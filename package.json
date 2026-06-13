@@ -1,0 +1,5 @@
+{
+  "name": "sevana",
+  "private": true,
+  "workspaces": ["packages/*"]
+}
