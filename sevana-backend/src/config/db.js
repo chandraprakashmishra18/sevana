@@ -40,10 +40,16 @@ console.log("=== DATABASE_URL ===");
 console.log(process.env.DATABASE_URL);
 console.log("====================");
 
+// const pool = new Pool({
+//   connectionString: process.env.DATABASE_URL,
+// });
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  host: "localhost",
+  port: 5432,
+  user: "sevana_user",
+  password: "sevana_pass",
+  database: "sevana_db",
 });
-
 pool
   .query("SELECT current_user, current_database()")
   .then((res) => {
