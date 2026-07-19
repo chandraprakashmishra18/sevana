@@ -2,10 +2,12 @@ require("dotenv").config();
 const { Client } = require("pg");
 
 async function test() {
-  console.log("DATABASE_URL:", process.env.DATABASE_URL);
-
   const client = new Client({
-    connectionString: process.env.DATABASE_URL,
+    host: "127.0.0.1",
+    port: 5432,
+    user: "sevana_user",
+    password: "sevana_pass",
+    database: "sevana_db",
   });
 
   try {
@@ -20,7 +22,6 @@ async function test() {
 
     await client.end();
   } catch (err) {
-    console.error("❌ Connection failed");
     console.error(err);
   }
 }
