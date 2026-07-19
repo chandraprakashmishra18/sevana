@@ -2,25 +2,15 @@ services:
   postgres:
     image: postgis/postgis:16-3.4
     container_name: sevana_postgres
-
     restart: unless-stopped
-
     environment:
       POSTGRES_USER: sevana_user
       POSTGRES_PASSWORD: sevana_pass
       POSTGRES_DB: sevana_db
-
     ports:
       - "5432:5432"
-
     volumes:
-      - sevana_pg_data:/var/lib/postgresql/data
-
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U sevana_user -d sevana_db"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
+      - postgres_data:/var/lib/postgresql/data
 
 volumes:
-  sevana_pg_data:
+  postgres_data:
