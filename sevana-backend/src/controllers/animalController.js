@@ -5,6 +5,7 @@ const { awardXP } = require('../utils/xp');
 
 const VALID_SEVERITY = ['critical', 'moderate', 'low'];
 const VALID_STATUS = ['reported', 'acknowledged', 'in_progress', 'rescued', 'closed'];
+const VALID_BEHAVIOR = ['calm', 'scared', 'aggressive'];
 
 const createReportSchema = z.object({
   species: z.string().max(60).optional(),
