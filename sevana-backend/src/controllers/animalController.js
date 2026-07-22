@@ -193,18 +193,27 @@ async function updateStatus(req, res) {
 }
 
 // POST /api/animals/:id/respond - "Raise Hand" on a specific report
+// POST /api/animals/:id/respond - "Raise Hand" on a specific report
 async function respondToReport(req, res) {
+  const parsed = respondSchema.safeParse(req.body);
+
+  if (!parsed.success) {
+    return res.status(400).json({ error: parsed.error.flatten() });
+  }
+
   const client = await pool.connect();
+
   try {
-    await client.query('BEGIN');
+    await client.query("BEGIN");
 
     const existing = await client.query(
       `SELECT id FROM animal_reports WHERE id = $1`,
       [req.params.id]
     );
+
     if (!existing.rows.length) {
-      await client.query('ROLLBACK');
-      return res.status(404).json({ error: 'Report not found' });
+      await client.query("ROLLBACK");
+      return res.status(404).json({ error: "Report not found" });
     }
 
     const inserted = await client.query(
@@ -212,32 +221,45 @@ async function respondToReport(req, res) {
        VALUES ($1, $2, $3)
        ON CONFLICT (animal_report_id, volunteer_id) DO NOTHING
        RETURNING *`,
-      [req.params.id, req.user.id, req.body.note || null]
+      [
+        req.params.id,
+        req.user.id,
+        parsed.data.note || null,
+      ]
     );
 
     if (!inserted.rows.length) {
-      await client.query('ROLLBACK');
-      return res.status(409).json({ error: 'You already responded to this report' });
+      await client.query("ROLLBACK");
+      return res.status(409).json({
+        error: "You already responded to this report",
+      });
     }
 
     // Bump status to acknowledged if it was just reported
     await client.query(
-      `UPDATE animal_reports SET status = 'acknowledged', updated_at = now()
-       WHERE id = $1 AND status = 'reported'`,
+      `UPDATE animal_reports
+       SET status = 'acknowledged',
+           updated_at = now()
+       WHERE id = $1
+         AND status = 'reported'`,
       [req.params.id]
     );
 
     const xp = await awardXP(client, {
       userId: req.user.id,
-      reason: 'raise_hand_responded',
-      refTable: 'animal_reports',
+      reason: "raise_hand_responded",
+      refTable: "animal_reports",
       refId: req.params.id,
     });
 
-    await client.query('COMMIT');
-    res.status(201).json({ response: inserted.rows[0], xpAwarded: xp });
+    await client.query("COMMIT");
+
+    return res.status(201).json({
+      response: inserted.rows[0],
+      xpAwarded: xp,
+    });
   } catch (err) {
-    await client.query('ROLLBACK');
+    await client.query("ROLLBACK");
     throw err;
   } finally {
     client.release();
