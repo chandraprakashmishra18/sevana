@@ -24,7 +24,16 @@ async function createReport(req, res) {
   if (!parsed.success) {
     return res.status(400).json({ error: parsed.error.flatten() });
   }
-  const { species, description, photo_url, severity, lat, lng, address_label } = parsed.data;
+ const {
+  species,
+  description,
+  photo_url,
+  severity,
+  behavior,
+  lat,
+  lng,
+  address_label,
+} = parsed.data;
 
   const client = await pool.connect();
   try {
