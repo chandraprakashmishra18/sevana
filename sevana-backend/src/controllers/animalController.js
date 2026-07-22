@@ -54,7 +54,17 @@ address_label
 )
 VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
        RETURNING *`,
-      [req.user.id, species || null, description || null, photo_url || null, severity, lat, lng, address_label || null]
+    [
+ req.user.id,
+ species || null,
+ description || null,
+ photo_url || null,
+ severity,
+ behavior || null,
+ lat,
+ lng,
+ address_label || null
+]
     );
 
     const xp = await awardXP(client, {
