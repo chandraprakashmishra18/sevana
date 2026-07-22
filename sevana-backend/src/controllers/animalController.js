@@ -41,8 +41,18 @@ async function createReport(req, res) {
 
     const { rows } = await client.query(
       `INSERT INTO animal_reports
-        (reporter_id, species, description, photo_url, severity, lat, lng, address_label)
-       VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+       (
+reporter_id,
+species,
+description,
+photo_url,
+severity,
+behavior,
+lat,
+lng,
+address_label
+)
+VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
        RETURNING *`,
       [req.user.id, species || null, description || null, photo_url || null, severity, lat, lng, address_label || null]
     );
