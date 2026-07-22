@@ -1,29 +1,25 @@
-require("dotenv").config();
 const { Client } = require("pg");
 
-async function test() {
-  const client = new Client({
-    host: "127.0.0.1",
-    port: 5432,
-    user: "sevana_user",
-    password: "sevana_pass",
-    database: "sevana_db",
-  });
+const client = new Client({
+  host: "127.0.0.1",
+  port: 5432,
+  user: "sevana_user",
+  password: "sevana_pass",
+  database: "sevana_db",
+});
 
+(async () => {
   try {
     await client.connect();
-    console.log("✅ Connected");
+    console.log("✅ Connected successfully!");
 
-    const result = await client.query(
+    const res = await client.query(
       "SELECT current_user, current_database()"
     );
 
-    console.log(result.rows);
-
+    console.log(res.rows[0]);
     await client.end();
   } catch (err) {
     console.error(err);
   }
-}
-
-test();
+})();
