@@ -36,117 +36,207 @@ END$$;
 -- ENUM: Report Status
 -- ============================================================
 
-CREATE TYPE report_status AS ENUM (
-    'REPORTED',
-    'RESPONDERS_JOINING',
-    'RESPONDER_ON_SITE',
-    'FIRST_AID_GIVEN',
-    'TRANSPORT_IN_PROGRESS',
-    'AT_VETERINARY_CLINIC',
-    'UNDER_TREATMENT',
-    'RECOVERING',
-    'RESCUED',
-    'CLOSED'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'report_status'
+    ) THEN
+        CREATE TYPE report_status AS ENUM (
+            'REPORTED',
+            'RESPONDERS_JOINING',
+            'RESPONDER_ON_SITE',
+            'FIRST_AID_GIVEN',
+            'TRANSPORT_IN_PROGRESS',
+            'AT_VETERINARY_CLINIC',
+            'UNDER_TREATMENT',
+            'RECOVERING',
+            'RESCUED',
+            'CLOSED'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Severity Level
 -- ============================================================
 
-CREATE TYPE severity_level AS ENUM (
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'CRITICAL'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'severity_level'
+    ) THEN
+        CREATE TYPE severity_level AS ENUM (
+            'LOW',
+            'MEDIUM',
+            'HIGH',
+            'CRITICAL'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Report Category
 -- ============================================================
 
-CREATE TYPE report_category AS ENUM (
-    'DOG',
-    'CAT',
-    'BIRD',
-    'CATTLE',
-    'WILDLIFE',
-    'OTHER'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'report_category'
+    ) THEN
+        CREATE TYPE report_category AS ENUM (
+            'DOG',
+            'CAT',
+            'BIRD',
+            'CATTLE',
+            'WILDLIFE',
+            'OTHER'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Notification Type
 -- ============================================================
 
-CREATE TYPE notification_type AS ENUM (
-    'EMERGENCY',
-    'RESCUE_UPDATE',
-    'CONFIRMATION_REQUEST',
-    'RESCUE_COMPLETED',
-    'VOLUNTEER',
-    'SYSTEM',
-    'ACHIEVEMENT'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'notification_type'
+    ) THEN
+        CREATE TYPE notification_type AS ENUM (
+            'EMERGENCY',
+            'RESCUE_UPDATE',
+            'CONFIRMATION_REQUEST',
+            'RESCUE_COMPLETED',
+            'VOLUNTEER',
+            'SYSTEM',
+            'ACHIEVEMENT'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Notification Priority
 -- ============================================================
 
-CREATE TYPE notification_priority AS ENUM (
-    'LOW',
-    'MEDIUM',
-    'HIGH',
-    'CRITICAL'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'notification_priority'
+    ) THEN
+        CREATE TYPE notification_priority AS ENUM (
+            'LOW',
+            'MEDIUM',
+            'HIGH',
+            'CRITICAL'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Participant Role
 -- ============================================================
 
-CREATE TYPE participant_role AS ENUM (
-    'REPORTER',
-    'VOLUNTEER',
-    'VET',
-    'NGO'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'participant_role'
+    ) THEN
+        CREATE TYPE participant_role AS ENUM (
+            'REPORTER',
+            'VOLUNTEER',
+            'VET',
+            'NGO'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Participant Status
 -- ============================================================
 
-CREATE TYPE participant_status AS ENUM (
-    'JOINED',
-    'ON_THE_WAY',
-    'ON_SITE',
-    'ACTIVE',
-    'COMPLETED',
-    'LEFT'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'participant_status'
+    ) THEN
+        CREATE TYPE participant_status AS ENUM (
+            'JOINED',
+            'ON_THE_WAY',
+            'ON_SITE',
+            'ACTIVE',
+            'COMPLETED',
+            'LEFT'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Volunteer Availability
 -- ============================================================
 
-CREATE TYPE availability_status AS ENUM (
-    'AVAILABLE',
-    'BUSY',
-    'OFFLINE'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'availability_status'
+    ) THEN
+        CREATE TYPE availability_status AS ENUM (
+            'AVAILABLE',
+            'BUSY',
+            'OFFLINE'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Verification Status
 -- ============================================================
 
-CREATE TYPE verification_status AS ENUM (
-    'PENDING',
-    'APPROVED',
-    'REJECTED'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'verification_status'
+    ) THEN
+        CREATE TYPE verification_status AS ENUM (
+            'PENDING',
+            'APPROVED',
+            'REJECTED'
+        );
+    END IF;
+END$$;
 
 -- ============================================================
 -- ENUM: Story Visibility
 -- ============================================================
 
-CREATE TYPE story_visibility AS ENUM (
-    'PUBLIC',
-    'PRIVATE'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'story_visibility'
+    ) THEN
+        CREATE TYPE story_visibility AS ENUM (
+            'PUBLIC',
+            'PRIVATE'
+        );
+    END IF;
+END$$;
