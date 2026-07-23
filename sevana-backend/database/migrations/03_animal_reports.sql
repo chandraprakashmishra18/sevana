@@ -76,16 +76,6 @@ CREATE TABLE IF NOT EXISTS animal_reports (
         REFERENCES users(id)
         ON DELETE SET NULL,
 
-    -- Media
-
-    cover_image TEXT,
-
-    image_count INTEGER
-        DEFAULT 0
-        CHECK (image_count >= 0),
-
-    video_url TEXT,
-
     -- AI Ready
 
     ai_detected_species VARCHAR(100),
