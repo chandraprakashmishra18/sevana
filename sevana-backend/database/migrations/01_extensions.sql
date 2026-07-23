@@ -15,15 +15,24 @@ CREATE EXTENSION IF NOT EXISTS earthdistance;
 -- ENUM: User Roles
 -- ============================================================
 
-CREATE TYPE user_role AS ENUM (
-    'user',
-    'volunteer',
-    'vet',
-    'ngo',
-    'admin'
-);
+DO $$
+BEGIN
+    IF NOT EXISTS (
+        SELECT 1
+        FROM pg_type
+        WHERE typname = 'user_role'
+    ) THEN
+        CREATE TYPE user_role AS ENUM (
+            'user',
+            'volunteer',
+            'vet',
+            'ngo',
+            'admin'
+        );
+    END IF;
+END$$;
 
--- ============================================================
+-- ===========================================================
 -- ENUM: Report Status
 -- ============================================================
 
