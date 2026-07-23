@@ -1,8 +1,12 @@
 const { Pool } = require("pg");
 
+console.log("DATABASE_URL:", process.env.DATABASE_URL);
+
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 });
+
+// rest of the file...
 
 pool
   .query("SELECT current_user, current_database()")
