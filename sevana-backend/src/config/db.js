@@ -1,17 +1,14 @@
 const { Pool } = require("pg");
 
 const pool = new Pool({
-  host: "127.0.0.1",
-  port: 5432,
-  user: "sevana_user",
-  password: "sevana_pass",
-  database: "sevana_db",
+  connectionString: process.env.DATABASE_URL,
 });
 
 pool
   .query("SELECT current_user, current_database()")
   .then((res) => {
-    console.log("✅ Connected:", res.rows[0]);
+    console.log("✅ PostgreSQL Connected");
+    console.log(res.rows[0]);
   })
   .catch((err) => {
     console.error("❌ PostgreSQL Connection Failed");
