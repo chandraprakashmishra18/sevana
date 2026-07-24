@@ -1,4 +1,4 @@
-const { uploadBufferToCloudinary } = require('../middleware/upload');
+const { uploadBufferToCloudinary } = require('../middleware/upload.middleware');
 
 // POST /api/uploads  (multipart/form-data, field name "photo")
 async function uploadPhoto(req, res) {
