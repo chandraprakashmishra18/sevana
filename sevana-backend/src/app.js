@@ -3,7 +3,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const morgan = require('morgan');
 
-const authRoutes = require('./routes/authRoutes');
+const authRoutes = require('./routes/auth.routes');
 const animalRoutes = require('./routes/animalRoutes');
 const vetRoutes = require('./routes/vetRoutes');
 const lostFoundRoutes = require('./routes/lostFoundRoutes');
