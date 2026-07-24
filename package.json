@@ -1,5 +1,10 @@
 {
   "name": "sevana",
   "private": true,
-  "workspaces": ["packages/*"]
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "zod": "^4.4.3"
+  }
 }
