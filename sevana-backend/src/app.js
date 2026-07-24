@@ -13,7 +13,7 @@ const userRoutes = require('./routes/user.routes');
 const errorHandler = require('./middleware/error.middleware');
 const authRoutes = require("./routes/auth.routes");
 const app = express();
-
+app.use("/api/v1/auth", authRoutes);
 app.use(helmet());
 app.use(cors());
 app.use(morgan('dev'));
