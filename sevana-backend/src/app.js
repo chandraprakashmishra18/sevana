@@ -5,7 +5,7 @@ const morgan = require('morgan');
 
 const authRoutes = require('./routes/auth.routes');
 const animalRoutes = require('./routes/report.routes');
-const vetRoutes = require('./routes/vetRoutes');
+const vetRoutes = require('./routes/vet.routes');
 const lostFoundRoutes = require('./routes/lost-found.routes');
 const raiseHandRoutes = require('./routes/raise-hand.routes');
 const uploadRoutes = require('./routes/upload.routes');
