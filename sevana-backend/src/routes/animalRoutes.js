@@ -1,7 +1,7 @@
 const express = require('express');
 const {
   createReport, listReports, getReport, updateStatus, respondToReport,
-} = require('../controllers/animalController');
+} = require('../controllers/report.controller');
 const { requireAuth } = require('../middleware/auth');
 const asyncHandler = require('../utils/asyncHandler');
 

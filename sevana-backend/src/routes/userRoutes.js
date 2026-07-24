@@ -1,5 +1,5 @@
 const express = require('express');
-const { myStats } = require('../controllers/animalController');
+const { myStats } = require('../controllers/report.controller');
 const { requireAuth } = require('../middleware/auth');
 const asyncHandler = require('../utils/asyncHandler');
 
