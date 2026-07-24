@@ -1,5 +1,5 @@
 const express = require('express');
-const { listVets, getVet } = require('../controllers/vetController');
+const { listVets, getVet } = require('../controllers/vet.controller');
 const asyncHandler = require('../utils/asyncHandler');
 
 const router = express.Router();
