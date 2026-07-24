@@ -47,14 +47,13 @@ async function findById(id) {
   return rows[0] || null;
 }
 
-async function createUser(user) {
-  const {
-    full_name,
-    email,
-    phone,
-    password_hash,
-    role,
-  } = user;
+async function createUser({
+  full_name,
+  email,
+  phone,
+  password_hash,
+  role = "user",
+}) {
 
   const { rows } = await pool.query(
     `
