@@ -21,18 +21,6 @@ async function verifyConnection() {
 
 verifyConnection();
 
-module.exports = pool;
-pool
-  .query("SELECT current_user, current_database()")
-  .then((res) => {
-    console.log("✅ PostgreSQL Connected");
-    console.log(res.rows[0]);
-  })
-  .catch((err) => {
-    console.error("❌ PostgreSQL Connection Failed");
-    console.error(err);
-  });
-
 pool.on("error", (err) => {
   console.error("Unexpected PostgreSQL Error:", err);
   process.exit(1);
