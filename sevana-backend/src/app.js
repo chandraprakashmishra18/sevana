@@ -10,6 +10,7 @@ const lostFoundRoutes = require('./routes/lost-found.routes');
 const raiseHandRoutes = require('./routes/raise-hand.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const userRoutes = require('./routes/user.routes');
+const errorHandler = require('./middleware/error.middleware');
 
 const app = express();
 
@@ -31,11 +32,7 @@ app.use('/api/users', userRoutes);
 // 404
 app.use((req, res) => res.status(404).json({ error: 'Route not found' }));
 
-// Central error handler - every controller above uses async/await without
-// individual try/catch for unexpected errors, so this is the safety net.
-app.use((err, req, res, next) => {
-  console.error(err);
-  res.status(500).json({ error: 'Internal server error' });
-});
+// Must be the last middleware so route errors are forwarded here.
+app.use(errorHandler);
 
 module.exports = app;
