@@ -9,7 +9,7 @@ const vetRoutes = require('./routes/vetRoutes');
 const lostFoundRoutes = require('./routes/lost-found.routes');
 const raiseHandRoutes = require('./routes/raise-hand.routes');
 const uploadRoutes = require('./routes/upload.routes');
-const userRoutes = require('./routes/userRoutes');
+const userRoutes = require('./routes/user.routes');
 
 const app = express();
 
