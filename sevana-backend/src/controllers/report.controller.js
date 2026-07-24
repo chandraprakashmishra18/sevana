@@ -192,7 +192,10 @@ async function updateStatus(req, res) {
   }
 }
 
-// POST /api/animals/:id/respond - "Raise Hand" on a specific report
+const respondSchema = z.object({
+  note: z.string().max(500).optional(),
+});
+
 // POST /api/animals/:id/respond - "Raise Hand" on a specific report
 async function respondToReport(req, res) {
   const parsed = respondSchema.safeParse(req.body);
