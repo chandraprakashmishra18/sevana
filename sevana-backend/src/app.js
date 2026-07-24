@@ -11,7 +11,7 @@ const raiseHandRoutes = require('./routes/raise-hand.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const userRoutes = require('./routes/user.routes');
 const errorHandler = require('./middleware/error.middleware');
-
+const authRoutes = require("./routes/auth.routes");
 const app = express();
 
 app.use(helmet());
