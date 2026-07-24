@@ -13,6 +13,11 @@ const userRoutes = require('./routes/user.routes');
 const errorHandler = require('./middleware/error.middleware');
 const authRoutes = require("./routes/auth.routes");
 const app = express();
+const errorHandler = require("./middleware/error.middleware");
+
+// all routes above
+
+app.use(errorHandler);
 app.use("/api/v1/auth", authRoutes);
 app.use(helmet());
 app.use(cors());
