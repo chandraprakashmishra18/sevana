@@ -2,7 +2,7 @@ const express = require('express');
 const { uploadPhoto } = require('../controllers/upload.controller');
 const { upload } = require('../middleware/upload.middleware');
 const { requireAuth } = require('../middleware/auth.middleware');
-const asyncHandler = require('../utils/asyncHandler');
+const asyncHandler = require('../utils/async-handler');
 
 const router = express.Router();
 
