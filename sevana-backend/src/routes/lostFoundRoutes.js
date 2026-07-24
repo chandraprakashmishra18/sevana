@@ -1,5 +1,5 @@
 const express = require('express');
-const { createPost, listPosts, resolvePost } = require('../controllers/lostFoundController');
+const { createPost, listPosts, resolvePost } = require('../controllers/lost-found.controller');
 const { requireAuth } = require('../middleware/auth');
 const asyncHandler = require('../utils/asyncHandler');
 
