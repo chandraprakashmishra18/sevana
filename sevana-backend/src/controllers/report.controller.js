@@ -1,5 +1,5 @@
 const { z } = require('zod');
-const pool = require('../config/db');
+const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
 const { awardXP } = require('../utils/xp.util');
 

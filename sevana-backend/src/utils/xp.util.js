@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+const pool = require('../db/db');
 
 // Central XP rulebook for the Animal Rescue module.
 // Keeping amounts here (not scattered in controllers) makes tuning easy

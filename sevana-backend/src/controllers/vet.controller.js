@@ -1,4 +1,4 @@
-const pool = require('../config/db');
+const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
 
 // GET /api/vets?lat=&lng=&radius=&service=
