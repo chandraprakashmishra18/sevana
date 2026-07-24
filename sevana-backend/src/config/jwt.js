@@ -1,9 +1,11 @@
-const ACCESS_TOKEN_EXPIRY = "15m";
-const REFRESH_TOKEN_EXPIRY = "30d";
+module.exports = {
+  accessToken: {
+    secret: process.env.JWT_ACCESS_SECRET,
+    expiresIn: "15m",
+  },
 
-const JWT = {
-  ACCESS_TOKEN_EXPIRY,
-  REFRESH_TOKEN_EXPIRY,
+  refreshToken: {
+    secret: process.env.JWT_REFRESH_SECRET,
+    expiresIn: "30d",
+  },
 };
-
-module.exports = JWT;
