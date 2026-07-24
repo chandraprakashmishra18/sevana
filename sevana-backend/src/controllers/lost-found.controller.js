@@ -1,6 +1,6 @@
 const { z } = require('zod');
 const pool = require('../config/db');
-const { awardXP } = require('../utils/xp');
+const { awardXP } = require('../utils/xp.util');
 
 const createPostSchema = z.object({
   post_type: z.enum(['lost', 'found']),
