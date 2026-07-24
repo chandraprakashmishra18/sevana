@@ -7,7 +7,7 @@ const authRoutes = require('./routes/auth.routes');
 const animalRoutes = require('./routes/report.routes');
 const vetRoutes = require('./routes/vetRoutes');
 const lostFoundRoutes = require('./routes/lost-found.routes');
-const raiseHandRoutes = require('./routes/raiseHandRoutes');
+const raiseHandRoutes = require('./routes/raise-hand.routes');
 const uploadRoutes = require('./routes/uploadRoutes');
 const userRoutes = require('./routes/userRoutes');
 
