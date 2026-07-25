@@ -63,7 +63,6 @@ async function loginUser(identifier, password) {
   const user = await authRepository.findByIdentifier(identifier);
 
 console.log("User found:", !!user);
-
 if (!user) {
   throw new ApiError({
     statusCode: 401,
