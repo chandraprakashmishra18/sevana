@@ -18,7 +18,7 @@ const createReportSchema = z.object({
   address_label: z.string().max(200).optional(),
 });
 
-// POST /api/animals - "Report Animal" quick action
+// POST /api/v1/reports - "Report Animal" quick action
 async function createReport(req, res) {
   const parsed = createReportSchema.safeParse(req.body);
   if (!parsed.success) {
@@ -84,7 +84,7 @@ VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
   }
 }
 
-// GET /api/animals?lat=&lng=&radius=&severity=&status=
+// GET /api/v1/reports?lat=&lng=&radius=&severity=&status=
 // Powers "Active Near You" feed on Home + RescueFeed screen
 async function listReports(req, res) {
   const lat = parseFloat(req.query.lat);
@@ -145,7 +145,7 @@ async function getReport(req, res) {
 
 const statusSchema = z.object({ status: z.enum(VALID_STATUS) });
 
-// PATCH /api/animals/:id/status - dispatch/acknowledge/rescue progression
+// PATCH /api/v1/reports/:id/status - dispatch/acknowledge/rescue progression
 async function updateStatus(req, res) {
   const parsed = statusSchema.safeParse(req.body);
   if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
@@ -196,7 +196,7 @@ const respondSchema = z.object({
   note: z.string().max(500).optional(),
 });
 
-// POST /api/animals/:id/respond - "Raise Hand" on a specific report
+// POST /api/v1/reports/:id/respond - "Raise Hand" on a specific report
 async function respondToReport(req, res) {
   const parsed = respondSchema.safeParse(req.body);
 
