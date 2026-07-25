@@ -11,8 +11,13 @@ const VALID_SEVERITY = [
 ];
 const VALID_STATUS = [
   "reported",
-  "acknowledged",
-  "in_progress",
+  "responders_joining",
+  "responder_on_site",
+  "first_aid_given",
+  "transport_in_progress",
+  "at_veterinary_clinic",
+  "under_treatment",
+  "recovering",
   "rescued",
   "closed",
 ];
