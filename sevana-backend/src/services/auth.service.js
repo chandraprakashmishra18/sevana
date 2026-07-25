@@ -69,16 +69,11 @@ async function loginUser(identifier, password) {
     });
   }
   console.log("Entered password:", password);
-console.log("Stored hash:", user.password_hash);
+  console.log("Stored hash:", user.password_hash);
 
-const validPassword = await comparePassword(
-  password,
-  user.password_hash
-);
+  const validPassword = await comparePassword(password, user.password_hash);
 
-console.log("Password match:", validPassword);
-
-  
+  console.log("Password match:", validPassword);
 
   if (!validPassword) {
     throw new ApiError({
