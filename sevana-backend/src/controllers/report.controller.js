@@ -171,7 +171,7 @@ async function listReports(req, res) {
 
   const { rows } = await pool.query(
     `SELECT ar.*, u.full_name AS reporter_name,
-            (SELECT COUNT(*) FROM rescue_responses rr WHERE rr.animal_report_id = ar.id) AS responder_count
+            (SELECT COUNT(*) FROM rescues rr WHERE rr.animal_report_id = ar.id) AS responder_count
      FROM animal_reports ar
      JOIN users u ON u.id = ar.reported_by
      ${where}
