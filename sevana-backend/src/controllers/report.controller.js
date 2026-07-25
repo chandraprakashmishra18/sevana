@@ -278,7 +278,7 @@ async function respondToReport(req, res) {
        VALUES ($1, $2, $3)
        ON CONFLICT (report_id, volunteer_id) DO NOTHING
        RETURNING *`,
-      [req.params.id, req.user.id, parsed.data.note || null],
+      [req.params.id, req.user.id, parsed.data.notes || null],
     );
 
     if (!inserted.rows.length) {
