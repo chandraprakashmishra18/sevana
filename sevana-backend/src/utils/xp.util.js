@@ -24,9 +24,27 @@ async function awardXP(client, { userId, reason, refTable = null, refId = null }
   }
 
   const db = client || pool;
-
-  
-
+  await db.query(
+  `INSERT INTO xp_transactions
+  (
+    user_id,
+    points,
+    reason,
+    reference_type,
+    reference_id
+  )
+  VALUES
+  (
+    $1,$2,$3,$4,$5
+  )`,
+  [
+    userId,
+    amount,
+    reason,
+    refTable,
+    refId
+  ]
+);
   const { rows } = await db.query(
     `UPDATE users SET xp = xp + $1 WHERE id = $2 RETURNING xp`,
     [amount, userId]
