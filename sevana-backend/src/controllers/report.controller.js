@@ -14,14 +14,33 @@ const VALID_STATUS = [
 const VALID_BEHAVIOR = ["calm", "scared", "aggressive"];
 
 const createReportSchema = z.object({
-  species: z.string().max(60).optional(),
-  description: z.string().max(1000).optional(),
-  photo_url: z.string().url().optional(),
-  severity: z.enum(VALID_SEVERITY).default("moderate"),
-  behavior: z.enum(VALID_BEHAVIOR).optional(),
-  lat: z.coerce.number(),
-  lng: z.coerce.number(),
-  address_label: z.string().max(200).optional(),
+  animal_type: z.string().min(2).max(50),
+
+  species: z.string().max(100).optional(),
+
+  breed: z.string().max(100).optional(),
+
+  gender: z.enum(["male", "female", "unknown"]).optional(),
+
+  estimated_age: z.string().optional(),
+
+  color: z.string().optional(),
+
+  severity: z.enum(["low", "medium", "high", "critical"]),
+
+  condition: z.string().min(5),
+
+  latitude: z.number(),
+
+  longitude: z.number(),
+
+  address: z.string().optional(),
+
+  city: z.string().optional(),
+
+  state: z.string().optional(),
+
+  landmark: z.string().optional(),
 });
 
 // POST /api/v1/reports - "Report Animal" quick action
@@ -31,14 +50,20 @@ async function createReport(req, res) {
     return res.status(400).json({ error: parsed.error.flatten() });
   }
   const {
+    animal_type,
     species,
-    description,
-    photo_url,
+    breed,
+    gender,
+    estimated_age,
+    color,
     severity,
-    behavior,
-    lat,
-    lng,
-    address_label,
+    condition,
+    latitude,
+    longitude,
+    address,
+    city,
+    state,
+    landmark,
   } = parsed.data;
 
   const client = await pool.connect();
@@ -46,30 +71,47 @@ async function createReport(req, res) {
     await client.query("BEGIN");
 
     const { rows } = await client.query(
-      `INSERT INTO animal_reports
-       (
-reporter_id,
+      `
+INSERT INTO animal_reports
+(
+reported_by,
+animal_type,
 species,
-description,
-photo_url,
+breed,
+gender,
+estimated_age,
+color,
 severity,
-behavior,
-lat,
-lng,
-address_label
+condition,
+latitude,
+longitude,
+address,
+city,
+state,
+landmark
 )
-VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9)
-       RETURNING *`,
+VALUES
+(
+$1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13,$14,$15
+)
+RETURNING *
+`,
       [
         req.user.id,
-        species || null,
-        description || null,
-        photo_url || null,
+        animal_type,
+        species ?? null,
+        breed ?? null,
+        gender ?? "unknown",
+        estimated_age ?? null,
+        color ?? null,
         severity,
-        behavior || null,
-        lat,
-        lng,
-        address_label || null,
+        condition,
+        latitude,
+        longitude,
+        address ?? null,
+        city ?? null,
+        state ?? null,
+        landmark ?? null,
       ],
     );
 
