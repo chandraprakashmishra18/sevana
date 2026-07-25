@@ -186,7 +186,12 @@ async function listReports(req, res) {
      JOIN users u ON u.id = ar.reported_by
      ${where}
      ORDER BY
-       CASE ar.severity WHEN 'critical' THEN 0 WHEN 'moderate' THEN 1 ELSE 2 END,
+       CASE ar.severity
+         WHEN 'critical' THEN 0
+         WHEN 'high' THEN 1
+         WHEN 'medium' THEN 2
+         ELSE 3
+       END,
        ar.created_at DESC
      LIMIT 100`,
     params,
@@ -283,20 +288,27 @@ async function respondToReport(req, res) {
       return res.status(404).json({ error: "Report not found" });
     }
 
-    const inserted = await client.query(
-      `INSERT INTO rescues (report_id, volunteer_id, notes)
-       VALUES ($1, $2, $3)
-       ON CONFLICT (report_id, volunteer_id) DO NOTHING
-       RETURNING *`,
-      [req.params.id, req.user.id, parsed.data.notes || null],
+    const existingRescue = await client.query(
+      `SELECT id
+       FROM rescues
+       WHERE report_id = $1
+         AND volunteer_id = $2`,
+      [req.params.id, req.user.id],
     );
 
-    if (!inserted.rows.length) {
+    if (existingRescue.rows.length) {
       await client.query("ROLLBACK");
       return res.status(409).json({
         error: "You already responded to this report",
       });
     }
+
+    const inserted = await client.query(
+      `INSERT INTO rescues (report_id, volunteer_id, notes)
+       VALUES ($1, $2, $3)
+       RETURNING *`,
+      [req.params.id, req.user.id, parsed.data.notes || null],
+    );
 
     // Bump status to acknowledged if it was just reported
     await client.query(
