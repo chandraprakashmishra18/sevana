@@ -329,7 +329,7 @@ async function myStats(req, res) {
     ),
     pool.query(
       `SELECT COUNT(*) FROM (
-         SELECT id FROM animal_reports WHERE reporter_id = $1
+         SELECT id FROM animal_reports WHERE reported_by = $1
          UNION
          SELECT animal_report_id FROM rescue_responses WHERE volunteer_id = $1
        ) t`,
