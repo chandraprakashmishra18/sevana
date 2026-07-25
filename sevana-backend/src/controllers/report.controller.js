@@ -247,7 +247,7 @@ async function updateStatus(req, res) {
 }
 
 const respondSchema = z.object({
-  note: z.string().max(500).optional(),
+  notes: z.string().max(500).optional(),
 });
 
 // POST /api/v1/reports/:id/respond - "Raise Hand" on a specific report
