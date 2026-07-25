@@ -276,7 +276,7 @@ async function respondToReport(req, res) {
     const inserted = await client.query(
       `INSERT INTO rescues (report_id, volunteer_id, note)
        VALUES ($1, $2, $3)
-       ON CONFLICT (animal_report_id, volunteer_id) DO NOTHING
+       ON CONFLICT (report_id, volunteer_id) DO NOTHING
        RETURNING *`,
       [req.params.id, req.user.id, parsed.data.note || null],
     );
