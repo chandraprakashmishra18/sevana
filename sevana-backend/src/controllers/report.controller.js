@@ -173,7 +173,7 @@ async function listReports(req, res) {
     `SELECT ar.*, u.full_name AS reporter_name,
             (SELECT COUNT(*) FROM rescue_responses rr WHERE rr.animal_report_id = ar.id) AS responder_count
      FROM animal_reports ar
-     JOIN users u ON u.id = ar.reporter_id
+     JOIN users u ON u.id = ar.reported_by
      ${where}
      ORDER BY
        CASE ar.severity WHEN 'critical' THEN 0 WHEN 'moderate' THEN 1 ELSE 2 END,
