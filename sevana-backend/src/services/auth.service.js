@@ -69,10 +69,7 @@ async function loginUser(identifier, password) {
     });
   }
 
-  const validPassword = await comparePassword(
-    password,
-    user.password_hash
-  );
+  
 
   if (!validPassword) {
     throw new ApiError({
