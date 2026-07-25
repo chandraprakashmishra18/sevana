@@ -3,7 +3,12 @@ const pool = require("../db/db");
 const { nearbyClause } = require("../utils/geo");
 const { awardXP } = require("../utils/xp.util");
 
-const VALID_SEVERITY = ["critical", "moderate", "low"];
+const VALID_SEVERITY = [
+  "low",
+  "medium",
+  "high",
+  "critical",
+];
 const VALID_STATUS = [
   "reported",
   "acknowledged",
