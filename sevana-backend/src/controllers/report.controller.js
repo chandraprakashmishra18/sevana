@@ -222,7 +222,7 @@ async function updateStatus(req, res) {
     if (parsed.data.status === "rescued") {
       // Award XP to everyone who responded to this report, not just the reporter
       const { rows: responders } = await client.query(
-        `SELECT volunteer_id FROM rescues WHERE animal_report_id = $1`,
+        `SELECT volunteer_id FROM rescues WHERE report_id = $1`,
         [req.params.id],
       );
       for (const r of responders) {
