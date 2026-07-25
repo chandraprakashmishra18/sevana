@@ -222,7 +222,7 @@ async function updateStatus(req, res) {
     if (parsed.data.status === "rescued") {
       // Award XP to everyone who responded to this report, not just the reporter
       const { rows: responders } = await client.query(
-        `SELECT volunteer_id FROM rescue_responses WHERE animal_report_id = $1`,
+        `SELECT volunteer_id FROM rescues WHERE animal_report_id = $1`,
         [req.params.id],
       );
       for (const r of responders) {
@@ -274,7 +274,7 @@ async function respondToReport(req, res) {
     }
 
     const inserted = await client.query(
-      `INSERT INTO rescue_responses (animal_report_id, volunteer_id, note)
+      `INSERT INTO rescues (animal_report_id, volunteer_id, note)
        VALUES ($1, $2, $3)
        ON CONFLICT (animal_report_id, volunteer_id) DO NOTHING
        RETURNING *`,
@@ -331,7 +331,7 @@ async function myStats(req, res) {
       `SELECT COUNT(*) FROM (
          SELECT id FROM animal_reports WHERE reported_by = $1
          UNION
-         SELECT animal_report_id FROM rescue_responses WHERE volunteer_id = $1
+         SELECT animal_report_id FROM rescues WHERE volunteer_id = $1
        ) t`,
       [req.user.id],
     ),
