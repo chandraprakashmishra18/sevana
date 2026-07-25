@@ -313,7 +313,7 @@ async function respondToReport(req, res) {
     // Bump status to acknowledged if it was just reported
     await client.query(
       `UPDATE animal_reports
-       SET status = 'acknowledged',
+       SET status = 'responders_joining',
            updated_at = now()
        WHERE id = $1
          AND status = 'reported'`,
