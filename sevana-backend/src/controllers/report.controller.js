@@ -331,7 +331,7 @@ async function myStats(req, res) {
       `SELECT COUNT(*) FROM (
          SELECT id FROM animal_reports WHERE reported_by = $1
          UNION
-         SELECT animal_report_id FROM rescues WHERE volunteer_id = $1
+         SELECT report_id FROM rescues WHERE volunteer_id = $1
        ) t`,
       [req.user.id],
     ),
