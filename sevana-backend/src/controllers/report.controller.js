@@ -13,8 +13,7 @@ const createReportSchema = z.object({
   photo_url: z.string().url().optional(),
   severity: z.enum(VALID_SEVERITY).default('moderate'),
   behavior: z.enum(VALID_BEHAVIOR).optional(),
-  lat: z.number(),
-  lng: z.number(),
+  
   address_label: z.string().max(200).optional(),
 });
 
