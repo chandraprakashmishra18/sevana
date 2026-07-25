@@ -134,7 +134,7 @@ async function listReports(req, res) {
 
 async function getReport(req, res) {
   const { rows } = await pool.query(
-    `SELECT ar.*, u.name AS reporter_name
+    `SELECT ar.*, u.full_name AS reporter_name
      FROM animal_reports ar JOIN users u ON u.id = ar.reporter_id
      WHERE ar.id = $1`,
     [req.params.id]
