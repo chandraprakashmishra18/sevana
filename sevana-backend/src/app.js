@@ -12,7 +12,7 @@ const uploadRoutes = require("./routes/upload.routes");
 const userRoutes = require("./routes/user.routes");
 
 const errorHandler = require("./middleware/error.middleware");
-
+const ngoRoutes = require('./routes/ngo.routes');
 const app = express();
 
 /* ============================================================
