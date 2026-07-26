@@ -18,7 +18,7 @@ const app = express();
 /* ============================================================
    Global Middlewares
 ============================================================ */
-
+app.use('/api/v1/ngos', ngoRoutes);
 app.use(helmet());
 app.use(cors());
 app.use(morgan("dev"));
