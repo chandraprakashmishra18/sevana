@@ -15,6 +15,7 @@ import RescueFeed from "./Screens/RescueFeed/RescueFeed";
 import VetFinder from "./Screens/Vets/VetFinder";
 import ProfileScreen from "./Screens/Profile/ProfileScreen";
 
+
 /* -------------------------------------------------------------------------- */
 /*                              Error Boundary                                */
 /* -------------------------------------------------------------------------- */
