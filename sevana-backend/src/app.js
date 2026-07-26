@@ -45,6 +45,7 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/reports", reportRoutes);
 app.use("/api/v1/vets", vetRoutes);
 app.use("/api/v1/ngos", ngoRoutes);
+app.use("/api/v1/donations", donationRoutes);
 app.use("/api/v1/lost-found", lostFoundRoutes);
 app.use("/api/v1/raise-hand", raiseHandRoutes);
 app.use("/api/v1/uploads", uploadRoutes);
