@@ -6,29 +6,40 @@ async function listVets(req, res) {
   const lat = parseFloat(req.query.lat);
   const lng = parseFloat(req.query.lng);
   const radius = parseFloat(req.query.radius) || 5;
-  const { service } = req.query;
 
   const params = [];
   const conditions = [];
 
   if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
-    const geo = nearbyClause({ lat, lng, radiusKm: radius, paramOffset: params.length });
+    const geo = nearbyClause({
+      lat,
+      lng,
+      radiusKm: radius,
+      paramOffset: params.length,
+    });
+
     conditions.push(geo.clause);
     params.push(...geo.params);
   }
 
-  if (service) {
-    params.push(service);
-    conditions.push(`$${params.length} = ANY(services)`);
-  }
-
-  const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
+  const where = conditions.length
+    ? `WHERE ${conditions.join(" AND ")}`
+    : "";
 
   const { rows } = await pool.query(
-    `SELECT * FROM vets ${where} ORDER BY clinic_name ASC LIMIT 50`,
+    `
+    SELECT *
+    FROM vets
+    ${where}
+    ORDER BY clinic_name ASC
+    LIMIT 50
+    `,
     params
   );
-  res.json({ vets: rows });
+
+  res.json({
+    vets: rows,
+  });
 }
 
 async function getVet(req, res) {
