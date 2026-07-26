@@ -78,7 +78,7 @@ async function createDonation(req, res) {
       amount,
       currency ?? 'INR',
       payment_method,
-      payment_status || 'pending',
+      payment_status ?? 'pending',
       transaction_reference,
       purpose,
       notes,
