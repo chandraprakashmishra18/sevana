@@ -25,7 +25,7 @@ async function listVets(req, res) {
   const where = conditions.length ? `WHERE ${conditions.join(' AND ')}` : '';
 
   const { rows } = await pool.query(
-    `SELECT * FROM vets ${where} ORDER BY is_verified DESC, rating DESC NULLS LAST LIMIT 50`,
+    `SELECT * FROM vets ${where} ORDER BY clinic_name ASC LIMIT 50`,
     params
   );
   res.json({ vets: rows });
