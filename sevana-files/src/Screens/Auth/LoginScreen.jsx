@@ -73,7 +73,10 @@ export default function LoginScreen({ onSwitch }) {
           autoComplete="username"
           value={identifier}
           disabled={loading}
-          onChange={(e) => setIdentifier(e.target.value)}
+          onChange={(e) => {
+            setIdentifier(e.target.value);
+            setError("");
+          }}
           required
           style={inputStyle}
         />
@@ -84,10 +87,25 @@ export default function LoginScreen({ onSwitch }) {
           autoComplete="current-password"
           value={password}
           disabled={loading}
-          onChange={(e) => setPassword(e.target.value)}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            setError("");
+          }}
           required
           style={inputStyle}
         />
+
+        <p
+          style={{
+            fontSize: 12,
+            color: "#666",
+            marginTop: -8,
+            marginBottom: 15,
+            lineHeight: 1.5,
+          }}
+        >
+          Enter the password you used when creating your Sevana account.
+        </p>
 
         <div
           style={{
@@ -126,13 +144,18 @@ export default function LoginScreen({ onSwitch }) {
 
         <button
           type="submit"
-          disabled={loading || !identifier.trim() || !password}
+          disabled={
+            loading || !identifier.trim() || !password || password.length < 8
+          }
           style={{
             ...buttonStyle,
-            opacity: loading || !identifier.trim() || !password ? 0.7 : 1,
+            opacity:
+              loading || !identifier.trim() || !password || password.length < 8
+                ? 0.7
+                : 1,
 
             cursor:
-              loading || !identifier.trim() || !password
+              loading || !identifier.trim() || !password || password.length < 8
                 ? "not-allowed"
                 : "pointer",
           }}
@@ -147,16 +170,21 @@ export default function LoginScreen({ onSwitch }) {
           }}
         >
           Don't have an account?{" "}
-          <span
+          <button
+            type="button"
             onClick={!loading ? onSwitch : undefined}
             style={{
               color: "#2E7D32",
               cursor: loading ? "default" : "pointer",
               fontWeight: 600,
+              background: "none",
+              border: "none",
+              padding: 0,
+              font: "inherit",
             }}
           >
             Register
-          </span>
+          </button>
         </p>
       </form>
     </div>
