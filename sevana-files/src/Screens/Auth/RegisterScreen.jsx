@@ -83,6 +83,7 @@ export default function RegisterScreen({ onSwitch }) {
 
         <input
           name="name"
+          autoFocus
           placeholder="Full Name"
           autoComplete="name"
           value={form.name}
@@ -107,6 +108,8 @@ export default function RegisterScreen({ onSwitch }) {
           name="phone"
           placeholder="Phone Number"
           autoComplete="tel"
+          inputMode="tel"
+          required
           value={form.phone}
           disabled={loading}
           onChange={handleChange}
