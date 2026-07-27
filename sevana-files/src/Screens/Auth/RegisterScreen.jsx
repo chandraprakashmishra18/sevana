@@ -14,6 +14,7 @@ export default function RegisterScreen({ onSwitch }) {
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleChange = (e) => {
     setForm((prev) => ({
@@ -30,17 +31,17 @@ export default function RegisterScreen({ onSwitch }) {
 
     try {
       await signUp({
-        name: form.name.trim(),
+        full_name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim(),
-        area: form.area.trim(),
+        // area: form.area.trim(),
         password: form.password,
       });
     } catch (err) {
       setError(
         err?.response?.data?.message ||
           err?.message ||
-          "Registration failed. Please try again."
+          "Registration failed. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -123,7 +124,7 @@ export default function RegisterScreen({ onSwitch }) {
 
         <input
           name="password"
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           autoComplete="new-password"
           value={form.password}
@@ -132,6 +133,42 @@ export default function RegisterScreen({ onSwitch }) {
           required
           style={inputStyle}
         />
+
+        <div
+          style={{
+            marginTop: -8,
+            marginBottom: 15,
+            textAlign: "right",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => setShowPassword((prev) => !prev)}
+            style={{
+              background: "none",
+              border: "none",
+              color: "#2E7D32",
+              cursor: "pointer",
+              fontSize: 14,
+              padding: 0,
+            }}
+          >
+            {showPassword ? "Hide Password" : "Show Password"}
+          </button>
+        </div>
+
+        <p
+          style={{
+            fontSize: 12,
+            color: "#666",
+            marginTop: 0,
+            marginBottom: 15,
+            lineHeight: 1.5,
+          }}
+        >
+          Password must contain at least 8 characters, one uppercase letter, one
+          lowercase letter, and one number.
+        </p>
 
         {error && (
           <div
@@ -146,11 +183,25 @@ export default function RegisterScreen({ onSwitch }) {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={
+            loading || !form.name.trim() || !form.phone.trim() || !form.password
+          }
           style={{
             ...buttonStyle,
-            opacity: loading ? 0.7 : 1,
-            cursor: loading ? "not-allowed" : "pointer",
+            opacity:
+              loading ||
+              !form.name.trim() ||
+              !form.phone.trim() ||
+              !form.password
+                ? 0.7
+                : 1,
+            cursor:
+              loading ||
+              !form.name.trim() ||
+              !form.phone.trim() ||
+              !form.password
+                ? "not-allowed"
+                : "pointer",
           }}
         >
           {loading ? "Creating Account..." : "Register"}
