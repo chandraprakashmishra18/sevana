@@ -219,3 +219,37 @@ Current Blockers:
 2. Registration payload/schema mismatch.
 
 No backend source code was modified.
+
+
+# 27 July 2026
+
+## Authentication UI Improvements
+
+### RegisterScreen Updates
+
+- Updated registration payload handling to match backend expectations:
+  - Changed frontend field mapping to send `full_name`.
+- Added password visibility toggle.
+- Added register button validation:
+  - Prevents submission when required fields are empty.
+- Improved loading state handling.
+- Added password requirement guidance text.
+- Improved error message handling during registration.
+
+### LoginScreen Updates
+
+- Added password visibility toggle.
+- Added login button validation:
+  - Prevents login when identifier or password is empty.
+  - Prevents login with passwords shorter than 8 characters.
+- Improved loading state handling.
+- Added error clearing when user starts typing again.
+- Improved password interaction during loading state.
+- Converted Register navigation control from span to button for better accessibility.
+- Added password guidance text.
+- Added proper button type handling to prevent unwanted form submission.
+
+### Auth Flow Improvements
+
+- Verified frontend authentication flow compatibility with backend response structure.
+- Improved token handling and user session restoration logic.
