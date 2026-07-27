@@ -33,7 +33,7 @@ async function nearbyAlerts(req, res) {
 
   const geo = nearbyClause({ lat, lng, radiusKm: 10 }); // wide net, alert.radius_km narrows further below
   const { rows } = await pool.query(
-    `SELECT ra.*, u.name AS raised_by
+    `SELECT ra.*, 
      FROM raise_hand_alerts ra
      JOIN users u ON u.id = ra.user_id
      WHERE ra.status = 'active'
