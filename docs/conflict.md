@@ -92,3 +92,59 @@ Followed:
 - No backend source code modified.
 - No database migration files modified.
 - Frontend changes limited to setup/testing only.
+
+# 27 July 2026
+
+## Authentication Related Conflicts and Resolutions
+
+### Conflict: Backend and Frontend Field Name Mismatch
+
+Problem:
+- Backend validation expected `full_name`.
+- Frontend registration form was sending a different field name.
+
+Resolution:
+- Updated RegisterScreen payload mapping.
+
+---
+
+### Conflict: JWT Token Response Structure Mismatch
+
+Problem:
+- Frontend token handling depended on response structure.
+- Backend returns authentication data inside the response data object.
+
+Resolution:
+- Reviewed AuthContext handling to match backend response format.
+
+---
+
+### Conflict: JWT Secret Configuration Issue
+
+Problem:
+- Backend returned:
+
+  "secretOrPrivateKey must have a value"
+
+Cause:
+- JWT access and refresh secrets were missing from environment variables.
+
+Resolution:
+- Identified missing JWT environment configuration.
+- Backend team was informed to update JWT secret variables.
+
+---
+
+### Conflict: Duplicate Email Registration
+
+Problem:
+- Registration returned:
+
+  "Email already registered"
+
+Cause:
+- User email already existed in database.
+
+Resolution:
+- Confirmed backend validation was working correctly.
+- Tested with a new email account.
