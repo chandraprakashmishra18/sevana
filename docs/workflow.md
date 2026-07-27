@@ -151,3 +151,55 @@ Next:
 - Resolve route prefix alignment.
 - Verify registration payload fields.
 - Continue frontend development.
+
+# 27 July 2026
+
+## Authentication Development Workflow Update
+
+### Frontend Authentication Flow
+
+The authentication flow was reviewed and improved.
+
+Current flow:
+
+1. User opens Sevana application.
+2. AuthContext checks for existing token in localStorage.
+3. If token exists:
+   - User session is restored.
+   - User data is loaded using `/api/v1/auth/me`.
+4. If no token exists:
+   - User is redirected to authentication screens.
+
+### Registration Flow
+
+1. User enters registration details.
+2. RegisterScreen validates required fields.
+3. Frontend sends:
+
+   - full_name
+   - email
+   - phone
+   - password
+
+4. Backend processes registration.
+5. On success:
+   - JWT token is stored.
+   - User state is updated.
+
+### Login Flow
+
+1. User enters email/phone and password.
+2. LoginScreen validates input.
+3. Frontend sends login request.
+4. Backend verifies credentials.
+5. On success:
+   - JWT token is stored.
+   - User session is created.
+   - User is redirected into the application.
+
+### UI Validation Rules Added
+
+- Empty required fields are blocked.
+- Password visibility can be toggled.
+- Login/register buttons show loading state.
+- Errors clear when users edit input fields.
