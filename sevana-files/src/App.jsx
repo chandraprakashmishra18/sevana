@@ -162,7 +162,7 @@ export default function App() {
   /* --------------------------- User Data --------------------------- */
 
   const userData = {
-    name: user?.name || "",
+    name: user?.full_name || "",
     area: user?.area || "",
     rescues: user?.rescues || 0,
     streak: user?.streak_days || 0,
@@ -183,7 +183,26 @@ export default function App() {
           fontWeight: 600,
         }}
       >
-        Loading...
+       <div
+  style={{
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    gap: 12,
+  }}
+>
+  <div
+    style={{
+      width: 40,
+      height: 40,
+      border: "4px solid #E0E0E0",
+      borderTop: "4px solid #2E7D32",
+      borderRadius: "50%",
+      animation: "spin 1s linear infinite",
+    }}
+  />
+  <p>Loading Sevana...</p>
+</div>
       </div>
     );
   }
