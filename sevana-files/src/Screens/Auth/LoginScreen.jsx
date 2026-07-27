@@ -10,6 +10,8 @@ export default function LoginScreen({ onSwitch }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -25,7 +27,7 @@ export default function LoginScreen({ onSwitch }) {
       setError(
         err?.response?.data?.message ||
           err?.message ||
-          "Unable to login. Please try again."
+          "Unable to login. Please try again.",
       );
     } finally {
       setLoading(false);
@@ -77,7 +79,7 @@ export default function LoginScreen({ onSwitch }) {
         />
 
         <input
-          type="password"
+          type={showPassword ? "text" : "password"}
           placeholder="Password"
           autoComplete="current-password"
           value={password}
@@ -86,6 +88,30 @@ export default function LoginScreen({ onSwitch }) {
           required
           style={inputStyle}
         />
+
+        <div
+          style={{
+            marginTop: -8,
+            marginBottom: 15,
+            textAlign: "right",
+          }}
+        >
+          <button
+            type="button"
+            disabled={loading}
+            onClick={() => setShowPassword((prev) => !prev)}
+            style={{
+              background: "none",
+              border: "none",
+              color: loading ? "#999" : "#2E7D32",
+              cursor: loading ? "not-allowed" : "pointer",
+              fontSize: 14,
+              padding: 0,
+            }}
+          >
+            {showPassword ? "Hide Password" : "Show Password"}
+          </button>
+        </div>
 
         {error && (
           <div
@@ -100,11 +126,15 @@ export default function LoginScreen({ onSwitch }) {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={loading || !identifier.trim() || !password}
           style={{
             ...buttonStyle,
-            opacity: loading ? 0.7 : 1,
-            cursor: loading ? "not-allowed" : "pointer",
+            opacity: loading || !identifier.trim() || !password ? 0.7 : 1,
+
+            cursor:
+              loading || !identifier.trim() || !password
+                ? "not-allowed"
+                : "pointer",
           }}
         >
           {loading ? "Logging in..." : "Login"}
