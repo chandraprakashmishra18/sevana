@@ -1,10 +1,4 @@
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-} from "react";
+import { createContext, useContext, useEffect, useMemo, useState } from "react";
 
 import { login, register, getMe } from "../api/authApi";
 
@@ -26,8 +20,8 @@ export function AuthProvider({ children }) {
       }
 
       try {
-        const data = await getMe();
-        setUser(data.user);
+        const response = await getMe();
+        setUser(response.data);
       } catch (err) {
         console.error("Session restore failed:", err);
         localStorage.removeItem(TOKEN_KEY);
@@ -41,28 +35,28 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signIn = async (credentials) => {
-    const data = await login(credentials);
+    const response = await login(credentials);
 
-    localStorage.setItem(TOKEN_KEY, data.token);
+    localStorage.setItem(TOKEN_KEY, response.data.accessToken);
 
-    setUser(data.user);
+    setUser(response.data.user);
 
-    return data.user;
+    return response.data.user;
   };
 
   const signUp = async (payload) => {
-    const data = await register(payload);
+    const response = await register(payload);
 
-    localStorage.setItem(TOKEN_KEY, data.token);
+    localStorage.setItem(TOKEN_KEY, response.data.accessToken);
 
-    setUser(data.user);
+    setUser(response.data.user);
 
-    return data.user;
+    return response.data.user;
   };
 
   const refreshUser = async () => {
-    const data = await getMe();
-    setUser(data.user);
+    const response = await getMe();
+    setUser(response.data);
   };
 
   const logout = () => {
@@ -80,14 +74,10 @@ export function AuthProvider({ children }) {
       refreshUser,
       isAuthenticated: !!user,
     }),
-    [user, loading]
+    [user, loading],
   );
 
-  return (
-    <AuthContext.Provider value={value}>
-      {children}
-    </AuthContext.Provider>
-  );
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 
 // eslint-disable-next-line react-refresh/only-export-components
