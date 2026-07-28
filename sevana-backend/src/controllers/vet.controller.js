@@ -1,5 +1,6 @@
 const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
+const { success, fail } = require("../shared/response");
 
 // GET /api/vets?lat=&lng=&radius=&service=
 async function listVets(req, res) {
@@ -37,15 +38,13 @@ async function listVets(req, res) {
     params
   );
 
-  res.json({
-    vets: rows,
-  });
+  return success(res, { message: "Vets fetched successfully.", data: rows });
 }
 
 async function getVet(req, res) {
   const { rows } = await pool.query(`SELECT * FROM vets WHERE id = $1`, [req.params.id]);
-  if (!rows.length) return res.status(404).json({ error: 'Vet not found' });
-  res.json({ vet: rows[0] });
+  if (!rows.length) return fail(res, { statusCode: 404, message: "Vet not found." });
+  return success(res, { message: "Vet fetched successfully.", data: rows[0] });
 }
 
 module.exports = { listVets, getVet };

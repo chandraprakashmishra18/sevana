@@ -1,4 +1,5 @@
 const pool = require('../db/db');
+const { success, created, fail } = require("../shared/response");
 
 // GET /api/v1/donations
 async function listDonations(req, res) {
@@ -10,9 +11,7 @@ async function listDonations(req, res) {
     `
   );
 
-  res.json({
-    donations: rows,
-  });
+  return success(res, { message: "Donations fetched successfully.", data: rows });
 }
 
 // GET /api/v1/donations/:id
@@ -27,14 +26,10 @@ async function getDonation(req, res) {
   );
 
   if (!rows.length) {
-    return res.status(404).json({
-      error: 'Donation not found',
-    });
+    return fail(res, { statusCode: 404, message: "Donation not found." });
   }
 
-  res.json({
-    donation: rows[0],
-  });
+  return success(res, { message: "Donation fetched successfully.", data: rows[0] });
 }
 
 // POST /api/v1/donations
@@ -85,9 +80,7 @@ async function createDonation(req, res) {
     ]
   );
 
-  res.status(201).json({
-    donation: rows[0],
-  });
+  return created(res, { message: "Donation created successfully.", data: rows[0] });
 }
 
 module.exports = {

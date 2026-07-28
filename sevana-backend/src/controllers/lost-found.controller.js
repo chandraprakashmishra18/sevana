@@ -1,6 +1,7 @@
 const { z } = require('zod');
 const pool = require('../db/db');
 const { awardXP } = require('../utils/xp.util');
+const { success, created, fail } = require("../shared/response");
 
 const createPostSchema = z.object({
   post_type: z.enum(['lost', 'found']),
@@ -13,7 +14,7 @@ const createPostSchema = z.object({
 
 async function createPost(req, res) {
   const parsed = createPostSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  if (!parsed.success) return fail(res, { statusCode: 400, message: "Validation failed." });
   const { post_type, animal_desc, photo_url, contact_info, lat, lng } = parsed.data;
 
   const { rows } = await pool.query(
@@ -21,7 +22,7 @@ async function createPost(req, res) {
      VALUES ($1,$2,$3,$4,$5,$6,$7) RETURNING *`,
     [req.user.id, post_type, animal_desc || null, photo_url || null, contact_info || null, lat || null, lng || null]
   );
-  res.status(201).json({ post: rows[0] });
+  return created(res, { message: "Lost-and-found post created successfully.", data: rows[0] });
 }
 
 async function listPosts(req, res) {
@@ -40,7 +41,7 @@ async function listPosts(req, res) {
     `SELECT * FROM lost_found_posts WHERE ${conditions.join(' AND ')} ORDER BY created_at DESC LIMIT 100`,
     params
   );
-  res.json({ posts: rows });
+  return success(res, { message: "Lost-and-found posts fetched successfully.", data: rows });
 }
 
 // PATCH /api/lost-found/:id/resolve
@@ -54,7 +55,7 @@ async function resolvePost(req, res) {
     );
     if (!rows.length) {
       await client.query('ROLLBACK');
-      return res.status(404).json({ error: 'Post not found or not yours' });
+      return fail(res, { statusCode: 404, message: "Post not found or not yours." });
     }
     const xp = await awardXP(client, {
       userId: req.user.id,
@@ -63,7 +64,7 @@ async function resolvePost(req, res) {
       refId: req.params.id,
     });
     await client.query('COMMIT');
-    res.json({ post: rows[0], xpAwarded: xp });
+    return success(res, { message: "Post resolved successfully.", data: { post: rows[0], xpAwarded: xp } });
   } catch (err) {
     await client.query('ROLLBACK');
     throw err;

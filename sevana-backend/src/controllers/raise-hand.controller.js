@@ -1,6 +1,7 @@
 const { z } = require('zod');
 const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
+const { success, created, fail } = require("../shared/response");
 
 const createAlertSchema = z.object({
   message: z.string().max(300).optional(),
@@ -12,7 +13,7 @@ const createAlertSchema = z.object({
 // POST /api/raise-hand - general "Alert nearby" quick action (not tied to a report)
 async function createAlert(req, res) {
   const parsed = createAlertSchema.safeParse(req.body);
-  if (!parsed.success) return res.status(400).json({ error: parsed.error.flatten() });
+  if (!parsed.success) return fail(res, { statusCode: 400, message: "Validation failed." });
   const { message, lat, lng, radius_km } = parsed.data;
 
   const { rows } = await pool.query(
@@ -20,7 +21,7 @@ async function createAlert(req, res) {
      VALUES ($1,$2,$3,$4,$5) RETURNING *`,
     [req.user.id, message || null, lat, lng, radius_km]
   );
-  res.status(201).json({ alert: rows[0] });
+  return created(res, { message: "Alert created successfully.", data: rows[0] });
 }
 
 // GET /api/raise-hand/nearby?lat=&lng=
@@ -28,7 +29,7 @@ async function nearbyAlerts(req, res) {
   const lat = parseFloat(req.query.lat);
   const lng = parseFloat(req.query.lng);
   if (Number.isNaN(lat) || Number.isNaN(lng)) {
-    return res.status(400).json({ error: 'lat and lng are required' });
+    return fail(res, { statusCode: 400, message: "lat and lng are required." });
   }
 
   const geo = nearbyClause({ lat, lng, radiusKm: 10 }); // wide net, alert.radius_km narrows further below
@@ -43,7 +44,7 @@ async function nearbyAlerts(req, res) {
      LIMIT 50`,
     geo.params
   );
-  res.json({ alerts: rows });
+  return success(res, { message: "Nearby alerts fetched successfully.", data: rows });
 }
 
 module.exports = { createAlert, nearbyAlerts };

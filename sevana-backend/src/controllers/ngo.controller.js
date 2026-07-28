@@ -1,5 +1,6 @@
 const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
+const { success, fail } = require("../shared/response");
 
 // GET /api/v1/ngos?lat=&lng=&radius=
 async function listNGOs(req, res) {
@@ -38,9 +39,7 @@ async function listNGOs(req, res) {
     params
   );
 
-  res.json({
-    ngos: rows,
-  });
+  return success(res, { message: "NGOs fetched successfully.", data: rows });
 }
 
 // GET /api/v1/ngos/:id
@@ -51,14 +50,10 @@ async function getNGO(req, res) {
   );
 
   if (!rows.length) {
-    return res.status(404).json({
-      error: "NGO not found",
-    });
+    return fail(res, { statusCode: 404, message: "NGO not found." });
   }
 
-  res.json({
-    ngo: rows[0],
-  });
+  return success(res, { message: "NGO fetched successfully.", data: rows[0] });
 }
 
 module.exports = {

@@ -2,6 +2,7 @@ const { z } = require("zod");
 const pool = require("../db/db");
 const { nearbyClause } = require("../utils/geo");
 const { awardXP } = require("../utils/xp.util");
+const { success, created, fail } = require("../shared/response");
 
 const VALID_SEVERITY = [
   "low",
@@ -55,7 +56,7 @@ const createReportSchema = z.object({
 async function createReport(req, res) {
   const parsed = createReportSchema.safeParse(req.body);
   if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.flatten() });
+    return fail(res, { statusCode: 400, message: "Validation failed." });
   }
   const {
     animal_type,
@@ -131,7 +132,10 @@ RETURNING *
     });
 
     await client.query("COMMIT");
-    return res.status(201).json({ report: rows[0], xpAwarded: xp });
+    return created(res, {
+      message: "Animal report created successfully.",
+      data: { report: rows[0], xpAwarded: xp },
+    });
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
@@ -195,7 +199,7 @@ async function listReports(req, res) {
     params,
   );
 
-  return res.json({ reports: rows });
+  return success(res, { message: "Reports fetched successfully.", data: rows });
 }
 
 async function getReport(req, res) {
@@ -206,10 +210,10 @@ async function getReport(req, res) {
     [req.params.id],
   );
   if (!rows.length) {
-    return res.status(404).json({ error: "Report not found" });
+    return fail(res, { statusCode: 404, message: "Report not found." });
   }
 
-  return res.json({ report: rows[0] });
+  return success(res, { message: "Report fetched successfully.", data: rows[0] });
 }
 
 const statusSchema = z.object({ status: z.enum(VALID_STATUS) });
@@ -218,7 +222,7 @@ const statusSchema = z.object({ status: z.enum(VALID_STATUS) });
 async function updateStatus(req, res) {
   const parsed = statusSchema.safeParse(req.body);
   if (!parsed.success)
-    return res.status(400).json({ error: parsed.error.flatten() });
+    return fail(res, { statusCode: 400, message: "Validation failed." });
 
   const client = await pool.connect();
   try {
@@ -231,7 +235,7 @@ async function updateStatus(req, res) {
     );
     if (!rows.length) {
       await client.query("ROLLBACK");
-      return res.status(404).json({ error: "Report not found" });
+      return fail(res, { statusCode: 404, message: "Report not found." });
     }
 
     let xp = null;
@@ -253,7 +257,10 @@ async function updateStatus(req, res) {
     }
 
     await client.query("COMMIT");
-    return res.json({ report: rows[0], xp });
+    return success(res, {
+      message: "Report status updated successfully.",
+      data: { report: rows[0], xp },
+    });
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
@@ -271,7 +278,7 @@ async function respondToReport(req, res) {
   const parsed = respondSchema.safeParse(req.body);
 
   if (!parsed.success) {
-    return res.status(400).json({ error: parsed.error.flatten() });
+    return fail(res, { statusCode: 400, message: "Validation failed." });
   }
 
   const client = await pool.connect();
@@ -286,7 +293,7 @@ async function respondToReport(req, res) {
 
     if (!existing.rows.length) {
       await client.query("ROLLBACK");
-      return res.status(404).json({ error: "Report not found" });
+      return fail(res, { statusCode: 404, message: "Report not found." });
     }
 
     const existingRescue = await client.query(
@@ -299,8 +306,9 @@ async function respondToReport(req, res) {
 
     if (existingRescue.rows.length) {
       await client.query("ROLLBACK");
-      return res.status(409).json({
-        error: "You already responded to this report",
+      return fail(res, {
+        statusCode: 409,
+        message: "You already responded to this report.",
       });
     }
 
@@ -330,9 +338,9 @@ async function respondToReport(req, res) {
 
     await client.query("COMMIT");
 
-    return res.status(201).json({
-      response: inserted.rows[0],
-      xpAwarded: xp,
+    return created(res, {
+      message: "Response to report created successfully.",
+      data: { response: inserted.rows[0], xpAwarded: xp },
     });
   } catch (err) {
     await client.query("ROLLBACK");

@@ -7,7 +7,6 @@ const success = (
     statusCode = 200,
     message = "Success",
     data = null,
-    meta = null,
   } = {}
 ) => {
   const response = {
@@ -15,10 +14,6 @@ const success = (
     message,
     data,
   };
-
-  if (meta) {
-    response.meta = meta;
-  }
 
   return res.status(statusCode).json(response);
 };
@@ -41,13 +36,6 @@ const created = (
 };
 
 /**
- * 204 No Content Response
- */
-const noContent = (res) => {
-  return res.status(204).send();
-};
-
-/**
  * Standard Error Response. Error details are intentionally not exposed in the
  * public response contract; log or handle them internally instead.
  */
@@ -67,6 +55,5 @@ const fail = (
 module.exports = {
   success,
   created,
-  noContent,
   fail,
 };
