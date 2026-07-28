@@ -70,6 +70,7 @@ export default function LoginScreen({ onSwitch }) {
         <input
           type="text"
           placeholder="Email or Phone"
+          aria-label="Email or Phone"
           autoComplete="username"
           value={identifier}
           disabled={loading}
@@ -98,13 +99,18 @@ export default function LoginScreen({ onSwitch }) {
         <p
           style={{
             fontSize: 12,
-            color: "#666",
+            color:
+              password.length === 0
+                ? "#666"
+                : password.length >= 8
+                  ? "#2E7D32"
+                  : "#D32F2F",
             marginTop: -8,
             marginBottom: 15,
             lineHeight: 1.5,
           }}
         >
-          Enter the password you used when creating your Sevana account.
+          Password should be at least 8 characters.
         </p>
 
         <div
