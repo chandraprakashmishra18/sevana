@@ -3,6 +3,13 @@ const { nearbyClause } = require("../utils/geo");
 const { success, fail } = require("../shared/response");
 const { updateProfileSchema, statsQuerySchema } = require("../validators/user.validator");
 
+const USER_PROFILE_FIELDS = `
+  id, full_name, email, phone, avatar_url, role, is_verified, is_active,
+  xp, level, latitude, longitude, area, city, state, pincode, bio,
+  blood_group, emergency_contact_name, emergency_contact_phone,
+  last_login, created_at, updated_at
+`;
+
 /**
  * GET /api/v1/users/me
  * Returns the logged-in user's profile
@@ -10,30 +17,7 @@ const { updateProfileSchema, statsQuerySchema } = require("../validators/user.va
 async function getMyProfile(req, res) {
   const { rows } = await pool.query(
     `
-    SELECT
-      id,
-      full_name,
-      email,
-      phone,
-      avatar_url,
-      role,
-      is_verified,
-      is_active,
-      xp,
-      level,
-      latitude,
-      longitude,
-      area,
-      city,
-      state,
-      pincode,
-      bio,
-      blood_group,
-      emergency_contact_name,
-      emergency_contact_phone,
-      last_login,
-      created_at,
-      updated_at
+    SELECT ${USER_PROFILE_FIELDS}
     FROM users
     WHERE id = $1
     `,
@@ -73,30 +57,7 @@ async function updateMyProfile(req, res) {
     UPDATE users
     SET ${updates.join(", ")}
     WHERE id = $${index}
-    RETURNING
-      id,
-      full_name,
-      email,
-      phone,
-      avatar_url,
-      role,
-      is_verified,
-      is_active,
-      xp,
-      level,
-      latitude,
-      longitude,
-      area,
-      city,
-      state,
-      pincode,
-      bio,
-      blood_group,
-      emergency_contact_name,
-      emergency_contact_phone,
-      last_login,
-      created_at,
-      updated_at
+    RETURNING ${USER_PROFILE_FIELDS}
     `,
     values
   );
