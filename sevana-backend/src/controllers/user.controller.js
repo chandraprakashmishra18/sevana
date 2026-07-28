@@ -1,6 +1,50 @@
 const pool = require("../db/db");
 const { nearbyClause } = require("../utils/geo");
 
+async function getMyProfile(req, res) {
+  const { rows } = await pool.query(
+    `
+    SELECT
+      id,
+      full_name,
+      email,
+      phone,
+      avatar_url,
+      role,
+      is_verified,
+      is_active,
+      xp,
+      level,
+      latitude,
+      longitude,
+      area,
+      city,
+      state,
+      pincode,
+      bio,
+      blood_group,
+      emergency_contact_name,
+      emergency_contact_phone,
+      last_login,
+      created_at,
+      updated_at
+    FROM users
+    WHERE id = $1
+    `,
+    [req.user.id],
+  );
+
+  if (rows.length === 0) {
+    return res.status(404).json({
+      message: "User not found.",
+    });
+  }
+
+  return res.json({
+    user: rows[0],
+  });
+}
+
 // GET /api/users/me/stats - "3 Active / 5 Vets Nearby / 7 My Rescues" on Home
 async function myStats(req, res) {
   const { lat, lng } = req.query;
@@ -48,4 +92,4 @@ async function myStats(req, res) {
   });
 }
 
-module.exports = { myStats };
+module.exports = { getMyProfile, myStats };
