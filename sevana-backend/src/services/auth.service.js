@@ -61,31 +61,14 @@ async function registerUser(data) {
 
 async function loginUser(identifier, password) {
   const user = await authRepository.findByIdentifier(identifier);
+  if (!user) {
+    throw new ApiError({ statusCode: 401, message: "Invalid credentials." });
+  }
 
-console.log("User found:", !!user);
-if (!user) {
-  throw new ApiError({
-    statusCode: 401,
-    message: "Invalid credentials.",
-  });
-}
-
-console.log("Entered password:", password);
-console.log("Stored hash:", user.password_hash);
-
-const validPassword = await comparePassword(
-  password,
-  user.password_hash
-);
-
-console.log("Password match:", validPassword);
-
-if (!validPassword) {
-  throw new ApiError({
-    statusCode: 401,
-    message: "Invalid credentials.",
-  });
-}
+  const validPassword = await comparePassword(password, user.password_hash);
+  if (!validPassword) {
+    throw new ApiError({ statusCode: 401, message: "Invalid credentials." });
+  }
 
   await authRepository.updateLastLogin(user.id);
 
