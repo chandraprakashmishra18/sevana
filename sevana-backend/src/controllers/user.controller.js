@@ -38,7 +38,7 @@ async function myStats(req, res) {
       : Promise.resolve({ rows: [{ count: 0 }] }),
   ]);
 
-  res.json({
+  return res.json({
     active: Number(active.rows[0].count),
     myRescues: Number(mine.rows[0].count),
     vetsNearby: Number(vetsNearby.rows[0].count),

@@ -21,8 +21,6 @@ const VALID_STATUS = [
   "rescued",
   "closed",
 ];
-const VALID_BEHAVIOR = ["calm", "scared", "aggressive"];
-
 const createReportSchema = z.object({
   animal_type: z.string().min(2).max(50),
 
@@ -133,7 +131,7 @@ RETURNING *
     });
 
     await client.query("COMMIT");
-    res.status(201).json({ report: rows[0], xpAwarded: xp });
+    return res.status(201).json({ report: rows[0], xpAwarded: xp });
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
@@ -197,7 +195,7 @@ async function listReports(req, res) {
     params,
   );
 
-  res.json({ reports: rows });
+  return res.json({ reports: rows });
 }
 
 async function getReport(req, res) {
@@ -207,8 +205,11 @@ async function getReport(req, res) {
      WHERE ar.id = $1`,
     [req.params.id],
   );
-  if (!rows.length) return res.status(404).json({ error: "Report not found" });
-  res.json({ report: rows[0] });
+  if (!rows.length) {
+    return res.status(404).json({ error: "Report not found" });
+  }
+
+  return res.json({ report: rows[0] });
 }
 
 const statusSchema = z.object({ status: z.enum(VALID_STATUS) });
@@ -252,7 +253,7 @@ async function updateStatus(req, res) {
     }
 
     await client.query("COMMIT");
-    res.json({ report: rows[0], xp });
+    return res.json({ report: rows[0], xp });
   } catch (err) {
     await client.query("ROLLBACK");
     throw err;
