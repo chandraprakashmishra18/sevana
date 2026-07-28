@@ -21,6 +21,17 @@ export default function RegisterScreen({ onSwitch }) {
       ...prev,
       [e.target.name]: e.target.value,
     }));
+
+    setError("");
+  };
+
+  const isPasswordValid = (password) => {
+    return (
+      password.length >= 8 &&
+      /[A-Z]/.test(password) &&
+      /[a-z]/.test(password) &&
+      /\d/.test(password)
+    );
   };
 
   const handleRegister = async (e) => {
@@ -34,7 +45,7 @@ export default function RegisterScreen({ onSwitch }) {
         full_name: form.name.trim(),
         email: form.email.trim(),
         phone: form.phone.trim(),
-        // area: form.area.trim(),
+        area: form.area.trim(),
         password: form.password,
       });
     } catch (err) {
@@ -84,6 +95,7 @@ export default function RegisterScreen({ onSwitch }) {
         <input
           name="name"
           autoFocus
+          aria-label="Full Name"
           placeholder="Full Name"
           autoComplete="name"
           value={form.name}
@@ -97,6 +109,7 @@ export default function RegisterScreen({ onSwitch }) {
           name="email"
           type="email"
           placeholder="Email"
+          aria-label="Email"
           autoComplete="email"
           value={form.email}
           disabled={loading}
@@ -107,6 +120,7 @@ export default function RegisterScreen({ onSwitch }) {
         <input
           name="phone"
           placeholder="Phone Number"
+          aria-label="Phone Number"
           autoComplete="tel"
           inputMode="tel"
           required
@@ -119,6 +133,7 @@ export default function RegisterScreen({ onSwitch }) {
         <input
           name="area"
           placeholder="Area"
+          aria-label="Area"
           value={form.area}
           disabled={loading}
           onChange={handleChange}
@@ -127,6 +142,7 @@ export default function RegisterScreen({ onSwitch }) {
 
         <input
           name="password"
+          aria-label="Password"
           type={showPassword ? "text" : "password"}
           placeholder="Password"
           autoComplete="new-password"
@@ -134,7 +150,13 @@ export default function RegisterScreen({ onSwitch }) {
           disabled={loading}
           onChange={handleChange}
           required
-          style={inputStyle}
+          style={{
+            ...inputStyle,
+            border:
+              form.password && form.password.length < 8
+                ? "1px solid #D32F2F"
+                : inputStyle.border,
+          }}
         />
 
         <div
@@ -163,7 +185,12 @@ export default function RegisterScreen({ onSwitch }) {
         <p
           style={{
             fontSize: 12,
-            color: "#666",
+            color:
+              form.password.length === 0
+                ? "#666"
+                : isPasswordValid(form.password)
+                  ? "#2E7D32"
+                  : "#D32F2F",
             marginTop: 0,
             marginBottom: 15,
             lineHeight: 1.5,
@@ -187,7 +214,10 @@ export default function RegisterScreen({ onSwitch }) {
         <button
           type="submit"
           disabled={
-            loading || !form.name.trim() || !form.phone.trim() || !form.password
+            loading ||
+            !form.name.trim() ||
+            !form.phone.trim() ||
+            !isPasswordValid(form.password)
           }
           style={{
             ...buttonStyle,
@@ -195,14 +225,14 @@ export default function RegisterScreen({ onSwitch }) {
               loading ||
               !form.name.trim() ||
               !form.phone.trim() ||
-              !form.password
+              !isPasswordValid(form.password)
                 ? 0.7
                 : 1,
             cursor:
               loading ||
               !form.name.trim() ||
               !form.phone.trim() ||
-              !form.password
+              !isPasswordValid(form.password)
                 ? "not-allowed"
                 : "pointer",
           }}
