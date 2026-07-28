@@ -16,9 +16,8 @@ Connecting citizens, volunteers, NGOs, and veterinary clinics to rescue animals 
 [![JWT](https://img.shields.io/badge/Auth-JWT-F59E0B?logo=jsonwebtokens&logoColor=white)](https://jwt.io/)
 [![Docker](https://img.shields.io/badge/Docker-Ready-2496ED?logo=docker&logoColor=white)](https://www.docker.com/)
 [![License](https://img.shields.io/badge/License-MIT-success)](LICENSE)
-
-[![GitHub Stats](https://github-readme-stats.vercel.app/api?username=chandraprakashmishra18&show_icons=true&hide_title=true&theme=transparent&hide_border=true)](https://github.com/chandraprakashmishra18)
-[![Visitor Count](https://visitor-badge.laobi.icu/badge?page_id=chandraprakashmishra18.sevana)](https://github.com/chandraprakashmishra18)
+[![Status](https://img.shields.io/badge/status-active-success)](docs/roadmap.md)
+[![Version](https://img.shields.io/badge/version-v1.0-2563EB)](docs/changelog.md)
 
 [Explore features](#-features) · [Run locally](#-getting-started) · [API reference](#-api-overview) · [Documentation](#-documentation)
 
@@ -34,7 +33,9 @@ Sevana provides one coordinated rescue platform where the community can report e
 
 ## 🔗 Live demo
 
-Deployment is being prepared. This section will be updated with production frontend and API links after release.
+🚧 **Coming Soon**
+
+Frontend and backend deployment will be available after the first production release.
 
 ## ✨ Features
 
@@ -53,20 +54,7 @@ Deployment is being prepared. This section will be updated with production front
 
 ## 🖼️ Screenshots
 
-> Polished product screenshots will replace these placeholders in a future update.
-
-<table>
-  <tr>
-    <td align="center"><strong>Home</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Home screen placeholder" /></td>
-    <td align="center"><strong>Report Animal</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Report screen placeholder" /></td>
-    <td align="center"><strong>Rescue Feed</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Rescue feed placeholder" /></td>
-  </tr>
-  <tr>
-    <td align="center"><strong>Vet Finder</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Vet finder placeholder" /></td>
-    <td align="center"><strong>Lost &amp; Found</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Lost and found placeholder" /></td>
-    <td align="center"><strong>Profile</strong><br /><img src="assets/screenshots/placeholder.svg" width="250" alt="Profile placeholder" /></td>
-  </tr>
-</table>
+Real product screenshots for Home, Report Animal, Rescue Feed, Vet Finder, Lost & Found, and Profile will be added after frontend completion.
 
 ## 🧰 Tech stack
 
@@ -74,13 +62,13 @@ Deployment is being prepared. This section will be updated with production front
 | --- | --- |
 | Frontend | React 18, Vite, Axios |
 | Backend | Node.js, Express |
-| Database | PostgreSQL with PostGIS |
+| Database | PostgreSQL with `cube` and `earthdistance` extensions |
 | Authentication | JSON Web Tokens, bcryptjs |
 | Validation | Zod |
 | Image storage | Cloudinary, Multer |
 | Security | Helmet, CORS, request throttling, parameterized SQL |
 | API testing | Postman |
-| Local services | Docker Compose, PostgreSQL, Redis |
+| Local services | Docker Compose, PostgreSQL |
 
 ## 🏗️ Architecture
 
@@ -89,9 +77,8 @@ flowchart LR
   Citizen["Citizen / Volunteer"] --> Web["React + Vite web app"]
   Web -->|"HTTPS / JSON"| API["Express API"]
   API --> Auth["JWT + Zod validation"]
-  API --> DB[("PostgreSQL + PostGIS")]
+  API --> DB[("PostgreSQL + cube + earthdistance")]
   API --> Media["Cloudinary"]
-  API --> Cache[("Redis — planned integration")]
   NGO["NGOs & veterinary clinics"] --> API
 ```
 
@@ -132,8 +119,8 @@ Sevana-React-Project/
 │   └── database/migrations/
 ├── docs/                         # Product and engineering documentation
 ├── postman/                      # Postman collections and environments
-├── assets/screenshots/           # README visual assets
-├── docker-compose.yml            # Local PostgreSQL and Redis services
+├── assets/                       # Logo and future README visual assets
+├── docker-compose.yml            # Local PostgreSQL service configuration
 ├── README.md
 └── LICENSE
 ```
@@ -144,7 +131,7 @@ Sevana-React-Project/
 
 - Node.js 18 or later
 - npm 9 or later
-- Docker Desktop (recommended for local PostgreSQL and Redis)
+- Docker Desktop (recommended for local PostgreSQL)
 - A Cloudinary account for uploads
 
 ### 1. Clone the repository
@@ -156,10 +143,10 @@ cd sevana
 
 ### 2. Start local services
 
-Create a root `.env` for Docker Compose, then start PostgreSQL and Redis:
+Create a root `.env` for Docker Compose, then start PostgreSQL:
 
 ```bash
-docker compose up -d
+docker compose up -d postgres
 ```
 
 ### 3. Start the backend
@@ -212,7 +199,6 @@ POSTGRES_USER=sevana
 POSTGRES_PASSWORD=replace-with-a-strong-password
 POSTGRES_DB=sevana
 POSTGRES_PORT=5432
-REDIS_PORT=6379
 ```
 
 ## 🔌 API overview
@@ -320,4 +306,5 @@ This project is licensed under the [MIT License](LICENSE).
 
 <div align="center">
   Built with care for the people who stop to help. 🐾
+  <br /><sub>Last updated: July 2026</sub>
 </div>
