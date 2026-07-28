@@ -48,20 +48,19 @@ const noContent = (res) => {
 };
 
 /**
- * Standard Error Response
+ * Standard Error Response. Error details are intentionally not exposed in the
+ * public response contract; log or handle them internally instead.
  */
 const fail = (
   res,
   {
     statusCode = 500,
     message = "Something went wrong.",
-    errors = [],
   } = {}
 ) => {
   return res.status(statusCode).json({
     success: false,
     message,
-    errors,
   });
 };
 

@@ -1,5 +1,6 @@
 const pool = require("../db/db");
 const { nearbyClause } = require("../utils/geo");
+const { success, fail } = require("../shared/response");
 
 /**
  * GET /api/v1/users/me
@@ -39,16 +40,10 @@ async function getMyProfile(req, res) {
   );
 
   if (rows.length === 0) {
-    return res.status(404).json({
-      success: false,
-      message: "User not found.",
-    });
+    return fail(res, { statusCode: 404, message: "User not found." });
   }
 
-  return res.json({
-    success: true,
-    user: rows[0],
-  });
+  return success(res, { message: "Profile fetched successfully.", data: rows[0] });
 }
 
 /**
@@ -84,10 +79,7 @@ async function updateMyProfile(req, res) {
   }
 
   if (updates.length === 0) {
-    return res.status(400).json({
-      success: false,
-      message: "No valid fields provided for update.",
-    });
+    return fail(res, { statusCode: 400, message: "No valid fields provided for update." });
   }
 
   updates.push("updated_at = NOW()");
@@ -126,11 +118,7 @@ async function updateMyProfile(req, res) {
     values
   );
 
-  return res.json({
-    success: true,
-    message: "Profile updated successfully.",
-    user: rows[0],
-  });
+  return success(res, { message: "Profile updated successfully.", data: rows[0] });
 }
 
 /**
@@ -198,8 +186,8 @@ async function myStats(req, res) {
         }),
   ]);
 
-  return res.json({
-    success: true,
+  return success(res, {
+    message: "Profile statistics fetched successfully.",
     data: {
       active: Number(active.rows[0].count),
       myRescues: Number(mine.rows[0].count),

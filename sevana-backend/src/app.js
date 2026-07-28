@@ -12,6 +12,7 @@ const uploadRoutes = require("./routes/upload.routes");
 const userRoutes = require("./routes/user.routes");
 
 const errorHandler = require("./middleware/error.middleware");
+const { success, fail } = require("./shared/response");
 const ngoRoutes = require('./routes/ngo.routes');
 const donationRoutes = require("./routes/donation.routes");
 const app = express();
@@ -30,10 +31,9 @@ app.use(express.urlencoded({ extended: true }));
 ============================================================ */
 
 app.get("/health", (req, res) => {
-  res.status(200).json({
-    success: true,
-    status: "ok",
-    module: "Sevana Backend",
+  return success(res, {
+    message: "Service is healthy.",
+    data: { status: "ok", module: "Sevana Backend" },
   });
 });
 
@@ -56,10 +56,7 @@ app.use("/api/v1/users", userRoutes);
 ============================================================ */
 
 app.use((req, res) => {
-  return res.status(404).json({
-    success: false,
-    message: "Route not found.",
-  });
+  return fail(res, { statusCode: 404, message: "Route not found." });
 });
 
 /* ============================================================
