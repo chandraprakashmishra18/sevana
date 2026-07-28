@@ -39,9 +39,12 @@ async function myStats(req, res) {
   ]);
 
   return res.json({
-    active: Number(active.rows[0].count),
-    myRescues: Number(mine.rows[0].count),
-    vetsNearby: Number(vetsNearby.rows[0].count),
+    success: true,
+    data: {
+      active: Number(active.rows[0].count),
+      myRescues: Number(mine.rows[0].count),
+      vetsNearby: Number(vetsNearby.rows[0].count),
+    },
   });
 }
 
