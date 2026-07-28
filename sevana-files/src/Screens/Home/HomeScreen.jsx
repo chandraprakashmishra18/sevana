@@ -20,6 +20,7 @@ export default function HomeScreen({ onNav, onXP, userData, xp }) {
   });
 
   const [loadingReports, setLoadingReports] = useState(true);
+  const [locationError, setLocationError] = useState("");
 
   useEffect(() => {
     async function loadReports() {
@@ -28,6 +29,9 @@ export default function HomeScreen({ onNav, onXP, userData, xp }) {
 
         const gps = await getCurrentLocation();
 
+        if (!gps?.lat || !gps?.lng) {
+          throw new Error("Location unavailable");
+        }
         const data = await getReports({
           lat: gps.lat,
           lng: gps.lng,
@@ -39,6 +43,7 @@ export default function HomeScreen({ onNav, onXP, userData, xp }) {
         setStats(statsData);
       } catch (err) {
         console.error(err);
+        setLocationError(err.message || "Unable to load nearby reports.");
       } finally {
         setLoadingReports(false);
       }
@@ -347,6 +352,30 @@ export default function HomeScreen({ onNav, onXP, userData, xp }) {
             View all →
           </button>
         </div>
+
+        {loadingReports && (
+          <p
+            style={{
+              fontSize: 13,
+              color: T.textSoft,
+              marginBottom: 10,
+            }}
+          >
+            Loading nearby reports...
+          </p>
+        )}
+
+        {locationError && (
+          <p
+            style={{
+              fontSize: 13,
+              color: T.red,
+              marginBottom: 10,
+            }}
+          >
+            {locationError}
+          </p>
+        )}
 
         {reports.slice(0, 2).map((r) => {
           const sv = sev(r.severity);

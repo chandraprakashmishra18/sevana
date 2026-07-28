@@ -35,25 +35,32 @@ export function AuthProvider({ children }) {
   }, []);
 
   const signIn = async (credentials) => {
-    const response = await login(credentials);
+    try {
+      const response = await login(credentials);
 
-    localStorage.setItem(TOKEN_KEY, response.data.accessToken);
+      localStorage.setItem(TOKEN_KEY, response.data.accessToken);
 
-    setUser(response.data.user);
+      setUser(response.data.user);
 
-    return response.data.user;
+      return response.data.user;
+    } catch (error) {
+      throw error;
+    }
   };
 
   const signUp = async (payload) => {
-    const response = await register(payload);
+    try {
+      const response = await register(payload);
 
-    localStorage.setItem(TOKEN_KEY, response.data.accessToken);
+      localStorage.setItem(TOKEN_KEY, response.data.accessToken);
 
-    setUser(response.data.user);
+      setUser(response.data.user);
 
-    return response.data.user;
+      return response.data.user;
+    } catch (error) {
+      throw error;
+    }
   };
-
   const refreshUser = async () => {
     const response = await getMe();
     setUser(response.data);
