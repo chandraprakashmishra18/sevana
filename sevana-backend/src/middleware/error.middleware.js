@@ -26,6 +26,14 @@ function errorHandler(err, req, res, next) { // eslint-disable-line no-unused-va
     return fail(res, { statusCode: err.statusCode, message: err.message });
   }
 
+  if (err.type === "entity.parse.failed") {
+    return fail(res, { statusCode: 400, message: "Request body contains invalid JSON." });
+  }
+
+  if (err.type === "entity.too.large") {
+    return fail(res, { statusCode: 413, message: "Request body is too large." });
+  }
+
   // PostgreSQL constraint and data-format errors
   if (POSTGRES_ERRORS[err.code]) {
     return fail(res, POSTGRES_ERRORS[err.code]);

@@ -15,16 +15,35 @@ const errorHandler = require("./middleware/error.middleware");
 const { success, fail } = require("./shared/response");
 const ngoRoutes = require('./routes/ngo.routes');
 const donationRoutes = require("./routes/donation.routes");
+const { apiRateLimiter, authRateLimiter } = require("./middleware/rate-limit.middleware");
+const ApiError = require("./errors/api.error");
 const app = express();
+
+const allowedOrigins = (process.env.CORS_ORIGIN || "http://localhost:3000,http://localhost:5173")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) return callback(null, true);
+    return callback(new ApiError({ statusCode: 403, message: "Origin not allowed by CORS." }));
+  },
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Authorization", "Content-Type"],
+  credentials: true,
+  maxAge: 86400,
+};
 
 /* ============================================================
    Global Middlewares
 ============================================================ */
 app.use(helmet());
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(morgan("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: true }));
+app.use(express.json({ limit: "1mb" }));
+app.use(express.urlencoded({ extended: true, limit: "1mb" }));
+app.use("/api", apiRateLimiter);
 
 /* ============================================================
    Health Check
@@ -41,7 +60,7 @@ app.get("/health", (req, res) => {
    API Routes
 ============================================================ */
 
-app.use("/api/v1/auth", authRoutes);
+app.use("/api/v1/auth", authRateLimiter, authRoutes);
 app.use("/api/v1/reports", reportRoutes);
 app.use("/api/v1/vets", vetRoutes);
 app.use("/api/v1/ngos", ngoRoutes);
