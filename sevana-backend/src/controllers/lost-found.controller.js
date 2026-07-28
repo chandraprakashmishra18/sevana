@@ -1,21 +1,10 @@
-const { z } = require('zod');
 const pool = require('../db/db');
 const { awardXP } = require('../utils/xp.util');
 const { success, created, fail } = require("../shared/response");
-
-const createPostSchema = z.object({
-  post_type: z.enum(['lost', 'found']),
-  animal_desc: z.string().max(500).optional(),
-  photo_url: z.string().url().optional(),
-  contact_info: z.string().max(160).optional(),
-  lat: z.number().optional(),
-  lng: z.number().optional(),
-});
+const { createPostSchema, listPostsQuerySchema, idParamSchema } = require("../validators/lost-found.validator");
 
 async function createPost(req, res) {
-  const parsed = createPostSchema.safeParse(req.body);
-  if (!parsed.success) return fail(res, { statusCode: 400, message: "Validation failed." });
-  const { post_type, animal_desc, photo_url, contact_info, lat, lng } = parsed.data;
+  const { post_type, animal_desc, photo_url, contact_info, lat, lng } = createPostSchema.parse(req.body);
 
   const { rows } = await pool.query(
     `INSERT INTO lost_found_posts (user_id, post_type, animal_desc, photo_url, contact_info, lat, lng)
@@ -26,11 +15,11 @@ async function createPost(req, res) {
 }
 
 async function listPosts(req, res) {
-  const { post_type, status } = req.query;
+  const { post_type, status } = listPostsQuerySchema.parse(req.query);
   const params = [];
   const conditions = [];
 
-  if (post_type && ['lost', 'found'].includes(post_type)) {
+  if (post_type) {
     params.push(post_type);
     conditions.push(`post_type = $${params.length}`);
   }
@@ -46,12 +35,13 @@ async function listPosts(req, res) {
 
 // PATCH /api/lost-found/:id/resolve
 async function resolvePost(req, res) {
+  const { id } = idParamSchema.parse(req.params);
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
     const { rows } = await client.query(
       `UPDATE lost_found_posts SET status = 'resolved' WHERE id = $1 AND user_id = $2 RETURNING *`,
-      [req.params.id, req.user.id]
+      [id, req.user.id]
     );
     if (!rows.length) {
       await client.query('ROLLBACK');
@@ -61,7 +51,7 @@ async function resolvePost(req, res) {
       userId: req.user.id,
       reason: 'lost_found_resolved',
       refTable: 'lost_found_posts',
-      refId: req.params.id,
+      refId: id,
     });
     await client.query('COMMIT');
     return success(res, { message: "Post resolved successfully.", data: { post: rows[0], xpAwarded: xp } });

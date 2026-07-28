@@ -1,17 +1,16 @@
 const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
 const { success, fail } = require("../shared/response");
+const { idParamSchema, nearbyQuerySchema } = require("../validators/directory.validator");
 
 // GET /api/v1/ngos?lat=&lng=&radius=
 async function listNGOs(req, res) {
-  const lat = parseFloat(req.query.lat);
-  const lng = parseFloat(req.query.lng);
-  const radius = parseFloat(req.query.radius) || 5;
+  const { lat, lng, radius } = nearbyQuerySchema.parse(req.query);
 
   const params = [];
   const conditions = [];
 
-  if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+  if (lat !== undefined && lng !== undefined) {
     const geo = nearbyClause({
       lat,
       lng,
@@ -44,9 +43,10 @@ async function listNGOs(req, res) {
 
 // GET /api/v1/ngos/:id
 async function getNGO(req, res) {
+  const { id } = idParamSchema.parse(req.params);
   const { rows } = await pool.query(
     `SELECT * FROM ngos WHERE id = $1`,
-    [req.params.id]
+    [id]
   );
 
   if (!rows.length) {

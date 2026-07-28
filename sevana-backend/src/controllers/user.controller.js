@@ -1,6 +1,7 @@
 const pool = require("../db/db");
 const { nearbyClause } = require("../utils/geo");
 const { success, fail } = require("../shared/response");
+const { updateProfileSchema, statsQuerySchema } = require("../validators/user.validator");
 
 /**
  * GET /api/v1/users/me
@@ -51,35 +52,17 @@ async function getMyProfile(req, res) {
  * Update logged-in user's profile
  */
 async function updateMyProfile(req, res) {
-  const allowedFields = [
-    "full_name",
-    "phone",
-    "avatar_url",
-    "latitude",
-    "longitude",
-    "area",
-    "city",
-    "state",
-    "pincode",
-    "bio",
-    "blood_group",
-    "emergency_contact_name",
-    "emergency_contact_phone",
-  ];
+  const profile = updateProfileSchema.parse(req.body);
 
   const updates = [];
   const values = [];
   let index = 1;
 
-  for (const field of allowedFields) {
-    if (req.body[field] !== undefined) {
+  for (const field of Object.keys(profile)) {
+    if (profile[field] !== undefined) {
       updates.push(`${field} = $${index++}`);
-      values.push(req.body[field]);
+      values.push(profile[field]);
     }
-  }
-
-  if (updates.length === 0) {
-    return fail(res, { statusCode: 400, message: "No valid fields provided for update." });
   }
 
   updates.push("updated_at = NOW()");
@@ -126,13 +109,9 @@ async function updateMyProfile(req, res) {
  * Powers the 3 stat tiles on HomeScreen
  */
 async function myStats(req, res) {
-  const { lat, lng } = req.query;
+  const { lat: latitude, lng: longitude } = statsQuerySchema.parse(req.query);
 
-  const latitude = Number(lat);
-  const longitude = Number(lng);
-
-  const hasLocation =
-    Number.isFinite(latitude) && Number.isFinite(longitude);
+  const hasLocation = latitude !== undefined && longitude !== undefined;
 
   const geo = hasLocation
     ? nearbyClause({

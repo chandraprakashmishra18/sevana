@@ -1,5 +1,6 @@
 const pool = require('../db/db');
 const { success, created, fail } = require("../shared/response");
+const { createDonationSchema, idParamSchema } = require("../validators/donation.validator");
 
 // GET /api/v1/donations
 async function listDonations(req, res) {
@@ -16,13 +17,14 @@ async function listDonations(req, res) {
 
 // GET /api/v1/donations/:id
 async function getDonation(req, res) {
+  const { id } = idParamSchema.parse(req.params);
   const { rows } = await pool.query(
     `
     SELECT *
     FROM donations
     WHERE id = $1
     `,
-    [req.params.id]
+    [id]
   );
 
   if (!rows.length) {
@@ -45,7 +47,7 @@ async function createDonation(req, res) {
     transaction_reference,
     purpose,
     notes,
-  } = req.body;
+  } = createDonationSchema.parse(req.body);
 
   const { rows } = await pool.query(
     `
@@ -71,9 +73,9 @@ async function createDonation(req, res) {
       report_id,
       ngo_id,
       amount,
-      currency ?? 'INR',
+      currency,
       payment_method,
-      payment_status ?? 'pending',
+      payment_status,
       transaction_reference,
       purpose,
       notes,

@@ -52,12 +52,21 @@ const createReportSchema = z.object({
   landmark: z.string().optional(),
 });
 
+const reportIdParamSchema = z.object({ id: z.string().uuid() });
+const listReportsQuerySchema = z
+  .object({
+    lat: z.coerce.number().min(-90).max(90).optional(),
+    lng: z.coerce.number().min(-180).max(180).optional(),
+    radius: z.coerce.number().positive().max(100).default(5),
+    severity: z.enum(VALID_SEVERITY).optional(),
+    status: z.enum(VALID_STATUS).optional(),
+  })
+  .refine((data) => (data.lat === undefined) === (data.lng === undefined), {
+    message: "lat and lng must be provided together.",
+  });
+
 // POST /api/v1/reports - "Report Animal" quick action
 async function createReport(req, res) {
-  const parsed = createReportSchema.safeParse(req.body);
-  if (!parsed.success) {
-    return fail(res, { statusCode: 400, message: "Validation failed." });
-  }
   const {
     animal_type,
     species,
@@ -73,7 +82,7 @@ async function createReport(req, res) {
     city,
     state,
     landmark,
-  } = parsed.data;
+  } = createReportSchema.parse(req.body);
 
   const client = await pool.connect();
   try {
@@ -147,15 +156,12 @@ RETURNING *
 // GET /api/v1/reports?lat=&lng=&radius=&severity=&status=
 // Powers "Active Near You" feed on Home + RescueFeed screen
 async function listReports(req, res) {
-  const lat = parseFloat(req.query.lat);
-  const lng = parseFloat(req.query.lng);
-  const radius = parseFloat(req.query.radius) || 5; // km default
-  const { severity, status } = req.query;
+  const { lat, lng, radius, severity, status } = listReportsQuerySchema.parse(req.query);
 
   const params = [];
   const conditions = [];
 
-  if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+  if (lat !== undefined && lng !== undefined) {
     const geo = nearbyClause({
       lat,
       lng,
@@ -166,12 +172,12 @@ async function listReports(req, res) {
     params.push(...geo.params);
   }
 
-  if (severity && VALID_SEVERITY.includes(severity)) {
+  if (severity) {
     params.push(severity);
     conditions.push(`severity = $${params.length}`);
   }
 
-  if (status && VALID_STATUS.includes(status)) {
+  if (status) {
     params.push(status);
     conditions.push(`status = $${params.length}`);
   } else {
@@ -203,11 +209,12 @@ async function listReports(req, res) {
 }
 
 async function getReport(req, res) {
+  const { id } = reportIdParamSchema.parse(req.params);
   const { rows } = await pool.query(
     `SELECT ar.*, u.full_name AS reporter_name
      FROM animal_reports ar JOIN users u ON u.id = ar.reported_by
      WHERE ar.id = $1`,
-    [req.params.id],
+    [id],
   );
   if (!rows.length) {
     return fail(res, { statusCode: 404, message: "Report not found." });
@@ -220,9 +227,8 @@ const statusSchema = z.object({ status: z.enum(VALID_STATUS) });
 
 // PATCH /api/v1/reports/:id/status - dispatch/acknowledge/rescue progression
 async function updateStatus(req, res) {
-  const parsed = statusSchema.safeParse(req.body);
-  if (!parsed.success)
-    return fail(res, { statusCode: 400, message: "Validation failed." });
+  const { status } = statusSchema.parse(req.body);
+  const { id } = reportIdParamSchema.parse(req.params);
 
   const client = await pool.connect();
   try {
@@ -231,7 +237,7 @@ async function updateStatus(req, res) {
     const { rows } = await client.query(
       `UPDATE animal_reports SET status = $1, updated_at = now()
        WHERE id = $2 RETURNING *`,
-      [parsed.data.status, req.params.id],
+      [status, id],
     );
     if (!rows.length) {
       await client.query("ROLLBACK");
@@ -239,18 +245,18 @@ async function updateStatus(req, res) {
     }
 
     let xp = null;
-    if (parsed.data.status === "rescued") {
+    if (status === "rescued") {
       // Award XP to everyone who responded to this report, not just the reporter
       const { rows: responders } = await client.query(
         `SELECT volunteer_id FROM rescues WHERE report_id = $1`,
-        [req.params.id],
+        [id],
       );
       for (const r of responders) {
         await awardXP(client, {
           userId: r.volunteer_id,
           reason: "rescue_confirmed",
           refTable: "animal_reports",
-          refId: req.params.id,
+          refId: id,
         });
       }
       xp = { awardedTo: responders.length };
@@ -275,11 +281,8 @@ const respondSchema = z.object({
 
 // POST /api/v1/reports/:id/respond - "Raise Hand" on a specific report
 async function respondToReport(req, res) {
-  const parsed = respondSchema.safeParse(req.body);
-
-  if (!parsed.success) {
-    return fail(res, { statusCode: 400, message: "Validation failed." });
-  }
+  const { notes } = respondSchema.parse(req.body);
+  const { id } = reportIdParamSchema.parse(req.params);
 
   const client = await pool.connect();
 
@@ -288,7 +291,7 @@ async function respondToReport(req, res) {
 
     const existing = await client.query(
       `SELECT id FROM animal_reports WHERE id = $1`,
-      [req.params.id],
+      [id],
     );
 
     if (!existing.rows.length) {
@@ -301,7 +304,7 @@ async function respondToReport(req, res) {
        FROM rescues
        WHERE report_id = $1
          AND volunteer_id = $2`,
-      [req.params.id, req.user.id],
+      [id, req.user.id],
     );
 
     if (existingRescue.rows.length) {
@@ -316,7 +319,7 @@ async function respondToReport(req, res) {
       `INSERT INTO rescues (report_id, volunteer_id, notes)
        VALUES ($1, $2, $3)
        RETURNING *`,
-      [req.params.id, req.user.id, parsed.data.notes || null],
+      [id, req.user.id, notes || null],
     );
 
     // Bump status to acknowledged if it was just reported
@@ -326,14 +329,14 @@ async function respondToReport(req, res) {
            updated_at = now()
        WHERE id = $1
          AND status = 'reported'`,
-      [req.params.id],
+      [id],
     );
 
     const xp = await awardXP(client, {
       userId: req.user.id,
       reason: "raise_hand_responded",
       refTable: "animal_reports",
-      refId: req.params.id,
+      refId: id,
     });
 
     await client.query("COMMIT");

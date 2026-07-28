@@ -1,17 +1,16 @@
 const pool = require('../db/db');
 const { nearbyClause } = require('../utils/geo');
 const { success, fail } = require("../shared/response");
+const { idParamSchema, nearbyQuerySchema } = require("../validators/directory.validator");
 
 // GET /api/vets?lat=&lng=&radius=&service=
 async function listVets(req, res) {
-  const lat = parseFloat(req.query.lat);
-  const lng = parseFloat(req.query.lng);
-  const radius = parseFloat(req.query.radius) || 5;
+  const { lat, lng, radius } = nearbyQuerySchema.parse(req.query);
 
   const params = [];
   const conditions = [];
 
-  if (!Number.isNaN(lat) && !Number.isNaN(lng)) {
+  if (lat !== undefined && lng !== undefined) {
     const geo = nearbyClause({
       lat,
       lng,
@@ -42,7 +41,8 @@ async function listVets(req, res) {
 }
 
 async function getVet(req, res) {
-  const { rows } = await pool.query(`SELECT * FROM vets WHERE id = $1`, [req.params.id]);
+  const { id } = idParamSchema.parse(req.params);
+  const { rows } = await pool.query(`SELECT * FROM vets WHERE id = $1`, [id]);
   if (!rows.length) return fail(res, { statusCode: 404, message: "Vet not found." });
   return success(res, { message: "Vet fetched successfully.", data: rows[0] });
 }
