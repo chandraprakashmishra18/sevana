@@ -102,7 +102,7 @@ sequenceDiagram
 ## 📁 Project structure
 
 ```text
-Sevana-React-Project/
+Sevana/
 ├── sevana-files/                 # React + Vite frontend
 │   └── src/
 │       ├── Components/
@@ -298,9 +298,10 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📬 Contact
 
-**Prashant Mishra** · B.Tech CSE
+**Prashant Mishra**
 
-[GitHub](https://github.com/chandraprakashmishra18) · [Email](mailto:prashantmishra44140@gmail.com)
+- GitHub: [@chandraprakashmishra18](https://github.com/chandraprakashmishra18)
+- Email: [prashantmishra44140@gmail.com](mailto:prashantmishra44140@gmail.com)
 
 ---
 
