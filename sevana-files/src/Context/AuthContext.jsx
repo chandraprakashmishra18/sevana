@@ -6,112 +6,158 @@ import {
   useState,
 } from "react";
 
-import { login, register, getMe } from "../api/authApi";
+import {
+  registerUser,
+  loginUser,
+  fetchCurrentUser,
+} from "../services/auth.service";
+
+const STORAGE_KEYS = {
+  ACCESS_TOKEN: "sevana_access_token",
+  REFRESH_TOKEN: "sevana_refresh_token",
+};
 
 const AuthContext = createContext(null);
-
-const TOKEN_KEY = "sevana_token";
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [initialized, setInitialized] = useState(false);
 
-  useEffect(() => {
-    const restoreSession = async () => {
-      const token = localStorage.getItem(TOKEN_KEY);
+  const isAuthenticated = !!user;
 
-      if (!token) {
-        setLoading(false);
-        return;
-      }
+  // ----------------------------
+  // Storage Helpers
+  // ----------------------------
 
-      try {
-        const response = await getMe();
+  const saveTokens = (accessToken, refreshToken) => {
+    if (accessToken) {
+      localStorage.setItem(STORAGE_KEYS.ACCESS_TOKEN, accessToken);
+    }
 
-        // Backend returns { success, message, data }
-        setUser(response.data);
-      } catch (err) {
-        console.error("Session restore failed:", err);
-        localStorage.removeItem(TOKEN_KEY);
-        setUser(null);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    restoreSession();
-  }, []);
-
-  const signIn = async (credentials) => {
-    try {
-      const response = await login(credentials);
-
-      // response = { success, message, data }
-      const { accessToken, user } = response.data;
-
-      localStorage.setItem(TOKEN_KEY, accessToken);
-      setUser(user);
-
-      return user;
-    } catch (error) {
-      console.error("Login Error:", error);
-      throw error;
+    if (refreshToken) {
+      localStorage.setItem(STORAGE_KEYS.REFRESH_TOKEN, refreshToken);
     }
   };
 
-const signUp = async (payload) => {
-  try {
-    const response = await register(payload);
+  const clearTokens = () => {
+    localStorage.removeItem(STORAGE_KEYS.ACCESS_TOKEN);
+    localStorage.removeItem(STORAGE_KEYS.REFRESH_TOKEN);
+  };
 
-    console.log("========== REGISTER RESPONSE ==========");
-    console.log(response);
+  const getAccessToken = () =>
+    localStorage.getItem(STORAGE_KEYS.ACCESS_TOKEN);
 
-    console.log("response.data =", response.data);
+  // ----------------------------
+  // Restore Session
+  // ----------------------------
 
-    const { accessToken, user } = response.data;
+  const restoreSession = async () => {
+    const token = getAccessToken();
 
-    console.log("Token:", accessToken);
-    console.log("User:", user);
+    if (!token) {
+      setLoading(false);
+      setInitialized(true);
+      return;
+    }
 
-    localStorage.setItem(TOKEN_KEY, accessToken);
+    // client.js currently reads "sevana_token"
+    // Keep it synced until we update client.js.
+    localStorage.setItem("sevana_token", token);
 
-    setUser(user);
+    try {
+      const me = await fetchCurrentUser();
+      setUser(me.user || me);
+    } catch (err) {
+      console.error(err);
+      clearTokens();
+      localStorage.removeItem("sevana_token");
+      setUser(null);
+    } finally {
+      setLoading(false);
+      setInitialized(true);
+    }
+  };
 
-    return user;
-  } catch (error) {
-    console.error("========== SIGNUP ERROR ==========");
-    console.error(error);
+  // ----------------------------
+  // Register
+  // ----------------------------
 
-    throw error;
-  }
-};
+  const signUp = async (payload) => {
+    const result = await registerUser(payload);
+
+    const accessToken = result.accessToken;
+    const refreshToken = result.refreshToken;
+    const currentUser = result.user;
+
+    saveTokens(accessToken, refreshToken);
+
+    // keep axios interceptor working
+    localStorage.setItem("sevana_token", accessToken);
+
+    setUser(currentUser);
+
+    return currentUser;
+  };
+
+  // ----------------------------
+  // Login
+  // ----------------------------
+
+  const signIn = async (payload) => {
+    const result = await loginUser(payload);
+
+    const accessToken = result.accessToken;
+    const refreshToken = result.refreshToken;
+    const currentUser = result.user;
+
+    saveTokens(accessToken, refreshToken);
+
+    // keep axios interceptor working
+    localStorage.setItem("sevana_token", accessToken);
+
+    setUser(currentUser);
+
+    return currentUser;
+  };
+
+  // ----------------------------
+  // Refresh User
+  // ----------------------------
 
   const refreshUser = async () => {
-    try {
-      const response = await getMe();
-      setUser(response.data);
-    } catch (error) {
-      console.error("Refresh User Error:", error);
-      throw error;
-    }
+    const me = await fetchCurrentUser();
+    setUser(me.user || me);
+    return me;
   };
 
+  // ----------------------------
+  // Logout
+  // ----------------------------
+
   const logout = () => {
-    localStorage.removeItem(TOKEN_KEY);
+    clearTokens();
+    localStorage.removeItem("sevana_token");
     setUser(null);
   };
+
+  useEffect(() => {
+    restoreSession();
+  }, []);
 
   const value = useMemo(
     () => ({
       user,
       loading,
+      initialized,
+      isAuthenticated,
       signIn,
       signUp,
       logout,
       refreshUser,
-      isAuthenticated: !!user,
+      setUser,
     }),
-    [user, loading]
+    [user, loading, initialized]
   );
 
   return (
@@ -121,4 +167,12 @@ const signUp = async (payload) => {
   );
 }
 
-export const useAuth = () => useContext(AuthContext);
+export function useAuth() {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error("useAuth must be used inside AuthProvider");
+  }
+
+  return context;
+}
