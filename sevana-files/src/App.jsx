@@ -2,7 +2,7 @@ import React, { Component, useEffect, useState } from "react";
 import { T } from "./styles/Theme";
 
 import client from "./api/client";
-import { useAuth } from "./Context/AuthContext";
+import { useAuth } from "./context/AuthContext";
 
 import GlobalStyles from "./Components/Layout/GlobalStyles";
 import BottomNav from "./Components/Layout/BottomNav";

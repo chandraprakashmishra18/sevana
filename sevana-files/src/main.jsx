@@ -5,8 +5,8 @@ import "./index.css";
 
 import App from "./App";
 
-import { AuthProvider } from "./Context/AuthContext";
-import { UserProvider } from "./Context/UserContext";
+import { AuthProvider } from "./context/AuthContext";
+import { UserProvider } from "./context/UserContext";
 
 createRoot(document.getElementById("root")).render(
   <StrictMode>
