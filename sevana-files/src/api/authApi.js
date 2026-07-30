@@ -3,23 +3,23 @@ import client from "./client";
 /**
  * Register a new user
  */
-export const register = async (data) => {
+export async function register(data) {
   const response = await client.post("/api/v1/auth/register", data);
   return response.data;
-};
+}
 
 /**
- * Login existing user
+ * Login using email OR phone
  */
-export const login = async (credentials) => {
-  const response = await client.post("/api/v1/auth/login", credentials);
+export async function login(data) {
+  const response = await client.post("/api/v1/auth/login", data);
   return response.data;
-};
+}
 
 /**
- * Get logged-in user
+ * Get current logged-in user
  */
-export const getMe = async () => {
+export async function getMe() {
   const response = await client.get("/api/v1/auth/me");
   return response.data;
-};
+}
