@@ -1,1 +1,118 @@
-/* Shared component styles. */
+.primary-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: 52px;
+  border: 0;
+  border-radius: 14px;
+  background: linear-gradient(135deg, #2e7d32, #43a047);
+  color: #fff;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  transition: all 0.25s ease;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.primary-button:hover:not(:disabled) {
+  box-shadow: 0 10px 24px rgba(46, 125, 50, 0.25);
+  transform: translateY(-2px);
+}
+
+.primary-button:active:not(:disabled) {
+  transform: scale(0.98);
+}
+
+.primary-button:disabled {
+  cursor: not-allowed;
+  opacity: 0.65;
+}
+
+.button-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.4);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 18px;
+}
+
+.input-label {
+  color: #374151;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.required {
+  margin-left: 3px;
+  color: #d32f2f;
+}
+
+.text-input {
+  box-sizing: border-box;
+  width: 100%;
+  height: 52px;
+  padding: 0 16px;
+  border: 1px solid #d1d5db;
+  border-radius: 14px;
+  background: #fff;
+  font-size: 15px;
+  transition: all 0.25s ease;
+}
+
+.text-input:focus {
+  outline: 0;
+  border-color: #2e7d32;
+  box-shadow: 0 0 0 4px rgba(46, 125, 50, 0.12);
+}
+
+.text-input::placeholder {
+  color: #9ca3af;
+}
+
+.input-error {
+  border-color: #e53935;
+}
+
+.input-error-text {
+  color: #e53935;
+  font-size: 13px;
+}
+
+.password-wrapper {
+  position: relative;
+}
+
+.password-toggle {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  border: 0;
+  background: transparent;
+  color: #2e7d32;
+  cursor: pointer;
+  font-size: 13px;
+  font-weight: 600;
+  transform: translateY(-50%);
+}
+
+.password-toggle:hover {
+  opacity: 0.8;
+}

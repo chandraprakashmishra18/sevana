@@ -1,18 +1,37 @@
 export default function TextInput({
   label,
-  id,
   name,
   type = "text",
+  value,
+  onChange,
+  placeholder,
   error,
-  ...inputProps
+  disabled = false,
+  required = false,
 }) {
-  const inputId = id || name;
 
   return (
-    <div className="text-input">
-      {label && <label htmlFor={inputId}>{label}</label>}
-      <input id={inputId} name={name} type={type} {...inputProps} />
-      {error && <p className="form-error">{error}</p>}
+    <div className="input-group">
+      {label && (
+        <label htmlFor={name} className="input-label">
+          {label}
+          {required && <span className="required">*</span>}
+        </label>
+      )}
+
+      <input
+        id={name}
+        className={`text-input ${error ? "input-error" : ""}`}
+        name={name}
+        type={type}
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        disabled={disabled}
+        required={required}
+      />
+
+      {error && <span className="input-error-text">{error}</span>}
     </div>
   );
 }

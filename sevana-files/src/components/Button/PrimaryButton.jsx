@@ -4,15 +4,23 @@ export default function PrimaryButton({
   onClick,
   disabled = false,
   loading = false,
+  fullWidth = true,
 }) {
   return (
     <button
       type={type}
       onClick={onClick}
       disabled={disabled || loading}
-      className="primary-btn"
+      className={`primary-button ${fullWidth ? "full-width" : ""}`}
     >
-      {loading ? "Please wait..." : children}
+      {loading ? (
+        <>
+          <span className="button-spinner" />
+          Please wait...
+        </>
+      ) : (
+        children
+      )}
     </button>
   );
 }

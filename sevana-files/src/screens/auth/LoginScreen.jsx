@@ -5,6 +5,7 @@ import AuthLayout from "./AuthLayout";
 import { useAuth } from "../../context/AuthContext";
 
 import TextInput from "../../components/Input/TextInput";
+import PasswordInput from "../../components/Input/PasswordInput";
 import PrimaryButton from "../../components/Button/PrimaryButton";
 
 export default function LoginScreen() {
@@ -74,10 +75,9 @@ export default function LoginScreen() {
           onChange={handleChange}
         />
 
-        <TextInput
+        <PasswordInput
           label="Password"
           name="password"
-          type="password"
           placeholder="Enter password"
           value={formData.password}
           onChange={handleChange}
