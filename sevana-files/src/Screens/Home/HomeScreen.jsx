@@ -22,6 +22,8 @@ export default function HomeScreen({ onNav, onXP, userData, xp }) {
   const [loadingReports, setLoadingReports] = useState(true);
   const [locationError, setLocationError] = useState("");
 
+  const [loadError, setLoadError] = useState("");
+
   useEffect(() => {
     async function loadReports() {
       try {
