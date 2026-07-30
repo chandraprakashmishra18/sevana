@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "./AuthLayout";
 import { useAuth } from "../../context/AuthContext";
+import { loginSchema } from "../../validation/auth.validation";
 
 import TextInput from "../../components/Input/TextInput";
 import PasswordInput from "../../components/Input/PasswordInput";
@@ -33,12 +34,10 @@ export default function LoginScreen() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!formData.identifier.trim()) {
-      return setError("Please enter your email or phone.");
-    }
+    const validation = loginSchema.safeParse(formData);
 
-    if (!formData.password.trim()) {
-      return setError("Please enter your password.");
+    if (!validation.success) {
+      return setError(validation.error.issues[0].message);
     }
 
     try {

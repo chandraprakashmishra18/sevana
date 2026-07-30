@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "./AuthLayout";
 import { useAuth } from "../../context/AuthContext";
+import { registerSchema } from "../../validation/auth.validation";
 
 import TextInput from "../../components/Input/TextInput";
 import PasswordInput from "../../components/Input/PasswordInput";
@@ -35,20 +36,10 @@ export default function RegisterScreen() {
   async function handleSubmit(e) {
     e.preventDefault();
 
-    if (!formData.full_name.trim()) {
-      return setError("Full name is required.");
-    }
+    const validation = registerSchema.safeParse(formData);
 
-    if (!formData.phone.trim()) {
-      return setError("Phone number is required.");
-    }
-
-    if (formData.password.length < 6) {
-      return setError("Password must be at least 6 characters.");
-    }
-
-    if (formData.password !== formData.confirmPassword) {
-      return setError("Passwords do not match.");
+    if (!validation.success) {
+      return setError(validation.error.issues[0].message);
     }
 
     try {
