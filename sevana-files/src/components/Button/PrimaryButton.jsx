@@ -1,5 +1,3 @@
-import "./PrimaryButton.css";
-
 export default function PrimaryButton({
   children,
   type = "button",
