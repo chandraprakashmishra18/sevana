@@ -1,4 +1,4 @@
-import { T } from '../../Styles/Theme';
+import { T } from '../../styles/Theme';
 
 const TABS = [
   {id:'home',   icon:'🏠', label:'Home'},

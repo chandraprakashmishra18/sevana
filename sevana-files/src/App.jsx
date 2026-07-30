@@ -1,5 +1,5 @@
 import React, { Component, useEffect, useState } from "react";
-import { T } from "./Styles/Theme";
+import { T } from "./styles/Theme";
 
 import client from "./api/client";
 import { useAuth } from "./Context/AuthContext";
