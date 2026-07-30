@@ -315,3 +315,49 @@ Next:
 - Review remaining frontend screens.
 - Verify API contracts for upcoming modules.
 - Continue UI and backend integration.
+
+
+# Workflow Log
+
+## Date: 29 July 2026 and 30 July 2026
+
+### Completed
+
+- Continued Rescue Feed frontend implementation.
+- Implemented Report Detail screen.
+- Implemented Lost & Found screen.
+- Added reusable EmptyState component.
+- Added reusable Input component.
+- Updated Home screen navigation.
+- Updated Login screen.
+- Improved API client error handling.
+- Updated Reports mock dataset.
+
+### Testing
+
+- Verified navigation:
+  - Home → Rescue Feed
+  - Rescue Feed → Report Detail
+  - Rescue Feed → Lost & Found
+  - Back navigation
+
+- Verified:
+  - Wishlist claiming
+  - Raise Hand interaction
+  - XP rewards
+  - Empty states
+
+### Pending
+
+Waiting for backend teammate to:
+
+- Fix environment validation.
+- Restore backend startup.
+- Enable API integration.
+
+Once backend is available:
+
+1. Replace mock report data.
+2. Connect Lost & Found to API.
+3. Connect Report Detail to API.
+4. Test full Rescue Feed workflow.
