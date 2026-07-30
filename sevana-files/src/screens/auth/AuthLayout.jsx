@@ -5,39 +5,57 @@ export default function AuthLayout({
   subtitle,
   children,
   footerText,
-  footerLink,
   footerLinkText,
+  footerLink,
 }) {
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-green-50 via-white to-green-100 px-4">
-      <div className="w-full max-w-md bg-white rounded-2xl shadow-xl p-8">
+    <div className="auth-page">
+      <div className="auth-wrapper">
+        {/* Left Section */}
+        <div className="auth-left">
+          <div className="logo-circle">
+            🐾
+          </div>
 
-        <div className="text-center mb-8">
-          <h1 className="text-4xl font-bold text-green-700">
-            🐾 Sevana
+          <h1 className="auth-logo">
+            Sevana
           </h1>
 
-          <h2 className="text-2xl font-semibold mt-6">
-            {title}
-          </h2>
+          <p className="auth-tagline">
+            Rescue • Report • Protect
+          </p>
 
-          <p className="text-gray-500 mt-2">
-            {subtitle}
+          <p className="auth-description">
+            Every rescue starts with one compassionate action.
+            Join the community that helps injured and abandoned
+            animals receive the care they deserve.
           </p>
         </div>
 
-        {children}
+        {/* Right Section */}
+        <div className="auth-right">
+          <div className="auth-card">
 
-        <div className="mt-8 text-center text-sm text-gray-600">
-          {footerText}{" "}
-          <Link
-            to={footerLink}
-            className="text-green-600 font-semibold hover:underline"
-          >
-            {footerLinkText}
-          </Link>
+            <h2>{title}</h2>
+
+            <p className="auth-subtitle">
+              {subtitle}
+            </p>
+
+            <div className="auth-form">
+              {children}
+            </div>
+
+            <div className="auth-footer">
+              <span>{footerText}</span>
+
+              <Link to={footerLink}>
+                {footerLinkText}
+              </Link>
+            </div>
+
+          </div>
         </div>
-
       </div>
     </div>
   );
