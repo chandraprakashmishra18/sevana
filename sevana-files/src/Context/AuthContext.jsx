@@ -59,22 +59,32 @@ export function AuthProvider({ children }) {
     }
   };
 
-  const signUp = async (payload) => {
-    try {
-      const response = await register(payload);
+const signUp = async (payload) => {
+  try {
+    const response = await register(payload);
 
-      // response = { success, message, data }
-      const { accessToken, user } = response.data;
+    console.log("========== REGISTER RESPONSE ==========");
+    console.log(response);
 
-      localStorage.setItem(TOKEN_KEY, accessToken);
-      setUser(user);
+    console.log("response.data =", response.data);
 
-      return user;
-    } catch (error) {
-      console.error("Register Error:", error);
-      throw error;
-    }
-  };
+    const { accessToken, user } = response.data;
+
+    console.log("Token:", accessToken);
+    console.log("User:", user);
+
+    localStorage.setItem(TOKEN_KEY, accessToken);
+
+    setUser(user);
+
+    return user;
+  } catch (error) {
+    console.error("========== SIGNUP ERROR ==========");
+    console.error(error);
+
+    throw error;
+  }
+};
 
   const refreshUser = async () => {
     try {
