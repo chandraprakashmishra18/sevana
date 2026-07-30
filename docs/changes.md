@@ -339,3 +339,131 @@ Current Frontend Status:
 - Register UI improved.
 - Authentication navigation working.
 - Ready for next integration phase.
+
+# 29-july-2026 and 30-july-2026
+
+### Frontend
+
+### Rescue Feed
+- Refactored the Rescue Feed into a multi-screen flow.
+- Added navigation from Rescue Feed to Report Detail.
+- Added navigation to Lost & Found screen.
+- Improved report cards with cleaner status indicators and empty state handling.
+
+### Report Detail
+- Created a dedicated Report Detail screen.
+- Added rescue timeline view.
+- Added resource wishlist with item claiming.
+- Added Raise Hand interaction with XP rewards.
+- Added navigation back to Rescue Feed.
+
+### Lost & Found
+- Created a dedicated Lost & Found screen.
+- Added Lost/Found listing cards.
+- Added "Create Listing" UI.
+- Added posting confirmation screen.
+- Added XP reward after successful listing creation.
+
+### Reusable Components
+- Added reusable EmptyState component.
+- Added reusable Input component.
+
+### Home
+- Updated Home screen navigation to support the new Rescue Feed flow.
+- Improved frontend handling for unavailable backend responses.
+
+### Authentication
+- Updated Login screen UI and related frontend logic.
+
+### API
+- Improved Axios client error handling for backend connection failures.
+
+### Data
+- Updated Reports mock data to support Report Detail and Wishlist functionality.
+
+---
+
+## Backend
+
+No backend changes were made.
+
+Backend development is currently blocked due to environment configuration owned by another team member.
+conflict.md
+# Conflict Log
+
+## Date: 30 July 2026
+
+### Backend Environment
+
+Issue:
+- Backend server could not be started locally.
+- Server exits during environment validation.
+
+Reason:
+- Backend now expects the following environment variables:
+  - JWT_ACCESS_SECRET
+  - JWT_REFRESH_SECRET
+
+Current `.env` contains:
+- JWT_SECRET
+
+Since backend ownership belongs to another teammate, no backend files were modified.
+
+Status:
+Waiting for backend teammate to update the environment configuration.
+
+---
+
+### Frontend
+
+Frontend development continued independently using mock data and existing UI components.
+
+No merge conflicts encountered.
+workflow.md
+# Workflow Log
+
+## Date: 30 July 2026
+
+### Completed
+
+- Continued Rescue Feed frontend implementation.
+- Implemented Report Detail screen.
+- Implemented Lost & Found screen.
+- Added reusable EmptyState component.
+- Added reusable Input component.
+- Updated Home screen navigation.
+- Updated Login screen.
+- Improved API client error handling.
+- Updated Reports mock dataset.
+
+### Testing
+
+- Verified navigation:
+  - Home → Rescue Feed
+  - Rescue Feed → Report Detail
+  - Rescue Feed → Lost & Found
+  - Back navigation
+
+- Verified:
+  - Wishlist claiming
+  - Raise Hand interaction
+  - XP rewards
+  - Empty states
+
+### Pending
+
+Waiting for backend teammate to:
+
+- Fix environment validation.
+- Restore backend startup.
+- Enable API integration.
+
+Once backend is available:
+
+1. Replace mock report data.
+2. Connect Lost & Found to API.
+3. Connect Report Detail to API.
+4. Test full Rescue Feed workflow.
+
+These entries accurately reflect today's work, clearly separate frontend progress from the blocked backend work, and are suitable for a professional team repository.
+
