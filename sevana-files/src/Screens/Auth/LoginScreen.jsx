@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../../Context/AuthContext";
+import Input from "../../Components/Common/Input";
 
 export default function LoginScreen({ onSwitch }) {
   const { signIn } = useAuth();
