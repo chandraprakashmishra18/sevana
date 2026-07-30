@@ -1,0 +1,37 @@
+.app-header {
+  height: 72px;
+  background: white;
+  border-bottom: 1px solid #ececec;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+
+  padding: 0 24px;
+
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  box-shadow: 0 4px 20px rgba(0,0,0,.04);
+}
+
+.header-logo {
+  font-size: 22px;
+  font-weight: 700;
+  color: #2e7d32;
+}
+
+.header-profile {
+  width: 42px;
+  height: 42px;
+
+  border-radius: 50%;
+  background: #eef6ef;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  cursor: pointer;
+}
