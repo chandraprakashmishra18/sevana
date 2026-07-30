@@ -11,12 +11,16 @@ const client = axios.create({
   },
 });
 
-// ===============================
+// =======================================
 // Request Interceptor
-// ===============================
+// =======================================
 client.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("sevana_token");
+    // Primary token (new)
+    const token =
+      localStorage.getItem("sevana_access_token") ||
+      // Fallback for older builds
+      localStorage.getItem("sevana_token");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -27,9 +31,9 @@ client.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ===============================
+// =======================================
 // Response Interceptor
-// ===============================
+// =======================================
 client.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -40,8 +44,12 @@ client.interceptors.response.use(
         data: error.response.data,
       });
 
-      // Auto logout if token becomes invalid
+      // Invalid / Expired Token
       if (error.response.status === 401) {
+        localStorage.removeItem("sevana_access_token");
+        localStorage.removeItem("sevana_refresh_token");
+
+        // Legacy cleanup
         localStorage.removeItem("sevana_token");
       }
     } else if (error.request) {
