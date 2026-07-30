@@ -19,16 +19,21 @@ client.interceptors.request.use(
 
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error),
 );
 
 // Handle API errors globally
 client.interceptors.response.use(
   (response) => response,
   (error) => {
-    console.error("API Error:", error.response?.data || error.message);
+    if (!error.response) {
+      console.error("Backend server is unreachable.");
+    } else {
+      console.error("API Error:", error.response.data);
+    }
+
     return Promise.reject(error);
-  }
+  },
 );
 
-export default client; 
+export default client;
