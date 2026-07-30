@@ -1,0 +1,16 @@
+.quick-actions {
+  margin: 26px 0;
+}
+
+.section-title {
+  margin-bottom: 18px;
+  color: #1f2937;
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.quick-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
