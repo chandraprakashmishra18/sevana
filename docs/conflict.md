@@ -241,3 +241,33 @@ Completed:
 Remaining:
 - Continue frontend feature integration.
 - Verify complete authenticated user experience with backend.
+
+
+## Date: 29 July 2026 and 30 July 2026
+
+### Backend Environment
+
+Issue:
+- Backend server could not be started locally.
+- Server exits during environment validation.
+
+Reason:
+- Backend now expects the following environment variables:
+  - JWT_ACCESS_SECRET
+  - JWT_REFRESH_SECRET
+
+Current `.env` contains:
+- JWT_SECRET
+
+Since backend ownership belongs to another teammate, no backend files were modified.
+
+Status:
+Waiting for backend teammate to update the environment configuration.
+
+---
+
+### Frontend
+
+Frontend development continued independently using mock data and existing UI components.
+
+No merge conflicts encountered.
