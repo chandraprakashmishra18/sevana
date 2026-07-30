@@ -48,13 +48,7 @@ export default function RegisterScreen({ onSwitch }) {
         area: form.area.trim(),
         password: form.password,
       });
-    } catch (err) {
-      setError(
-        err?.response?.data?.message ||
-          err?.message ||
-          "Registration failed. Please try again.",
-      );
-    } finally {
+    }  finally {
       setLoading(false);
     }
   };
