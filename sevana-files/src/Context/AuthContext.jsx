@@ -1,4 +1,10 @@
-import { createContext, useContext, useEffect, useMemo, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
 
 import { login, register, getMe } from "../api/authApi";
 
@@ -21,6 +27,8 @@ export function AuthProvider({ children }) {
 
       try {
         const response = await getMe();
+
+        // Backend returns { success, message, data }
         setUser(response.data);
       } catch (err) {
         console.error("Session restore failed:", err);
@@ -38,12 +46,15 @@ export function AuthProvider({ children }) {
     try {
       const response = await login(credentials);
 
-      localStorage.setItem(TOKEN_KEY, response.data.accessToken);
+      // response = { success, message, data }
+      const { accessToken, user } = response.data;
 
-      setUser(response.data.user);
+      localStorage.setItem(TOKEN_KEY, accessToken);
+      setUser(user);
 
-      return response.data.user;
+      return user;
     } catch (error) {
+      console.error("Login Error:", error);
       throw error;
     }
   };
@@ -52,18 +63,27 @@ export function AuthProvider({ children }) {
     try {
       const response = await register(payload);
 
-      localStorage.setItem(TOKEN_KEY, response.data.accessToken);
+      // response = { success, message, data }
+      const { accessToken, user } = response.data;
 
-      setUser(response.data.user);
+      localStorage.setItem(TOKEN_KEY, accessToken);
+      setUser(user);
 
-      return response.data.user;
+      return user;
     } catch (error) {
+      console.error("Register Error:", error);
       throw error;
     }
   };
+
   const refreshUser = async () => {
-    const response = await getMe();
-    setUser(response.data);
+    try {
+      const response = await getMe();
+      setUser(response.data);
+    } catch (error) {
+      console.error("Refresh User Error:", error);
+      throw error;
+    }
   };
 
   const logout = () => {
@@ -81,11 +101,14 @@ export function AuthProvider({ children }) {
       refreshUser,
       isAuthenticated: !!user,
     }),
-    [user, loading],
+    [user, loading]
   );
 
-  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
 }
 
-// eslint-disable-next-line react-refresh/only-export-components
 export const useAuth = () => useContext(AuthContext);
