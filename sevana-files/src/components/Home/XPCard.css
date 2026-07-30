@@ -1,0 +1,107 @@
+.xp-card{
+
+    background:white;
+
+    border-radius:22px;
+
+    padding:24px;
+
+    margin-bottom:22px;
+
+    box-shadow:0 8px 28px rgba(0,0,0,.06);
+
+}
+
+.xp-header{
+
+    display:flex;
+
+    justify-content:space-between;
+
+    align-items:center;
+
+}
+
+.xp-title{
+
+    color:#777;
+
+    font-size:14px;
+
+}
+
+.xp-header h3{
+
+    margin-top:6px;
+
+    color:#1b5e20;
+
+}
+
+.xp-badge{
+
+    width:52px;
+
+    height:52px;
+
+    border-radius:50%;
+
+    background:#E8F5E9;
+
+    display:flex;
+
+    align-items:center;
+
+    justify-content:center;
+
+    color:#2E7D32;
+
+}
+
+.xp-stats{
+
+    margin-top:18px;
+
+    display:flex;
+
+    justify-content:space-between;
+
+    font-size:14px;
+
+}
+
+.xp-item{
+
+    display:flex;
+
+    align-items:center;
+
+    gap:8px;
+
+}
+
+.progress-track{
+
+    width:100%;
+
+    height:10px;
+
+    border-radius:20px;
+
+    overflow:hidden;
+
+    background:#ECEFF1;
+
+    margin-top:18px;
+
+}
+
+.progress-fill{
+
+    height:100%;
+
+    background:linear-gradient(90deg,#2E7D32,#66BB6A);
+
+    transition:.5s;
+
+}
