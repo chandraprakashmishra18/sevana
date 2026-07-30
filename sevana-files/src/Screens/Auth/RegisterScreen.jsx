@@ -49,6 +49,12 @@ export default function RegisterScreen({ onSwitch }) {
         password: form.password,
       });
     } catch (err) {
+      console.error("REGISTER SCREEN ERROR");
+      console.error(err);
+      console.error("Response:", err.response);
+      console.error("Request:", err.request);
+      console.error("Message:", err.message);
+
       setError(
         err?.response?.data?.message ||
           err?.message ||
