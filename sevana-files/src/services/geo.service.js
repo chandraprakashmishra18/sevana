@@ -22,13 +22,37 @@ export const getCurrentLocation = () =>
   });
 
 export async function reverseGeocode(latitude, longitude) {
-  // Placeholder for now.
-  // Later we'll integrate OpenStreetMap or Google Maps.
+  const params = new URLSearchParams({
+    format: "jsonv2",
+    lat: String(latitude),
+    lon: String(longitude),
+  });
+  const response = await fetch(
+    `https://nominatim.openstreetmap.org/reverse?${params}`
+  );
+
+  if (!response.ok) {
+    throw new Error("Unable to look up the detected location.");
+  }
+
+  const data = await response.json();
+  const address = data.address ?? {};
+
+  if (!data.display_name) {
+    throw new Error("No address was found for this location.");
+  }
+
   return {
-    address: "",
-    city: "",
-    state: "",
-    landmark: "",
+    address: data.display_name,
+    city:
+      address.city ||
+      address.town ||
+      address.village ||
+      address.municipality ||
+      "",
+    state: address.state || "",
+    postcode: address.postcode || "",
+    landmark: address.neighbourhood || address.suburb || "",
     latitude,
     longitude,
   };

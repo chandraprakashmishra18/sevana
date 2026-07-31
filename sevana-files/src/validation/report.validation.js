@@ -40,6 +40,8 @@ export const reportSchema = z.object({
 
   state: z.string().optional(),
 
+  postcode: z.string().optional(),
+
   landmark: z.string().optional(),
 });
 

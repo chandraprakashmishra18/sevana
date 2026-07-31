@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 import Stepper from "./Stepper";
 import AnimalStep from "./steps/AnimalStep";
@@ -31,6 +32,7 @@ const INITIAL_DATA = {
   address: "",
   city: "",
   state: "",
+  postcode: "",
   landmark: "",
 };
 
@@ -113,11 +115,21 @@ export default function ReportForm() {
       <Stepper currentStep={currentStepIndex} />
 
       <div className="report-card">
-        <CurrentStep
-          formData={formData}
-          updateField={updateField}
-          updateFields={updateFields}
-        />
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={currentStepIndex}
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -40 }}
+            transition={{ duration: 0.25 }}
+          >
+            <CurrentStep
+              formData={formData}
+              updateField={updateField}
+              updateFields={updateFields}
+            />
+          </motion.div>
+        </AnimatePresence>
       </div>
 
       <div className="report-actions">
