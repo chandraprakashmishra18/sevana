@@ -1,0 +1,43 @@
+.input-wrapper{
+
+display:flex;
+
+flex-direction:column;
+
+gap:8px;
+
+}
+
+.input-wrapper label{
+
+font-weight:600;
+
+}
+
+.input-wrapper input{
+
+padding:14px;
+
+border-radius:14px;
+
+border:1px solid var(--border);
+
+outline:none;
+
+transition:.25s;
+
+}
+
+.input-wrapper input:focus{
+
+border-color:var(--primary-600);
+
+box-shadow:0 0 0 4px rgba(37,99,235,.15);
+
+}
+
+.input-wrapper small{
+
+color:var(--danger);
+
+}
