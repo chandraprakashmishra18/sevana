@@ -1,24 +1,48 @@
-import Loader from "../Loader/Loader";
 import "./Button.css";
 
 export default function Button({
   children,
   variant = "primary",
+  size = "md",
+  fullWidth = false,
   loading = false,
   disabled = false,
-  className = "",
+  leftIcon,
+  rightIcon,
   type = "button",
-  ...props
+  onClick,
 }) {
   return (
     <button
-      {...props}
       type={type}
       disabled={disabled || loading}
-      className={`button button-${variant} ${className}`.trim()}
+      onClick={onClick}
+      className={`
+        sevana-btn
+        sevana-btn-${variant}
+        sevana-btn-${size}
+        ${fullWidth ? "sevana-btn-full" : ""}
+      `}
     >
-      {loading && <Loader size="small" />}
-      {children}
+      {loading ? (
+        <span className="btn-loader" />
+      ) : (
+        <>
+          {leftIcon && (
+            <span className="btn-icon">
+              {leftIcon}
+            </span>
+          )}
+
+          <span>{children}</span>
+
+          {rightIcon && (
+            <span className="btn-icon">
+              {rightIcon}
+            </span>
+          )}
+        </>
+      )}
     </button>
   );
 }
