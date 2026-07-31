@@ -1,0 +1,23 @@
+.sevana-card{
+
+background:white;
+
+border-radius:20px;
+
+padding:20px;
+
+border:1px solid var(--border);
+
+box-shadow:var(--shadow-sm);
+
+transition:all .25s ease;
+
+}
+
+.sevana-card:hover{
+
+transform:translateY(-3px);
+
+box-shadow:var(--shadow-md);
+
+}
