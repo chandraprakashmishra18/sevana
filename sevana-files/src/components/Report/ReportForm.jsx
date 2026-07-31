@@ -7,6 +7,7 @@ import LocationStep from "./steps/LocationStep";
 import ReviewStep from "./steps/ReviewStep";
 
 import { useCreateReport } from "../../hooks/useCreateReport";
+import useMultiStepForm from "../../hooks/useMultiStepForm";
 
 import "./styles/Report.css";
 
@@ -30,9 +31,23 @@ const INITIAL_DATA = {
   landmark: "",
 };
 
+const STEPS = [
+  AnimalStep,
+  RescueStep,
+  LocationStep,
+  ReviewStep,
+];
+
 export default function ReportForm() {
-  const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState(INITIAL_DATA);
+  const {
+    step: CurrentStep,
+    currentStepIndex,
+    next,
+    previous,
+    isFirstStep,
+    isLastStep,
+  } = useMultiStepForm(STEPS);
 
   const createReport = useCreateReport();
 
@@ -44,7 +59,7 @@ export default function ReportForm() {
   };
 
   const validateStep = () => {
-    switch (currentStep) {
+    switch (currentStepIndex) {
       case 0:
         if (!formData.animal_type) {
           alert("Please select an animal.");
@@ -81,76 +96,37 @@ export default function ReportForm() {
   const nextStep = () => {
     if (!validateStep()) return;
 
-    setCurrentStep((prev) => prev + 1);
-  };
-
-  const previousStep = () => {
-    setCurrentStep((prev) => prev - 1);
+    next();
   };
 
   const submitReport = () => {
     createReport.mutate(formData);
   };
 
-  const renderStep = () => {
-    switch (currentStep) {
-      case 0:
-        return (
-          <AnimalStep
-            formData={formData}
-            updateField={updateField}
-          />
-        );
-
-      case 1:
-        return (
-          <RescueStep
-            formData={formData}
-            updateField={updateField}
-          />
-        );
-
-      case 2:
-        return (
-          <LocationStep
-            formData={formData}
-            updateField={updateField}
-          />
-        );
-
-      case 3:
-        return (
-          <ReviewStep
-            formData={formData}
-          />
-        );
-
-      default:
-        return null;
-    }
-  };
-
   return (
     <div className="report-container">
 
-      <Stepper currentStep={currentStep} />
+      <Stepper currentStep={currentStepIndex} />
 
       <div className="report-card">
-        {renderStep()}
+        <CurrentStep
+          formData={formData}
+          updateField={updateField}
+        />
       </div>
 
       <div className="report-actions">
 
-        {currentStep > 0 && (
+        {!isFirstStep && (
           <button
             className="secondary-btn"
-            onClick={previousStep}
+            onClick={previous}
           >
             Back
           </button>
         )}
 
-        {currentStep < 3 ? (
+        {!isLastStep ? (
           <button
             className="primary-btn"
             onClick={nextStep}
