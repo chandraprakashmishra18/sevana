@@ -1,18 +1,14 @@
 import { useQuery } from "@tanstack/react-query";
-import { getReports } from "../services/report.service";
+import { getReport } from "../services/report.service";
 
-export default function useReports(filters = {}) {
+export default function useReport(id) {
   return useQuery({
-    queryKey: ["reports", filters],
+    queryKey: ["report", id],
 
-    queryFn: () => getReports(filters),
+    queryFn: () => getReport(id),
 
-    staleTime: 1000 * 60,
+    enabled: !!id,
 
-    refetchInterval: 30000,
-
-    retry: 2,
-
-    refetchOnWindowFocus: false,
+    staleTime: 60000,
   });
 }
