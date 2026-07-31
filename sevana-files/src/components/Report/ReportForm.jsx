@@ -8,8 +8,11 @@ import ReviewStep from "./steps/ReviewStep";
 
 import { useCreateReport } from "../../hooks/useCreateReport";
 import useMultiStepForm from "../../hooks/useMultiStepForm";
+import { useToast } from "../../context/ToastContext";
+import { reportSchema } from "../../validation/report.validation";
+import Button from "../Common/Button/Button";
 
-import "./styles/Report.css";
+import "./Report.css";
 
 const INITIAL_DATA = {
   animal_type: "",
@@ -38,6 +41,12 @@ const STEPS = [
   ReviewStep,
 ];
 
+const STEP_SCHEMAS = [
+  reportSchema.pick({ animal_type: true }),
+  reportSchema.pick({ severity: true, condition: true }),
+  reportSchema.pick({ latitude: true, longitude: true }),
+];
+
 export default function ReportForm() {
   const [formData, setFormData] = useState(INITIAL_DATA);
   const {
@@ -50,6 +59,7 @@ export default function ReportForm() {
   } = useMultiStepForm(STEPS);
 
   const createReport = useCreateReport();
+  const { toast } = useToast();
 
   const updateField = (field, value) => {
     setFormData((prev) => ({
@@ -58,39 +68,26 @@ export default function ReportForm() {
     }));
   };
 
+  const updateFields = (values) => {
+    setFormData((prev) => ({
+      ...prev,
+      ...values,
+    }));
+  };
+
   const validateStep = () => {
-    switch (currentStepIndex) {
-      case 0:
-        if (!formData.animal_type) {
-          alert("Please select an animal.");
-          return false;
-        }
-        return true;
+    const schema = STEP_SCHEMAS[currentStepIndex];
 
-      case 1:
-        if (!formData.severity) {
-          alert("Please select severity.");
-          return false;
-        }
+    if (!schema) return true;
 
-        if (!formData.condition.trim()) {
-          alert("Please describe the animal's condition.");
-          return false;
-        }
+    const result = schema.safeParse(formData);
 
-        return true;
-
-      case 2:
-        if (!formData.latitude || !formData.longitude) {
-          alert("Please detect the location.");
-          return false;
-        }
-
-        return true;
-
-      default:
-        return true;
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return false;
     }
+
+    return true;
   };
 
   const nextStep = () => {
@@ -100,6 +97,13 @@ export default function ReportForm() {
   };
 
   const submitReport = () => {
+    const result = reportSchema.safeParse(formData);
+
+    if (!result.success) {
+      toast.error(result.error.issues[0].message);
+      return;
+    }
+
     createReport.mutate(formData);
   };
 
@@ -112,37 +116,36 @@ export default function ReportForm() {
         <CurrentStep
           formData={formData}
           updateField={updateField}
+          updateFields={updateFields}
         />
       </div>
 
       <div className="report-actions">
 
         {!isFirstStep && (
-          <button
-            className="secondary-btn"
+          <Button
+            variant="secondary"
             onClick={previous}
           >
             Back
-          </button>
+          </Button>
         )}
 
         {!isLastStep ? (
-          <button
-            className="primary-btn"
+          <Button
+            variant="primary"
             onClick={nextStep}
           >
             Next
-          </button>
+          </Button>
         ) : (
-          <button
-            className="primary-btn"
-            disabled={createReport.isPending}
+          <Button
+            variant="primary"
+            loading={createReport.isPending}
             onClick={submitReport}
           >
-            {createReport.isPending
-              ? "Submitting..."
-              : "Submit Report"}
-          </button>
+            Submit Report
+          </Button>
         )}
 
       </div>

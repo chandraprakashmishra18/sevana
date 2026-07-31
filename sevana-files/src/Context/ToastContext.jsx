@@ -4,7 +4,7 @@ import Toast from "../components/Feedback/Toast";
 const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {
-  const [toast, setToast] = useState({
+  const [toastState, setToast] = useState({
     message: "",
     type: "success",
   });
@@ -23,13 +23,20 @@ export function ToastProvider({ children }) {
     });
   }, []);
 
+  const toast = {
+    success: (message) => showToast(message, "success"),
+    error: (message) => showToast(message, "error"),
+    warning: (message) => showToast(message, "warning"),
+    info: (message) => showToast(message, "info"),
+  };
+
   return (
-    <ToastContext.Provider value={{ showToast }}>
+    <ToastContext.Provider value={{ showToast, toast }}>
       {children}
 
       <Toast
-        message={toast.message}
-        type={toast.type}
+        message={toastState.message}
+        type={toastState.type}
         onClose={hideToast}
       />
     </ToastContext.Provider>

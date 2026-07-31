@@ -1,14 +1,16 @@
 import { useState } from "react";
-import { MapPin, LocateFixed, Loader2 } from "lucide-react";
+import { MapPin, LocateFixed } from "lucide-react";
 
 import {
   getCurrentLocation,
   reverseGeocode,
 } from "../../../services/geo.service";
+import Button from "../../Common/Button/Button";
+import Loader from "../../Common/Loader";
 
 export default function LocationStep({
   formData,
-  updateField,
+  updateFields,
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -24,9 +26,7 @@ export default function LocationStep({
       const location =
         await reverseGeocode(latitude, longitude);
 
-      Object.entries(location).forEach(([key, value]) =>
-        updateField(key, value)
-      );
+      updateFields(location);
     } catch (err) {
       setError(
         err.message || "Unable to detect location."
@@ -48,18 +48,14 @@ export default function LocationStep({
         </p>
       </div>
 
-      <button
-        type="button"
+      <Button
         className="location-btn"
         onClick={detectLocation}
         disabled={loading}
       >
         {loading ? (
           <>
-            <Loader2
-              size={18}
-              className="spin"
-            />
+            <Loader size="small" />
 
             Detecting...
           </>
@@ -70,7 +66,7 @@ export default function LocationStep({
             Detect Current Location
           </>
         )}
-      </button>
+      </Button>
 
       {error && (
         <div className="location-error">

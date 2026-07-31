@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
+import { useToast } from "../../context/ToastContext";
 
 import "./Report.css";
 
@@ -7,10 +8,11 @@ export default function LocationPicker({
   onLocationSelect,
 }) {
   const [loading, setLoading] = useState(false);
+  const { toast } = useToast();
 
   function detectLocation() {
     if (!navigator.geolocation) {
-      alert("Geolocation is not supported.");
+      toast.error("Geolocation is not supported.");
       return;
     }
 
@@ -27,7 +29,7 @@ export default function LocationPicker({
       },
       () => {
         setLoading(false);
-        alert("Unable to fetch your location.");
+        toast.error("Unable to fetch your location.");
       }
     );
   }
