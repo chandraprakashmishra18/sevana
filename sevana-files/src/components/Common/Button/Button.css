@@ -1,27 +1,106 @@
-.button {
+.sevana-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  border: 0;
-  border-radius: 10px;
-  padding: 10px 16px;
+
+  border: none;
   cursor: pointer;
-  font: inherit;
+
+  border-radius: 14px;
+
   font-weight: 600;
+
+  transition: all .25s ease;
+
+  font-family: inherit;
 }
 
-.button:disabled {
-  cursor: not-allowed;
-  opacity: 0.65;
+.sevana-btn:hover {
+  transform: translateY(-2px);
 }
 
-.button-primary {
-  background: #2e7d32;
-  color: #fff;
+.sevana-btn:active {
+  transform: scale(.98);
 }
 
-.button-secondary {
-  background: #e8f5e9;
-  color: #1b5e20;
+.sevana-btn-full {
+  width: 100%;
+}
+
+/* Sizes */
+
+.sevana-btn-sm{
+  padding:10px 16px;
+  font-size:14px;
+}
+
+.sevana-btn-md{
+  padding:12px 22px;
+  font-size:15px;
+}
+
+.sevana-btn-lg{
+  padding:15px 28px;
+  font-size:16px;
+}
+
+/* Variants */
+
+.sevana-btn-primary{
+  background:var(--primary-600);
+  color:white;
+}
+
+.sevana-btn-primary:hover{
+  background:var(--primary-700);
+}
+
+.sevana-btn-secondary{
+  background:white;
+  border:1px solid var(--border);
+}
+
+.sevana-btn-secondary:hover{
+  background:#f8fafc;
+}
+
+.sevana-btn-danger{
+  background:var(--danger);
+  color:white;
+}
+
+.sevana-btn-success{
+  background:var(--success);
+  color:white;
+}
+
+.sevana-btn:disabled{
+  opacity:.6;
+  cursor:not-allowed;
+}
+
+.btn-loader{
+  width:18px;
+  height:18px;
+
+  border-radius:50%;
+
+  border:2px solid rgba(255,255,255,.4);
+
+  border-top-color:white;
+
+  animation:spin .7s linear infinite;
+}
+
+@keyframes spin{
+
+from{
+transform:rotate(0deg);
+}
+
+to{
+transform:rotate(360deg);
+}
+
 }
