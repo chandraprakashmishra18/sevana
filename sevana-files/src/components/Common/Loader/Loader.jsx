@@ -1,11 +1,15 @@
 import "./Loader.css";
 
-export default function Loader({ size = "medium", className = "" }) {
+export default function Loader({
+  size = 36,
+}) {
   return (
-    <span
-      className={`loader loader-${size} ${className}`.trim()}
-      aria-label="Loading"
-      role="status"
+    <div
+      className="loader"
+      style={{
+        width: size,
+        height: size,
+      }}
     />
   );
 }
