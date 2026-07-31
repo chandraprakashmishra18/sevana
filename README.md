@@ -298,7 +298,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## 📬 Contact
 
-**Prashant Mishra**
+**Chandra Prakash Mishra**
 
 - GitHub: [@chandraprakashmishra18](https://github.com/chandraprakashmishra18)
 - Email: [prashantmishra44140@gmail.com](mailto:prashantmishra44140@gmail.com)
