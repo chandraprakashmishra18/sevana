@@ -6,7 +6,7 @@ import {
   reverseGeocode,
 } from "../../../services/geo.service";
 import Button from "../../Common/Button/Button";
-import Loader from "../../Common/Loader";
+import Loader from "../../Common/Loader/Loader";
 
 export default function LocationStep({
   formData,
