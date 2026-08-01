@@ -1,11 +1,10 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-
 import { createReport } from "../services/report.service";
 
 export default function useCreateReport() {
   const queryClient = useQueryClient();
 
-  return useMutation({
+  const mutation = useMutation({
     mutationFn: createReport,
 
     onSuccess: () => {
@@ -14,4 +13,11 @@ export default function useCreateReport() {
       });
     },
   });
+
+  return {
+    submitReport: mutation.mutateAsync,
+    loading: mutation.isPending,
+    error: mutation.error,
+    isSuccess: mutation.isSuccess,
+  };
 }
