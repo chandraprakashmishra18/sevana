@@ -116,6 +116,57 @@ export default function LocationStep({
         </div>
       )}
 
+      {formData.latitude && formData.longitude && (
+        <a
+          href={`https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`}
+          target="_blank"
+          rel="noreferrer"
+        >
+          View on Map
+        </a>
+      )}
+
+      <div className="input-group">
+        <label>Landmark</label>
+
+        <input
+          value={formData.landmark}
+          onChange={(e) =>
+            updateFields({
+              landmark: e.target.value,
+            })
+          }
+        />
+      </div>
+
+      <div className="input-row">
+        <div className="input-group">
+          <label>City</label>
+
+          <input
+            value={formData.city}
+            onChange={(e) =>
+              updateFields({
+                city: e.target.value,
+              })
+            }
+          />
+        </div>
+
+        <div className="input-group">
+          <label>State</label>
+
+          <input
+            value={formData.state}
+            onChange={(e) =>
+              updateFields({
+                state: e.target.value,
+              })
+            }
+          />
+        </div>
+      </div>
+
     </div>
   );
 }
