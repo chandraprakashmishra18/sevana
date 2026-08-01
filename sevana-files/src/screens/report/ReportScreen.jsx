@@ -1,5 +1,6 @@
 import { useState } from "react";
 
+import ReportProgress from "../../components/Report/ReportProgress";
 import AnimalStep from "../../components/Report/steps/AnimalStep";
 import RescueStep from "../../components/Report/steps/RescueStep";
 import LocationStep from "../../components/Report/steps/LocationStep";
@@ -38,6 +39,7 @@ export default function ReportScreen() {
 
   return (
     <div className="report-screen">
+      <ReportProgress step={step} />
 
       {step === 1 && (
         <AnimalStep
