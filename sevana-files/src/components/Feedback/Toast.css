@@ -22,6 +22,15 @@
   gap: 12px;
 }
 
+.toast-title,
+.toast-message {
+  display: block;
+}
+
+.toast-title {
+  margin-bottom: 2px;
+}
+
 .toast-success {
   background: #2e7d32;
 }

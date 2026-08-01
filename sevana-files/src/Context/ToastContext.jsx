@@ -5,19 +5,26 @@ const ToastContext = createContext(null);
 
 export function ToastProvider({ children }) {
   const [toastState, setToast] = useState({
+    title: "",
     message: "",
     type: "success",
   });
 
-  const showToast = useCallback((message, type = "success") => {
+  const showToast = useCallback((toast, type = "success") => {
+    const nextToast = typeof toast === "string"
+      ? { message: toast, type }
+      : toast;
+
     setToast({
-      message,
-      type,
+      title: "",
+      type: "success",
+      ...nextToast,
     });
   }, []);
 
   const hideToast = useCallback(() => {
     setToast({
+      title: "",
       message: "",
       type: "success",
     });
@@ -35,6 +42,7 @@ export function ToastProvider({ children }) {
       {children}
 
       <Toast
+        title={toastState.title}
         message={toastState.message}
         type={toastState.type}
         onClose={hideToast}

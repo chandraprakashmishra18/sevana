@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import "./Toast.css";
 
 export default function Toast({
+  title,
   message,
   type = "success",
   onClose,
@@ -29,9 +30,10 @@ export default function Toast({
           {type === "info" && "ℹ️"}
         </span>
 
-        <span className="toast-message">
-          {message}
-        </span>
+        <div>
+          {title && <strong className="toast-title">{title}</strong>}
+          <span className="toast-message">{message}</span>
+        </div>
       </div>
 
       <button

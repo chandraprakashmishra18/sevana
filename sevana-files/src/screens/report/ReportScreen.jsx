@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { useReport } from "../../hooks/useReport";
+import { useToast } from "../../context/ToastContext";
 
 import ReportProgress from "../../components/Report/ReportProgress";
 import AnimalStep from "../../components/Report/AnimalStep";
@@ -15,6 +16,7 @@ export default function ReportScreen() {
   const navigate = useNavigate();
 
   const { submitReport, loading } = useReport();
+  const { showToast } = useToast();
 
   const [step, setStep] = useState(1);
 
@@ -84,8 +86,11 @@ export default function ReportScreen() {
 
       await submitReport(formData);
 
-      // Temporary Success Message
-      alert("🎉 Report submitted successfully!");
+      showToast({
+        type: "success",
+        title: "Report Submitted",
+        message: "+50 XP earned! Nearby volunteers have been notified.",
+      });
 
       // Later we'll replace this with a Success Screen
       navigate("/");
