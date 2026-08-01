@@ -61,9 +61,14 @@ export default function ReportScreen() {
       {step === 3 && (
         <LocationStep
           formData={formData}
-          updateFields={(fields) =>
-            setFormData((prev) => ({ ...prev, ...fields }))
+          updateFields={(values) =>
+            setFormData((prev) => ({
+              ...prev,
+              ...values,
+            }))
           }
+          back={() => setStep(2)}
+          next={() => setStep(4)}
         />
       )}
 
