@@ -3,21 +3,29 @@ import "./Input.css";
 export default function Input({
   label,
   error,
+  className = "",
   ...props
 }) {
   return (
-    <div className="input-wrapper">
-
+    <div className={`input-wrapper ${className}`}>
       {label && (
-        <label>{label}</label>
+        <label className="input-label">
+          {label}
+        </label>
       )}
 
-      <input {...props} />
+      <input
+        className={`input-field ${
+          error ? "input-error" : ""
+        }`}
+        {...props}
+      />
 
       {error && (
-        <small>{error}</small>
+        <span className="input-error-text">
+          {error}
+        </span>
       )}
-
     </div>
   );
 }
