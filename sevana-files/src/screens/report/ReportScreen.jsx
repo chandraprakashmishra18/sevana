@@ -1,7 +1,7 @@
 import { useState } from "react";
 
 import ReportProgress from "../../components/Report/ReportProgress";
-import AnimalStep from "../../components/Report/steps/AnimalStep";
+import AnimalStep from "../../components/Report/AnimalStep";
 import RescueStep from "../../components/Report/steps/RescueStep";
 import LocationStep from "../../components/Report/steps/LocationStep";
 
@@ -45,6 +45,7 @@ export default function ReportScreen() {
         <AnimalStep
           formData={formData}
           updateField={updateField}
+          next={() => setStep(2)}
         />
       )}
 

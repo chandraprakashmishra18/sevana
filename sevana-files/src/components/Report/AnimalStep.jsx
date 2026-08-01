@@ -20,6 +20,7 @@ const genders = [
 export default function AnimalStep({
   formData,
   updateField,
+  next,
 }) {
   return (
     <div className="report-step">
@@ -145,6 +146,17 @@ export default function AnimalStep({
 
         </div>
 
+      </div>
+
+      <div className="step-actions">
+        <button
+          className="primary-btn"
+          type="button"
+          onClick={next}
+          disabled={!formData.animal_type}
+        >
+          Continue →
+        </button>
       </div>
 
     </div>
