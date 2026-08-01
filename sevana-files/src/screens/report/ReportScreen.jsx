@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
-import useReport from "../../hooks/useReport";
+import useCreateReport from "../../hooks/useCreateReport";
 import { useToast } from "../../context/ToastContext";
 
 import ReportProgress from "../../components/Report/ReportProgress";
@@ -15,7 +15,10 @@ import "./Report.css";
 export default function ReportScreen() {
   const navigate = useNavigate();
 
-  const { submitReport, loading } = useReport();
+  const {
+    mutateAsync: submitReport,
+    isPending: loading,
+  } = useCreateReport();
   const { showToast } = useToast();
 
   const [step, setStep] = useState(1);
