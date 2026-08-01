@@ -1,6 +1,8 @@
 import { useState } from "react";
 import { AlertTriangle, ShieldAlert, Heart, Siren } from "lucide-react";
 
+import "./RescueStep.css";
+
 const severityLevels = [
   {
     value: "low",
@@ -36,6 +38,7 @@ export default function RescueStep({
   formData,
   updateField,
   next,
+  back,
 }) {
   const maxCharacters = 500;
   const [error, setError] = useState("");
@@ -118,6 +121,30 @@ export default function RescueStep({
           {formData.condition.length} / {maxCharacters}
         </div>
 
+      </div>
+
+      {error && (
+        <div className="step-error">
+          {error}
+        </div>
+      )}
+
+      <div className="step-actions">
+        <button
+          type="button"
+          className="secondary-btn"
+          onClick={back}
+        >
+          ← Back
+        </button>
+
+        <button
+          type="button"
+          className="primary-btn"
+          onClick={handleContinue}
+        >
+          Continue →
+        </button>
       </div>
 
     </div>

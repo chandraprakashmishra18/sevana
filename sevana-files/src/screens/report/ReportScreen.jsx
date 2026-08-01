@@ -54,6 +54,7 @@ export default function ReportScreen() {
           formData={formData}
           updateField={updateField}
           next={() => setStep(3)}
+          back={() => setStep(1)}
         />
       )}
 
