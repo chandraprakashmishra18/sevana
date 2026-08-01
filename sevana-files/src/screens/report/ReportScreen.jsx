@@ -1,4 +1,7 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
+
+import { useReport } from "../../hooks/useReport";
 
 import ReportProgress from "../../components/Report/ReportProgress";
 import AnimalStep from "../../components/Report/AnimalStep";
@@ -9,9 +12,14 @@ import ReviewStep from "../../components/Report/steps/ReviewStep";
 import "./Report.css";
 
 export default function ReportScreen() {
+  const navigate = useNavigate();
+
+  const { submitReport, loading } = useReport();
+
   const [step, setStep] = useState(1);
 
   const [formData, setFormData] = useState({
+    // Animal Information
     animal_type: "",
     species: "",
     breed: "",
@@ -19,10 +27,12 @@ export default function ReportScreen() {
     estimated_age: "",
     color: "",
 
+    // Rescue Details
     severity: "medium",
     condition: "",
     description: "",
 
+    // Location
     latitude: "",
     longitude: "",
     address: "",
@@ -31,6 +41,9 @@ export default function ReportScreen() {
     landmark: "",
   });
 
+  // =====================================
+  // Update Single Field
+  // =====================================
   function updateField(field, value) {
     setFormData((prev) => ({
       ...prev,
@@ -38,10 +51,61 @@ export default function ReportScreen() {
     }));
   }
 
+  // =====================================
+  // Update Multiple Fields
+  // =====================================
+  function updateFields(values) {
+    setFormData((prev) => ({
+      ...prev,
+      ...values,
+    }));
+  }
+
+  // =====================================
+  // Submit Report
+  // =====================================
+  async function handleSubmit() {
+    try {
+      // Basic Validation
+      if (!formData.animal_type) {
+        alert("Please select an animal.");
+        return;
+      }
+
+      if (!formData.condition.trim()) {
+        alert("Please describe the animal's condition.");
+        return;
+      }
+
+      if (!formData.latitude || !formData.longitude) {
+        alert("Please detect the animal's location.");
+        return;
+      }
+
+      await submitReport(formData);
+
+      // Temporary Success Message
+      alert("🎉 Report submitted successfully!");
+
+      // Later we'll replace this with a Success Screen
+      navigate("/");
+    } catch (err) {
+      console.error(err);
+
+      alert(
+        err?.response?.data?.message ||
+          "Failed to submit report."
+      );
+    }
+  }
+
   return (
     <div className="report-screen">
       <ReportProgress step={step} />
 
+      {/* =====================================
+          STEP 1
+      ====================================== */}
       {step === 1 && (
         <AnimalStep
           formData={formData}
@@ -50,6 +114,9 @@ export default function ReportScreen() {
         />
       )}
 
+      {/* =====================================
+          STEP 2
+      ====================================== */}
       {step === 2 && (
         <RescueStep
           formData={formData}
@@ -59,20 +126,21 @@ export default function ReportScreen() {
         />
       )}
 
+      {/* =====================================
+          STEP 3
+      ====================================== */}
       {step === 3 && (
         <LocationStep
           formData={formData}
-          updateFields={(values) =>
-            setFormData((prev) => ({
-              ...prev,
-              ...values,
-            }))
-          }
-          back={() => setStep(2)}
+          updateFields={updateFields}
           next={() => setStep(4)}
+          back={() => setStep(2)}
         />
       )}
 
+      {/* =====================================
+          STEP 4
+      ====================================== */}
       {step === 4 && (
         <ReviewStep
           formData={formData}
@@ -81,7 +149,6 @@ export default function ReportScreen() {
           loading={loading}
         />
       )}
-
     </div>
   );
 }
