@@ -1,13 +1,13 @@
 import { useState } from "react";
 
-import useReports from "../hooks/useReports";
+import useReports from "../../hooks/useReports";
 
-import RescueList from "../components/Rescue/RescueList";
-import RescueLoading from "../components/Rescue/RescueLoading";
-import RescueEmpty from "../components/Rescue/RescueEmpty";
-import RescueFilters from "../components/Rescue/RescueFilters";
+import RescueList from "../../components/Rescue/RescueList";
+import RescueLoading from "../../components/Rescue/RescueLoading";
+import RescueEmpty from "../../components/Rescue/RescueEmpty";
+import RescueFilters from "../../components/Rescue/RescueFilters";
 
-import "../components/Rescue/RescueFeed.css";
+import "../../components/Rescue/RescueFeed.css";
 
 export default function RescueFeedScreen() {
   const [filters, setFilters] = useState({});
