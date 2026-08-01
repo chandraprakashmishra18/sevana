@@ -33,7 +33,7 @@ export default function QuickActions() {
           title="Nearby Vets"
           subtitle="Find emergency veterinary care"
           color="#1976D2"
-          onClick={() => navigate("/vets")}
+          onClick={() => alert("Vet Finder is coming in Sprint 2")}
         />
       </div>
     </section>
