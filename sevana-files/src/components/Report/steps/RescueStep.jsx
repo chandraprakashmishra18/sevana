@@ -87,6 +87,7 @@ export default function RescueStep({
             >
               <Icon size={28} />
 
+
               <div>
                 <h4>{level.title}</h4>
                 <p>{level.description}</p>
