@@ -15,7 +15,7 @@ const errorHandler = require("./middleware/error.middleware");
 const { success, fail } = require("./shared/response");
 const ngoRoutes = require('./routes/ngo.routes');
 const donationRoutes = require("./routes/donation.routes");
-const { apiRateLimiter, authRateLimiter } = require("./middleware/rate-limit.middleware");
+const { apiRateLimiter } = require("./middleware/rate-limit.middleware");
 const ApiError = require("./errors/api.error");
 const app = express();
 
@@ -60,7 +60,7 @@ app.get("/health", (req, res) => {
    API Routes
 ============================================================ */
 
-app.use("/api/v1/auth", authRateLimiter, authRoutes);
+app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/reports", reportRoutes);
 app.use("/api/v1/vets", vetRoutes);
 app.use("/api/v1/ngos", ngoRoutes);
