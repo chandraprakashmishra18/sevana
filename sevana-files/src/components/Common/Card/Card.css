@@ -1,23 +1,11 @@
-.sevana-card{
+.card{
 
-background:white;
+    background:white;
 
-border-radius:20px;
+    border-radius:24px;
 
-padding:20px;
+    padding:24px;
 
-border:1px solid var(--border);
-
-box-shadow:var(--shadow-sm);
-
-transition:all .25s ease;
-
-}
-
-.sevana-card:hover{
-
-transform:translateY(-3px);
-
-box-shadow:var(--shadow-md);
+    box-shadow:var(--shadow);
 
 }
