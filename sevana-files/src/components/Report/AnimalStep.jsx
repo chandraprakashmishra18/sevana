@@ -1,5 +1,7 @@
 import { Dog, Cat, Bird, Fish, Rabbit, PawPrint, Beef, Horse } from "lucide-react";
 
+import "./AnimalStep.css";
+
 const animals = [
   { id: "dog", label: "Dog", icon: Dog },
   { id: "cat", label: "Cat", icon: Cat },
