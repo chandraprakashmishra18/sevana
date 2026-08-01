@@ -8,6 +8,7 @@ import {
 
 import Button from "../../Common/Button/Button";
 import Loader from "../../Common/Loader/Loader";
+import "./LocationStep.css";
 
 export default function LocationStep({
   formData,

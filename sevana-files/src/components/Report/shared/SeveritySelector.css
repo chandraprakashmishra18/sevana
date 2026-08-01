@@ -1,0 +1,12 @@
+.severity-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+}
+
+.severity-card {
+  border: 2px solid;
+  border-radius: 8px;
+  padding: 10px;
+  background: #fff;
+}

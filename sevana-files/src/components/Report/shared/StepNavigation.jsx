@@ -1,6 +1,6 @@
-import "./styles/Report.css";
+import "./StepNavigation.css";
 
-const Stepper = ({ currentStep }) => {
+const StepNavigation = ({ currentStep }) => {
   const steps = [
     "Animal",
     "Details",
@@ -53,4 +53,4 @@ const Stepper = ({ currentStep }) => {
   );
 };
 
-export default Stepper;
+export default StepNavigation;

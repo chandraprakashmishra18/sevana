@@ -1,4 +1,4 @@
-import "./Report.css";
+import "./AnimalTypeSelector.css";
 
 const ANIMAL_TYPES = [
   "Dog",
@@ -12,7 +12,7 @@ const ANIMAL_TYPES = [
   "Other",
 ];
 
-export default function AnimalTypeSelect({
+export default function AnimalTypeSelector({
   value,
   onChange,
   error,

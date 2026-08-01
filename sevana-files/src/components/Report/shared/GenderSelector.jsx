@@ -1,4 +1,4 @@
-import "./Report.css";
+import "./GenderSelector.css";
 
 const genders = [
   "male",

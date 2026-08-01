@@ -1,0 +1,13 @@
+.report-header {
+  margin-bottom: 24px;
+}
+
+.report-header h1,
+.report-header p {
+  margin: 0;
+}
+
+.report-header p {
+  margin-top: 6px;
+  color: #667085;
+}

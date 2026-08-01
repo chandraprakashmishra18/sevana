@@ -1,0 +1,8 @@
+.report-input-field {
+  display: grid;
+  gap: 6px;
+}
+
+.report-input-field small {
+  color: #d32f2f;
+}

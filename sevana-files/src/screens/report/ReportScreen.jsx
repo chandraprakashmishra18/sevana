@@ -5,7 +5,7 @@ import useCreateReport from "../../hooks/useCreateReport";
 import { useToast } from "../../context/ToastContext";
 
 import ReportProgress from "../../components/Report/ReportProgress";
-import AnimalStep from "../../components/Report/AnimalStep";
+import AnimalStep from "../../components/Report/steps/AnimalStep";
 import RescueStep from "../../components/Report/steps/RescueStep";
 import LocationStep from "../../components/Report/steps/LocationStep";
 import ReviewStep from "../../components/Report/steps/ReviewStep";

@@ -1,4 +1,4 @@
-import "./Report.css";
+import "./SeveritySelector.css";
 
 const levels = [
   {

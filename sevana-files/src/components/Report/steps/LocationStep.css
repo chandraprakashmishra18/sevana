@@ -1,0 +1,24 @@
+.location-card {
+  display: grid;
+  gap: 12px;
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid #d0d5dd;
+  border-radius: 12px;
+}
+
+.location-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.location-item div {
+  display: grid;
+}
+
+.location-error,
+.step-error {
+  color: #d32f2f;
+  margin-top: 8px;
+}

@@ -1,10 +1,10 @@
 import { useState } from "react";
 import { MapPin } from "lucide-react";
-import { useToast } from "../../context/ToastContext";
+import { useToast } from "../../../context/ToastContext";
 
-import "./Report.css";
+import "./LocationCard.css";
 
-export default function LocationPicker({
+export default function LocationCard({
   onLocationSelect,
 }) {
   const [loading, setLoading] = useState(false);
