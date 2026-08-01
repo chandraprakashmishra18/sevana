@@ -7,11 +7,15 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
 
 import HomeScreen from "../screens/home/HomeScreen";
+import ReportDetailScreen from "../screens/report/ReportDetailScreen";
+import RescueFeedScreen from "../screens/rescue/RescueFeedScreen";
+// import VetFinderScreen from "../screens/vet/VetFinderScreen"; // <-- we'll confirm the filename
 
 export default function AppRoutes() {
   return (
     <Routes>
-      {/* Public Routes */}
+
+      {/* Public */}
       <Route
         path="/login"
         element={
@@ -30,7 +34,7 @@ export default function AppRoutes() {
         }
       />
 
-      {/* Protected Routes */}
+      {/* Protected */}
       <Route
         path="/"
         element={
@@ -40,7 +44,26 @@ export default function AppRoutes() {
         }
       />
 
-      {/* Catch All */}
+      <Route
+        path="/report"
+        element={
+          <ProtectedRoute>
+            <ReportDetailScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      <Route
+        path="/rescue"
+        element={
+          <ProtectedRoute>
+            <RescueFeedScreen />
+          </ProtectedRoute>
+        }
+      />
+
+      {/* Add vet route after confirming filename */}
+
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
   );
