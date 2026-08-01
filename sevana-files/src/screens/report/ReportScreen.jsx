@@ -16,8 +16,8 @@ export default function ReportScreen() {
   const navigate = useNavigate();
 
   const {
-    mutateAsync: submitReport,
-    isPending: loading,
+    submitReport,
+    loading,
   } = useCreateReport();
   const { showToast } = useToast();
 
