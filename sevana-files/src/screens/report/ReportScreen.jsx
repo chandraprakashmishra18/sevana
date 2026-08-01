@@ -4,6 +4,7 @@ import ReportProgress from "../../components/Report/ReportProgress";
 import AnimalStep from "../../components/Report/AnimalStep";
 import RescueStep from "../../components/Report/steps/RescueStep";
 import LocationStep from "../../components/Report/steps/LocationStep";
+import ReviewStep from "../../components/Report/steps/ReviewStep";
 
 import "./Report.css";
 
@@ -69,6 +70,15 @@ export default function ReportScreen() {
           }
           back={() => setStep(2)}
           next={() => setStep(4)}
+        />
+      )}
+
+      {step === 4 && (
+        <ReviewStep
+          formData={formData}
+          back={() => setStep(3)}
+          submit={handleSubmit}
+          loading={loading}
         />
       )}
 
