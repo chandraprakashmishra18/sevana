@@ -1,16 +1,19 @@
 import { useState } from "react";
-import { MapPin, LocateFixed } from "lucide-react";
+import { MapPin, LocateFixed, ExternalLink } from "lucide-react";
 
 import {
   getCurrentLocation,
   reverseGeocode,
 } from "../../../services/geo.service";
+
 import Button from "../../Common/Button/Button";
 import Loader from "../../Common/Loader/Loader";
 
 export default function LocationStep({
   formData,
   updateFields,
+  next,
+  back,
 }) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -23,17 +26,29 @@ export default function LocationStep({
       const { latitude, longitude } =
         await getCurrentLocation();
 
-      const location =
-        await reverseGeocode(latitude, longitude);
+      const location = await reverseGeocode(
+        latitude,
+        longitude
+      );
 
       updateFields(location);
     } catch (err) {
       setError(
-        err.message || "Unable to detect location."
+        err.message || "Unable to detect your location."
       );
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleContinue = () => {
+    if (!formData.latitude || !formData.longitude) {
+      setError("Please detect your current location.");
+      return;
+    }
+
+    setError("");
+    next();
   };
 
   return (
@@ -43,8 +58,8 @@ export default function LocationStep({
         <h2>Animal Location</h2>
 
         <p>
-          Detect your current location so nearby
-          volunteers can reach the animal quickly.
+          Detect your location so nearby volunteers can
+          reach the animal as quickly as possible.
         </p>
       </div>
 
@@ -56,13 +71,11 @@ export default function LocationStep({
         {loading ? (
           <>
             <Loader size="small" />
-
             Detecting...
           </>
         ) : (
           <>
             <LocateFixed size={18} />
-
             Detect Current Location
           </>
         )}
@@ -82,7 +95,6 @@ export default function LocationStep({
 
             <div>
               <strong>Latitude</strong>
-
               <span>{formData.latitude}</span>
             </div>
           </div>
@@ -92,7 +104,6 @@ export default function LocationStep({
 
             <div>
               <strong>Longitude</strong>
-
               <span>{formData.longitude}</span>
             </div>
           </div>
@@ -102,7 +113,6 @@ export default function LocationStep({
 
             <div>
               <strong>Address</strong>
-
               <span>
                 {formData.address || "Not Available"}
               </span>
@@ -113,23 +123,25 @@ export default function LocationStep({
             ✓ Location Verified
           </div>
 
-        </div>
-      )}
+          <a
+            className="map-link"
+            href={`https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`}
+            target="_blank"
+            rel="noreferrer"
+          >
+            <ExternalLink size={16} />
+            View on Google Maps
+          </a>
 
-      {formData.latitude && formData.longitude && (
-        <a
-          href={`https://www.google.com/maps?q=${formData.latitude},${formData.longitude}`}
-          target="_blank"
-          rel="noreferrer"
-        >
-          View on Map
-        </a>
+        </div>
       )}
 
       <div className="input-group">
         <label>Landmark</label>
 
         <input
+          type="text"
+          placeholder="Temple, School, Bus Stop..."
           value={formData.landmark}
           onChange={(e) =>
             updateFields({
@@ -140,10 +152,12 @@ export default function LocationStep({
       </div>
 
       <div className="input-row">
+
         <div className="input-group">
           <label>City</label>
 
           <input
+            type="text"
             value={formData.city}
             onChange={(e) =>
               updateFields({
@@ -157,6 +171,7 @@ export default function LocationStep({
           <label>State</label>
 
           <input
+            type="text"
             value={formData.state}
             onChange={(e) =>
               updateFields({
@@ -165,6 +180,28 @@ export default function LocationStep({
             }
           />
         </div>
+
+      </div>
+
+      <div className="step-actions">
+
+        <Button
+          type="button"
+          className="secondary-btn"
+          onClick={back}
+        >
+          ← Back
+        </Button>
+
+        <Button
+          type="button"
+          className="primary-btn"
+          onClick={handleContinue}
+          disabled={!formData.latitude}
+        >
+          Continue →
+        </Button>
+
       </div>
 
     </div>
