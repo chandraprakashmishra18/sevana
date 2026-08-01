@@ -10,6 +10,7 @@ import "./styles/variables.css";
 import "./styles/global.css";
 import "./styles/components.css";
 import "./styles/auth.css";
+import "./styles/design.css";
 
 import App from "./App";
 import { AuthProvider } from "./context/AuthContext";
