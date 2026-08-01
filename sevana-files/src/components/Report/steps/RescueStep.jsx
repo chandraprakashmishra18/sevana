@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AlertTriangle, ShieldAlert, Heart, Siren } from "lucide-react";
 
 const severityLevels = [
@@ -34,8 +35,25 @@ const severityLevels = [
 export default function RescueStep({
   formData,
   updateField,
+  next,
 }) {
   const maxCharacters = 500;
+  const [error, setError] = useState("");
+
+  function handleContinue() {
+    if (!formData.condition.trim()) {
+      setError("Please describe the animal's condition.");
+      return;
+    }
+
+    if (formData.condition.trim().length < 15) {
+      setError("Please provide a little more detail.");
+      return;
+    }
+
+    setError("");
+    next();
+  }
 
   return (
     <div className="report-step">

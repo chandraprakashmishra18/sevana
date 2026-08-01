@@ -53,6 +53,7 @@ export default function ReportScreen() {
         <RescueStep
           formData={formData}
           updateField={updateField}
+          next={() => setStep(3)}
         />
       )}
 
