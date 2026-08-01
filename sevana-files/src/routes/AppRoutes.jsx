@@ -7,7 +7,7 @@ import LoginScreen from "../screens/auth/LoginScreen";
 import RegisterScreen from "../screens/auth/RegisterScreen";
 
 import HomeScreen from "../screens/home/HomeScreen";
-import ReportDetailScreen from "../screens/report/ReportDetailScreen";
+import ReportScreen from "../screens/report/ReportScreen";
 import RescueFeedScreen from "../screens/rescue/RescueFeedScreen";
 // import VetFinderScreen from "../screens/vet/VetFinderScreen"; // <-- we'll confirm the filename
 
@@ -48,7 +48,7 @@ export default function AppRoutes() {
         path="/report"
         element={
           <ProtectedRoute>
-            <ReportDetailScreen />
+            <ReportScreen />
           </ProtectedRoute>
         }
       />
