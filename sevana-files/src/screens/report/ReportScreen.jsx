@@ -83,6 +83,11 @@ export default function ReportScreen() {
         return;
       }
 
+      if (!formData.images.length) {
+        alert("Please upload a photo.");
+        return;
+      }
+
       if (!formData.latitude || !formData.longitude) {
         alert("Please detect the animal's location.");
         return;

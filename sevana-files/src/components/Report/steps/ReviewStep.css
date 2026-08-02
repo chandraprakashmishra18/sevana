@@ -22,3 +22,11 @@
     line-height:1.7;
     color:#555;
 }
+
+.review-image{
+    display:block;
+    width:100%;
+    max-height:280px;
+    object-fit:cover;
+    border-radius:12px;
+}

@@ -68,6 +68,17 @@ export default function ReviewStep({
 
       </div>
 
+      {formData.images?.[0]?.url && (
+        <div className="review-card">
+          <h3>Photo</h3>
+          <img
+            className="review-image"
+            src={formData.images[0].url}
+            alt=""
+          />
+        </div>
+      )}
+
       <div className="review-card">
 
         <h3>📍 Location</h3>
