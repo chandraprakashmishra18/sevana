@@ -50,6 +50,15 @@ const createReportSchema = z.object({
   state: z.string().optional(),
 
   landmark: z.string().optional(),
+
+  images: z
+    .array(
+      z.object({
+        url: z.string().url(),
+        publicId: z.string(),
+      })
+    )
+    .min(1, "At least one image is required."),
 });
 
 const reportIdParamSchema = z.object({ id: z.string().uuid() });
@@ -82,6 +91,7 @@ async function createReport(req, res) {
     city,
     state,
     landmark,
+    images,
   } = createReportSchema.parse(req.body);
 
   const client = await pool.connect();
