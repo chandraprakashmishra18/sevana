@@ -283,9 +283,25 @@ async function listReports(req, res) {
 async function getReport(req, res) {
   const { id } = reportIdParamSchema.parse(req.params);
   const { rows } = await pool.query(
-    `SELECT ar.*, u.full_name AS reporter_name
-     FROM animal_reports ar JOIN users u ON u.id = ar.reported_by
-     WHERE ar.id = $1`,
+    `
+    SELECT
+        ar.*,
+        u.full_name AS reporter_name,
+
+        (
+            SELECT rm.media_url
+            FROM report_media rm
+            WHERE rm.report_id = ar.id
+            ORDER BY rm.is_primary DESC, rm.created_at ASC
+            LIMIT 1
+        ) AS image
+
+    FROM animal_reports ar
+    JOIN users u
+        ON u.id = ar.reported_by
+
+    WHERE ar.id = $1
+    `,
     [id],
   );
   if (!rows.length) {
