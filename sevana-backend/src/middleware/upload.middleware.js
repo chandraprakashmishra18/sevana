@@ -15,14 +15,28 @@ const upload = multer({
   storage: multer.memoryStorage(),
   limits: { fileSize: 8 * 1024 * 1024 }, // 8MB cap
   fileFilter: (req, file, callback) => {
-    const allowedTypes = new Set(["image/jpeg", "image/png", "image/webp"]);
+    console.log("Uploaded MIME:", file.mimetype);
+
+    const allowedTypes = new Set([
+      "image/jpeg",
+      "image/jpg",
+      "image/png",
+      "image/webp",
+      "image/heic",
+      "image/heif",
+      "image/pjpeg",
+    ]);
+
     if (!allowedTypes.has(file.mimetype)) {
-      return callback(new ApiError({
-        statusCode: 400,
-        message: "Only JPEG, PNG, and WebP images are allowed.",
-      }));
+      return callback(
+        new ApiError({
+          statusCode: 400,
+          message: `Unsupported image type: ${file.mimetype}`,
+        })
+      );
     }
-    return callback(null, true);
+
+    callback(null, true);
   },
 });
 
