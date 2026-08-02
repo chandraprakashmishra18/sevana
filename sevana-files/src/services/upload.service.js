@@ -6,12 +6,11 @@ export async function uploadPhoto(file) {
   formData.append("photo", file);
 
   const response = await api.post(
-    "/api/v1/upload",
+    "/api/v1/uploads",
     formData,
     {
       headers: {
-        "Content-Type":
-          "multipart/form-data",
+        "Content-Type": "multipart/form-data",
       },
     }
   );
