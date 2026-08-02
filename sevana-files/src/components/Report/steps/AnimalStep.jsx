@@ -1,5 +1,6 @@
 import { Dog, Cat, Bird, Fish, Rabbit, PawPrint, Beef } from "lucide-react";
 
+import ImageUploader from "../shared/ImageUploader";
 import "./AnimalStep.css";
 
 const animals = [
@@ -148,6 +149,17 @@ export default function AnimalStep({
 
         </div>
 
+      </div>
+
+      <div className="input-group">
+        <label>Animal Photo *</label>
+
+        <ImageUploader
+          value={formData.images?.[0]}
+          onChange={(image) =>
+            updateField("images", [image])
+          }
+        />
       </div>
 
       <div className="step-actions">
