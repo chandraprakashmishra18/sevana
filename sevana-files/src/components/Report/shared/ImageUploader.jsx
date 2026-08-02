@@ -14,10 +14,16 @@ export default function ImageUploader({
   const [uploading, setUploading] = useState(false);
 
   async function handleFile(file) {
-    if (!file) return;
-
+    console.log("HANDLE FILE CALLED");
     console.log(file);
+
+    if (!file) {
+      console.log("NO FILE");
+      return;
+    }
+
     console.log(file.name);
+    console.log(file.type);
 
     try {
       setUploading(true);
@@ -77,9 +83,12 @@ export default function ImageUploader({
         type="file"
         accept="image/*"
         capture="environment"
-        onChange={(e) =>
-          handleFile(e.target.files?.[0])
-        }
+        onChange={(e) => {
+          console.log("INPUT CHANGED");
+          console.log(e.target.files);
+
+          handleFile(e.target.files?.[0]);
+        }}
       />
 
     </div>
