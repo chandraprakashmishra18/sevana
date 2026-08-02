@@ -143,17 +143,56 @@ RETURNING *
       ],
     );
 
+    const report = rows[0];
+
+    // Save uploaded images
+    if (images && images.length) {
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+
+        await client.query(
+          `
+          INSERT INTO report_media
+          (
+            report_id,
+            uploaded_by,
+            media_type,
+            media_url,
+            is_primary
+          )
+          VALUES
+          (
+            $1,
+            $2,
+            'image',
+            $3,
+            $4
+          )
+          `,
+          [
+            report.id,
+            req.user.id,
+            image.url,
+            i === 0,
+          ],
+        );
+      }
+    }
+
     const xp = await awardXP(client, {
       userId: req.user.id,
       reason: "report_submitted",
       refTable: "animal_reports",
-      refId: rows[0].id,
+      refId: report.id,
     });
 
     await client.query("COMMIT");
     return created(res, {
       message: "Animal report created successfully.",
-      data: { report: rows[0], xpAwarded: xp },
+      data: {
+        report,
+        xpAwarded: xp,
+      },
     });
   } catch (err) {
     await client.query("ROLLBACK");
