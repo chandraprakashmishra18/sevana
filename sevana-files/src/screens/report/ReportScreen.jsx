@@ -36,6 +36,7 @@ export default function ReportScreen() {
     severity: "medium",
     condition: "",
     description: "",
+    images: [],
 
     // Location
     latitude: "",
