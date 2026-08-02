@@ -4,6 +4,8 @@ import { useNavigate } from "react-router-dom";
 import StatusBadge from "./StatusBadge";
 
 export default function RescueCard({ report }) {
+  console.log(report);
+
   const navigate = useNavigate();
 
   return (
