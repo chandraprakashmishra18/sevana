@@ -237,20 +237,43 @@ async function listReports(req, res) {
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const { rows } = await pool.query(
-    `SELECT ar.*, u.full_name AS reporter_name,
-            (SELECT COUNT(*) FROM rescues rr WHERE rr.report_id = ar.id) AS responder_count
-     FROM animal_reports ar
-     JOIN users u ON u.id = ar.reported_by
-     ${where}
-     ORDER BY
-       CASE ar.severity
-         WHEN 'critical' THEN 0
-         WHEN 'high' THEN 1
-         WHEN 'medium' THEN 2
-         ELSE 3
-       END,
-       ar.created_at DESC
-     LIMIT 100`,
+    `
+    SELECT
+        ar.*,
+        u.full_name AS reporter_name,
+
+        (
+            SELECT COUNT(*)
+            FROM rescues rr
+            WHERE rr.report_id = ar.id
+        ) AS responder_count,
+
+        (
+            SELECT rm.media_url
+            FROM report_media rm
+            WHERE rm.report_id = ar.id
+            ORDER BY rm.is_primary DESC, rm.created_at ASC
+            LIMIT 1
+        ) AS image
+
+    FROM animal_reports ar
+
+    JOIN users u
+        ON u.id = ar.reported_by
+
+    ${where}
+
+    ORDER BY
+        CASE ar.severity
+            WHEN 'critical' THEN 0
+            WHEN 'high' THEN 1
+            WHEN 'medium' THEN 2
+            ELSE 3
+        END,
+        ar.created_at DESC
+
+    LIMIT 100
+    `,
     params,
   );
 
