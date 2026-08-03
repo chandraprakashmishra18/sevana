@@ -8,23 +8,15 @@ export default function LocationCard({
   onLocationSelect,
 }) {
   const [loading, setLoading] = useState(false);
-  const { toast } = useToast();
+  const { showToast } = useToast();
 
   function detectLocation() {
     if (!navigator.geolocation) {
-      toast.error("Geolocation is not supported.");
-      return;
-    }
-
-    setLoading(true);
-
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        setLoading(false);
-
-        onLocationSelect({
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
+      showToast({
+        type: "error",
+        title: "Not Supported",
+        message: "Geolocation is not supported by your browser.",
+      });
       return;
     }
 
@@ -38,10 +30,20 @@ export default function LocationCard({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
+
+        showToast({
+          type: "success",
+          title: "Location Detected",
+          message: "Coordinates captured successfully.",
+        });
       },
       () => {
         setLoading(false);
-        toast.error("Unable to fetch your location.");
+        showToast({
+          type: "error",
+          title: "Error",
+          message: "Unable to fetch your location.",
+        });
       }
     );
   }
