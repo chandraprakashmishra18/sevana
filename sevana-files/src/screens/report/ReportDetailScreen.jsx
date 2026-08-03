@@ -66,16 +66,22 @@ export default function ReportDetailsScreen() {
 
   if (isLoading) {
     return (
-      <div className="report-details-page">
-        Loading...
+      <div className="report-details-container loading-container">
+        <div className="loader-spinner"></div>
+        <p>Loading rescue request details...</p>
       </div>
     );
   }
 
   if (isError || !report) {
     return (
-      <div className="report-details-page">
-        Failed to load report.
+      <div className="report-details-container error-container">
+        <ShieldAlert size={48} className="error-icon" />
+        <h2>Failed to load report.</h2>
+        <p>Please check your connection and try again.</p>
+        <button className="back-button" onClick={() => navigate(-1)}>
+          <ArrowLeft size={16} /> Back to Feed
+        </button>
       </div>
     );
   }
