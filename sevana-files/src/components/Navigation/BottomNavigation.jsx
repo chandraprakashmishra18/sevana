@@ -1,5 +1,5 @@
 import { NavLink } from "react-router-dom";
-import { Home, PlusCircle, AlertCircle } from "lucide-react";
+import { Home, PlusCircle, AlertCircle, Stethoscope } from "lucide-react";
 
 import "./BottomNavigation.css";
 
@@ -19,6 +19,11 @@ export default function BottomNavigation() {
       <NavLink to="/rescue" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
         <AlertCircle size={20} className="nav-icon" />
         <span>Rescue</span>
+      </NavLink>
+
+      <NavLink to="/vets" className={({ isActive }) => `nav-item ${isActive ? "active" : ""}`}>
+        <Stethoscope size={20} className="nav-icon" />
+        <span>Vets</span>
       </NavLink>
     </nav>
   );
