@@ -67,7 +67,10 @@ export default function PhotoStep({
       </label>
 
       {uploading && (
-        <p>Uploading...</p>
+        <div style={{ display: "flex", alignItems: "center", gap: "8px", margin: "12px 0", color: "#6b7280" }}>
+          <Loader2 className="spin" size={18} />
+          <span>Uploading photo...</span>
+        </div>
       )}
 
       {formData.images?.length > 0 && (
@@ -85,6 +88,7 @@ export default function PhotoStep({
                 images: [],
               })
             }
+            disabled={uploading}
           >
             <Trash2 />
           </button>
@@ -95,13 +99,13 @@ export default function PhotoStep({
 
       <div className="step-actions">
 
-        <button onClick={back}>
+        <button onClick={back} disabled={uploading}>
           Back
         </button>
 
         <button
           disabled={
-            !formData.images?.length
+            !formData.images?.length || uploading
           }
           onClick={next}
         >
