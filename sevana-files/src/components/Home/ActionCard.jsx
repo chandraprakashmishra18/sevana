@@ -1,11 +1,10 @@
-import { ChevronRight } from "lucide-react";
 import "./ActionCard.css";
 
 export default function ActionCard({
   icon: Icon,
   title,
   subtitle,
-  color = "#2E7D32",
+  color = "#10b981",
   onClick,
 }) {
   return (
@@ -14,15 +13,13 @@ export default function ActionCard({
         className="action-icon"
         style={{ backgroundColor: `${color}15`, color }}
       >
-        <Icon size={26} />
+        <Icon size={28} />
       </div>
 
       <div className="action-content">
         <h4>{title}</h4>
         <p>{subtitle}</p>
       </div>
-
-      <ChevronRight size={20} className="action-arrow" />
     </button>
   );
 }
