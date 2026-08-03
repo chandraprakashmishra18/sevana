@@ -20,14 +20,14 @@ export default function ReportDetailsScreen() {
     refetch,
   } = useReport(id);
 
-  const {
-    respond,
-    loading: responding,
-  } = useRespondToReport();
+  const respondMutation = useRespondToReport();
 
   async function handleRespond() {
     try {
-      await respond(id);
+      await respondMutation.mutateAsync({
+        id,
+        notes: "",
+      });
 
       showToast({
         type: "success",
@@ -170,10 +170,10 @@ export default function ReportDetailsScreen() {
 
       <button
         className="respond-btn"
-        disabled={responding}
+        disabled={respondMutation.isPending}
         onClick={handleRespond}
       >
-        {responding
+        {respondMutation.isPending
           ? "Joining..."
           : "🚑 I'm Responding"}
       </button>
