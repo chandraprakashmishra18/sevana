@@ -9,11 +9,7 @@ export default function RescueCard({ report }) {
   const navigate = useNavigate();
 
   return (
-    <div
-  className="rescue-card"
-  onClick={goToDetails}
->
-
+    <div className="rescue-card" onClick={goToDetails}>
       {/* ---------- Animal Image ---------- */}
 
       {report.image && (
@@ -27,26 +23,21 @@ export default function RescueCard({ report }) {
       {/* ---------- Header ---------- */}
 
       <div className="rescue-card-header">
-
         <div>
           <h2>{report.animal_type}</h2>
           <p>{report.species || "Unknown Species"}</p>
         </div>
 
         <StatusBadge severity={report.severity} />
-
       </div>
 
       {/* ---------- Condition ---------- */}
 
-      <div className="rescue-condition">
-        {report.condition}
-      </div>
+      <div className="rescue-condition">{report.condition}</div>
 
       {/* ---------- Info ---------- */}
 
       <div className="rescue-info">
-
         <div className="rescue-info-item">
           <MapPin size={16} />
           <span>{report.address || "Location unavailable"}</span>
@@ -54,20 +45,14 @@ export default function RescueCard({ report }) {
 
         <div className="rescue-info-item">
           <Clock size={16} />
-          <span>
-            {new Date(report.created_at).toLocaleString()}
-          </span>
+          <span>{new Date(report.created_at).toLocaleString()}</span>
         </div>
-
       </div>
 
       {/* ---------- Footer ---------- */}
 
       <div className="rescue-footer">
-
-        <span>
-          👥 {report.responder_count || 0} Responders
-        </span>
+        <span>👥 {report.responder_count || 0} Responders</span>
 
         <button
           className="view-report-btn"
@@ -76,9 +61,7 @@ export default function RescueCard({ report }) {
           View Details
           <ArrowRight size={18} />
         </button>
-
       </div>
-
     </div>
   );
 }
