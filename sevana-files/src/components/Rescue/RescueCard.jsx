@@ -9,7 +9,10 @@ export default function RescueCard({ report }) {
   const navigate = useNavigate();
 
   return (
-    <div className="rescue-card">
+    <div
+  className="rescue-card"
+  onClick={goToDetails}
+>
 
       {/* ---------- Animal Image ---------- */}
 
