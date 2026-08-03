@@ -2,10 +2,12 @@ import { useNavigate } from "react-router-dom";
 import { HeartHandshake, PawPrint, Stethoscope } from "lucide-react";
 
 import ActionCard from "./ActionCard";
+import { useToast } from "../../context/ToastContext";
 import "./QuickActions.css";
 
 export default function QuickActions() {
   const navigate = useNavigate();
+  const { showToast } = useToast();
 
   return (
     <section className="quick-actions">
@@ -33,7 +35,13 @@ export default function QuickActions() {
           title="Nearby Vets"
           subtitle="Find emergency veterinary care"
           color="#1976D2"
-          onClick={() => alert("Vet Finder is coming in Sprint 2")}
+          onClick={() =>
+            showToast({
+              type: "info",
+              title: "Coming Soon",
+              message: "Vet Finder is coming in Sprint 2.",
+            })
+          }
         />
       </div>
     </section>
