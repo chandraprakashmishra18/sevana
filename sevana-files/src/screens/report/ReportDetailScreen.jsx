@@ -23,11 +23,17 @@ export default function ReportDetailsScreen() {
   const respondMutation = useRespondToReport();
 
   async function handleRespond() {
+    console.log("Button clicked");
+
     try {
+      console.log("Calling API...");
+
       await respondMutation.mutateAsync({
         id,
         notes: "",
       });
+
+      console.log("Success!");
 
       showToast({
         type: "success",
@@ -37,6 +43,8 @@ export default function ReportDetailsScreen() {
 
       await refetch();
     } catch (err) {
+      console.error(err);
+
       showToast({
         type: "error",
         title: "Unable to Join",
