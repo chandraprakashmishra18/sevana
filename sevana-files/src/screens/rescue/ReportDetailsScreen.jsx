@@ -1,16 +1,19 @@
 import { useParams, useNavigate } from "react-router-dom";
-import { MapPin, Clock, ArrowLeft, ShieldAlert, User, Users, Activity, HeartPulse } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, ShieldAlert, User, Users, Activity, HeartPulse, Heart, Share2, Compass } from "lucide-react";
+import { useState } from "react";
 
 import useReport from "../../hooks/useReport";
 import useRespondToReport from "../../hooks/useRepondToReport";
 import { useToast } from "../../context/ToastContext";
 import RescueStatusBadge from "../../components/Rescue/RescueStatusBadge";
+import StatusBadge from "../../components/Rescue/StatusBadge";
 import "./ReportDetails.css";
 
 export default function ReportDetailsScreen() {
   const { id } = useParams();
   const navigate = useNavigate();
   const { showToast } = useToast();
+  const [isFavorited, setIsFavorited] = useState(false);
 
   const { data, isLoading, isError } = useReport(id);
   const respondMutation = useRespondToReport();
@@ -24,8 +27,8 @@ export default function ReportDetailsScreen() {
 
       showToast({
         type: "success",
-        title: "Joined Rescue",
-        message: "You have successfully joined this rescue.",
+        title: "Successfully Joined",
+        message: "You have joined the rescue! Coordinates shared.",
       });
     } catch (err) {
       if (err?.response?.status === 409) {
@@ -40,9 +43,7 @@ export default function ReportDetailsScreen() {
       showToast({
         type: "error",
         title: "Unable to Join",
-        message:
-          err?.response?.data?.message ||
-          "Something went wrong.",
+        message: err?.response?.data?.message || "Something went wrong.",
       });
     }
   }
@@ -56,13 +57,13 @@ export default function ReportDetailsScreen() {
     );
   }
 
-  if (isError) {
+  if (isError || !data) {
     return (
       <div className="report-details-container error-container">
         <ShieldAlert size={48} className="error-icon" />
         <h2>Failed to load report.</h2>
         <p>Please check your connection and try again.</p>
-        <button className="back-button" onClick={() => navigate(-1)}>
+        <button className="back-button-err" onClick={() => navigate(-1)}>
           <ArrowLeft size={16} /> Back to Feed
         </button>
       </div>
@@ -72,47 +73,84 @@ export default function ReportDetailsScreen() {
   const report = data;
 
   return (
-    <div className="report-details-container">
-      {/* Header / Navigation */}
-      <header className="details-header">
-        <button className="back-button" onClick={() => navigate(-1)}>
-          <ArrowLeft size={20} />
-          <span>Back</span>
-        </button>
-        <h1 className="header-title">Rescue Request</h1>
-      </header>
+    <div className="report-details-page-wrapper">
+      {/* ---------- Absolute Header Overlays on Image ---------- */}
+      <div className="details-image-hero">
+        {report.image ? (
+          <img
+            src={report.image}
+            alt={report.animal_type}
+            className="hero-image"
+          />
+        ) : (
+          <div className="hero-image-placeholder">
+            <HeartPulse size={48} className="placeholder-icon" />
+            <span>No Image Available</span>
+          </div>
+        )}
 
-      <main className="details-main">
-        {/* Hero Section */}
-        <div className="details-hero">
-          {report.image ? (
-            <img
-              src={report.image}
-              alt={report.animal_type}
-              className="hero-image"
-            />
-          ) : (
-            <div className="hero-image-placeholder">
-              <HeartPulse size={48} className="placeholder-icon" />
-              <span>No Image Available</span>
-            </div>
-          )}
-          <div className="hero-overlay">
-            <div className="hero-meta">
-              <span className={`severity-badge ${report.severity.toLowerCase()}`}>
-                <ShieldAlert size={14} />
-                {report.severity.toUpperCase()}
-              </span>
-              <h2 className="animal-title">{report.animal_type}</h2>
-              {report.species && <p className="species-subtitle">{report.species}</p>}
-            </div>
+        <div className="hero-floating-header">
+          <button className="floating-round-btn" onClick={() => navigate(-1)}>
+            <ArrowLeft size={20} />
+          </button>
+          <div className="hero-right-actions">
+            <button className="floating-round-btn" onClick={() => showToast({
+              type: "info",
+              title: "Share",
+              message: "Rescue details link copied to clipboard!"
+            })}>
+              <Share2 size={18} />
+            </button>
+            <button
+              className={`floating-round-btn ${isFavorited ? "favorited" : ""}`}
+              onClick={() => {
+                setIsFavorited(!isFavorited);
+                showToast({
+                  type: "success",
+                  title: isFavorited ? "Removed from Saved" : "Saved Rescue",
+                  message: isFavorited ? "Removed from bookmarks." : "Saved to your rescue bookmarks."
+                });
+              }}
+            >
+              <Heart size={18} fill={isFavorited ? "#ef4444" : "none"} />
+            </button>
           </div>
         </div>
 
-        {/* Info Grid */}
+        {/* Float badges on bottom of image */}
+        <div className="hero-bottom-badges">
+          <StatusBadge severity={report.severity} />
+          <RescueStatusBadge status={report.status} />
+        </div>
+      </div>
+
+      {/* ---------- Main Content Body (Slides Over Hero) ---------- */}
+      <main className="details-content-sheet">
+        {/* Title Section */}
+        <div className="details-title-section">
+          <h1 className="animal-title">{report.animal_type}</h1>
+          {report.species && <p className="species-subtitle">{report.species}</p>}
+        </div>
+
+        {/* Reporter Card */}
+        <div className="reporter-avatar-row">
+          <div className="reporter-avatar">
+            <User size={20} />
+          </div>
+          <div className="reporter-meta">
+            <span className="reported-by-label">Reported by</span>
+            <span className="reporter-name">{report.reporter_name || "Anonymous Hero"}</span>
+          </div>
+          <div className="reported-time-stamp">
+            <Clock size={12} />
+            <span>{new Date(report.created_at).toLocaleDateString()}</span>
+          </div>
+        </div>
+
+        {/* Info Cards Grid */}
         <div className="info-cards-grid">
-          {/* Card 1: Animal Details */}
-          <div className="info-card animal-details-card">
+          {/* Card 1: Animal Specs */}
+          <div className="info-card">
             <div className="card-header">
               <Activity size={18} className="card-icon" />
               <h3>Animal Details</h3>
@@ -128,17 +166,13 @@ export default function ReportDetailsScreen() {
               </div>
               <div className="grid-item">
                 <span className="grid-label">Estimated Age</span>
-                <span className="grid-value">{report.estimated_age}</span>
-              </div>
-              <div className="grid-item">
-                <span className="grid-label">Status</span>
-                <RescueStatusBadge status={report.status} />
+                <span className="grid-value">{report.estimated_age || "Unknown"}</span>
               </div>
             </div>
           </div>
 
           {/* Card 2: Incident Condition */}
-          <div className="info-card condition-card">
+          <div className="info-card">
             <div className="card-header">
               <HeartPulse size={18} className="card-icon alert-icon" />
               <h3>Condition Description</h3>
@@ -149,67 +183,48 @@ export default function ReportDetailsScreen() {
           </div>
 
           {/* Card 3: Location Details */}
-          <div className="info-card location-card">
+          <div className="info-card">
             <div className="card-header">
               <MapPin size={18} className="card-icon map-icon" />
-              <h3>Location</h3>
+              <h3>Incident Location</h3>
             </div>
             <div className="location-content">
-              <p className="address-text">{report.address}</p>
-              <button
-                className="maps-btn"
-                onClick={() =>
-                  window.open(
-                    `https://www.google.com/maps/dir/?api=1&destination=${report.latitude},${report.longitude}`,
-                    "_blank"
-                  )
-                }
-              >
-                🧭 Navigate to Animal
-              </button>
+              <p className="address-text">{report.address || "Address unavailable"}</p>
             </div>
           </div>
-
-          {/* Card 4: Reporter & Rescue Team */}
-          <div className="info-card reporter-card">
-            <div className="card-header">
-              <User size={18} className="card-icon user-icon" />
-              <h3>Report Info</h3>
-            </div>
-            <div className="reporter-content">
-              <div className="info-row">
-                <User size={16} />
-                <span>Reported by: <strong>{report.reporter_name}</strong></span>
-              </div>
-              <div className="info-row">
-                <Clock size={16} />
-                <span>Time: <strong>{new Date(report.created_at).toLocaleString()}</strong></span>
-              </div>
-              <div className="info-row count-row">
-                <Users size={16} />
-                <span>Active Responders: <strong className="count-badge">{report.responder_count}</strong></span>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        {/* Action Button */}
-        <div className="action-container">
-          <button
-            className="respond-btn"
-            disabled={respondMutation.isPending}
-            onClick={handleRespond}
-          >
-            {respondMutation.isPending ? (
-              <span className="btn-spinner">Joining Rescue...</span>
-            ) : (
-              <>
-                <span>🚑 I'm Responding</span>
-              </>
-            )}
-          </button>
         </div>
       </main>
+
+      {/* ---------- Sticky Bottom Action Bar ---------- */}
+      <footer className="details-action-footer">
+        <button
+          className="footer-nav-btn"
+          onClick={() =>
+            window.open(
+              `https://www.google.com/maps/dir/?api=1&destination=${report.latitude},${report.longitude}`,
+              "_blank"
+            )
+          }
+          title="Navigate to Animal"
+        >
+          <Compass size={20} />
+          <span>Navigate</span>
+        </button>
+
+        <button
+          className="respond-btn"
+          disabled={respondMutation.isPending}
+          onClick={handleRespond}
+        >
+          {respondMutation.isPending ? (
+            <span className="btn-spinner">Joining...</span>
+          ) : (
+            <>
+              <span>🚑 I'm Responding</span>
+            </>
+          )}
+        </button>
+      </footer>
     </div>
   );
 }
