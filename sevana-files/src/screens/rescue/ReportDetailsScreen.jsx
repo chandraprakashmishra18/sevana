@@ -3,7 +3,7 @@ import { ArrowLeft, MapPin, Clock, ShieldAlert, User, Users, Activity, HeartPuls
 import { useState } from "react";
 
 import useReport from "../../hooks/useReport";
-import useRespondToReport from "../../hooks/useRepondToReport";
+import useRespondToReport from "../../hooks/useRespondToReport";
 import { useToast } from "../../context/ToastContext";
 import RescueStatusBadge from "../../components/Rescue/RescueStatusBadge";
 import StatusBadge from "../../components/Rescue/StatusBadge";

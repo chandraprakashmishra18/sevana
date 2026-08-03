@@ -1,4 +1,4 @@
-import { T } from '../Styles/Theme';
+import { T } from '../styles/theme';
 export const sev = (s) => ({
   critical:  { label:'Critical',   bg:T.redLt,   color:T.red,   dot:T.red },
   injured:   { label:'Injured',    bg:T.amberLt, color:T.amber, dot:T.amber },
