@@ -1,5 +1,5 @@
 import { useNavigate } from "react-router-dom";
-import { HeartHandshake, PawPrint } from "lucide-react";
+import { HeartHandshake, PawPrint, Stethoscope } from "lucide-react";
 
 import ActionCard from "./ActionCard";
 import "./QuickActions.css";
@@ -16,7 +16,7 @@ export default function QuickActions() {
           icon={PawPrint}
           title="Report Animal"
           subtitle="Create a new report"
-          color="#10b981"
+          color="#2b4c6f"
           onClick={() => navigate("/report")}
         />
 
@@ -24,8 +24,16 @@ export default function QuickActions() {
           icon={HeartHandshake}
           title="Rescue Feed"
           subtitle="View nearby cases"
-          color="#f59e0b"
+          color="#e07a5f"
           onClick={() => navigate("/rescue")}
+        />
+
+        <ActionCard
+          icon={Stethoscope}
+          title="Nearby Vets"
+          subtitle="Find emergency care"
+          color="#0369a1"
+          onClick={() => navigate("/vets")}
         />
       </div>
     </section>
