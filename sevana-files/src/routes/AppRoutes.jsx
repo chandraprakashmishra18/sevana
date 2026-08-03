@@ -10,7 +10,7 @@ import HomeScreen from "../screens/home/HomeScreen";
 import ReportScreen from "../screens/report/ReportScreen";
 import RescueFeedScreen from "../screens/rescue/RescueFeedScreen";
 import ReportDetailsScreen from "../screens/rescue/ReportDetailsScreen";
-// import VetFinderScreen from "../screens/vet/VetFinderScreen"; // <-- we'll confirm the filename
+import VetFinderScreen from "../screens/vet/VetFinderScreen";
 
 export default function AppRoutes() {
   return (
