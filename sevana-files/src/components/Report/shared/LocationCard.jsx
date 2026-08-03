@@ -25,13 +25,23 @@ export default function LocationCard({
         onLocationSelect({
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
+      return;
+    }
+
+    setLoading(true);
+
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        setLoading(false);
+
+        onLocationSelect({
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
         });
       },
       () => {
         setLoading(false);
         toast.error("Unable to fetch your location.");
-      }
-    );
       }
     );
   }
