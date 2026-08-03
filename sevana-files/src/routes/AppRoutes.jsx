@@ -65,7 +65,11 @@ export default function AppRoutes() {
 
       <Route
         path="/reports/:id"
-        element={<ReportDetailsScreen />}
+        element={
+          <ProtectedRoute>
+            <ReportDetailsScreen />
+          </ProtectedRoute>
+        }
       />
 
       {/* Add vet route after confirming filename */}
