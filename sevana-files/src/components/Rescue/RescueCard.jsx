@@ -7,6 +7,7 @@ export default function RescueCard({ report }) {
   console.log(report);
 
   const navigate = useNavigate();
+  const goToDetails = () => navigate(`/reports/${report.id}`);
 
   return (
     <div className="rescue-card" onClick={goToDetails}>
@@ -56,7 +57,10 @@ export default function RescueCard({ report }) {
 
         <button
           className="view-report-btn"
-          onClick={() => navigate(`/reports/${report.id}`)}
+          onClick={(e) => {
+            e.stopPropagation();
+            goToDetails();
+          }}
         >
           View Details
           <ArrowRight size={18} />
