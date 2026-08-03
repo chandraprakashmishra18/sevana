@@ -132,9 +132,7 @@ export default function ReportDetailsScreen() {
               </div>
               <div className="grid-item">
                 <span className="grid-label">Status</span>
-                <span className="grid-value status-value capitalize">
-                  {report.status ? report.status.replace(/_/g, " ") : "Reported"}
-                </span>
+                <RescueStatusBadge status={report.status} />
               </div>
             </div>
           </div>
