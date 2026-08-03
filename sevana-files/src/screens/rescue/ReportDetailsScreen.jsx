@@ -4,6 +4,7 @@ import { MapPin, Clock, ArrowLeft, ShieldAlert, User, Users, Activity, HeartPuls
 import useReport from "../../hooks/useReport";
 import useRespondToReport from "../../hooks/useRepondToReport";
 import { useToast } from "../../context/ToastContext";
+import RescueStatusBadge from "../../components/Rescue/RescueStatusBadge";
 import "./ReportDetails.css";
 
 export default function ReportDetailsScreen() {
