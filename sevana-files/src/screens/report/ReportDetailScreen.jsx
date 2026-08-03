@@ -4,6 +4,7 @@ import { ArrowLeft, MapPin, Clock, ShieldAlert } from "lucide-react";
 import useReport from "../../hooks/useReport";
 import useRespondToReport from "../../hooks/useRespondToReport";
 import { useToast } from "../../context/ToastContext";
+import RescueStatusBadge from "../../components/Rescue/RescueStatusBadge";
 
 import "../rescue/ReportDetails.css";
 
