@@ -18,7 +18,7 @@
 .section-title {
   font-size: 20px;
   font-weight: 800;
-  color: #111827;
+  color: var(--text);
   margin: 0;
   letter-spacing: -0.5px;
 }
@@ -33,17 +33,17 @@
 .view-all-link {
   background: none;
   border: none;
-  color: #10b981;
+  color: var(--primary);
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 8px;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 
 .view-all-link:hover {
-  background: #f0fdf4;
+  background: var(--primary-light);
 }
 
 /* Loader Styles */
@@ -56,8 +56,8 @@
   padding: 30px;
   background: white;
   border-radius: 20px;
-  border: 1px solid #f3f4f6;
-  color: #6b7280;
+  border: 1px solid var(--border);
+  color: var(--text-light);
   font-size: 14px;
 }
 
@@ -65,7 +65,7 @@
   width: 20px;
   height: 20px;
   border: 2px solid #e5e7eb;
-  border-top-color: #10b981;
+  border-top-color: var(--primary);
   border-radius: 50%;
   animation: spin-loader 1s linear infinite;
 }
@@ -74,20 +74,78 @@
   to { transform: rotate(360deg); }
 }
 
-/* Premium Active Rescue Card */
+/* ---------- Today's Impact Stats ---------- */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+}
+
+.stat-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 8px;
+  padding: 16px 8px;
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow);
+  transition: var(--transition);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  border-color: #cbd5e1;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.04);
+}
+
+.stat-icon-wrapper {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.stat-icon-wrapper.success { background: var(--success-light); color: var(--primary); }
+.stat-icon-wrapper.danger { background: var(--danger-light); color: var(--danger); }
+.stat-icon-wrapper.accent { background: var(--accent-light); color: var(--accent-text); }
+
+.stat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.stat-value {
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--text);
+}
+
+.stat-label {
+  font-size: 11px;
+  color: var(--text-light);
+  font-weight: 600;
+}
+
+/* ---------- Premium Active Rescue Card ---------- */
 .premium-active-card {
   background: white;
-  border-radius: 24px;
-  border: 1px solid #f3f4f6;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.03), 0 2px 4px -1px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
   overflow: hidden;
   cursor: pointer;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: var(--transition);
 }
 
 .premium-active-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.06), 0 10px 10px -5px rgba(0, 0, 0, 0.03);
+  box-shadow: var(--shadow-lg);
 }
 
 .active-card-image-wrapper {
@@ -111,7 +169,7 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  color: #9ca3af;
+  color: var(--text-light);
   background: linear-gradient(135deg, #f9fafb 0%, #f3f4f6 100%);
 }
 
@@ -140,7 +198,7 @@
 .active-card-header h4 {
   font-size: 18px;
   font-weight: 800;
-  color: #111827;
+  color: var(--text);
   margin: 0;
   letter-spacing: -0.4px;
 }
@@ -148,7 +206,7 @@
 .active-species {
   font-size: 12px;
   font-weight: 600;
-  color: #6b7280;
+  color: var(--text-light);
   background: #f3f4f6;
   padding: 4px 8px;
   border-radius: 6px;
@@ -156,7 +214,7 @@
 
 .active-condition {
   font-size: 14px;
-  color: #4b5563;
+  color: var(--text);
   line-height: 1.5;
   margin: 0 0 16px 0;
   display: -webkit-box;
@@ -170,7 +228,7 @@
   flex-direction: column;
   gap: 8px;
   margin-bottom: 18px;
-  border-bottom: 1px solid #f3f4f6;
+  border-bottom: 1px solid var(--border);
   padding-bottom: 14px;
 }
 
@@ -179,12 +237,13 @@
   align-items: center;
   gap: 8px;
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-light);
   font-weight: 500;
 }
 
 .active-meta-item svg {
-  color: #9ca3af;
+  color: var(--text-light);
+  opacity: 0.7;
 }
 
 .active-respond-btn {
@@ -194,20 +253,20 @@
   justify-content: center;
   gap: 8px;
   background: #f3f4f6;
-  color: #1f2937;
+  color: var(--text);
   border: none;
   padding: 12px;
-  border-radius: 14px;
+  border-radius: 9999px; /* Capsule buttons */
   font-weight: 700;
   font-size: 14px;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 
 .premium-active-card:hover .active-respond-btn {
-  background: #10b981;
+  background: var(--primary);
   color: white;
-  box-shadow: 0 4px 12px rgba(16, 185, 129, 0.2);
+  box-shadow: 0 4px 12px rgba(44, 74, 62, 0.2);
 }
 
 /* No Active Rescues Card */
@@ -219,9 +278,9 @@
   text-align: center;
   padding: 32px 20px;
   background: white;
-  border-radius: 24px;
-  border: 1px solid #f3f4f6;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.02);
+  border-radius: var(--radius-xl);
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow);
 }
 
 .no-rescue-icon {
@@ -232,13 +291,13 @@
 .no-active-rescues-card h4 {
   font-size: 16px;
   font-weight: 700;
-  color: #1f2937;
+  color: var(--text);
   margin: 0 0 6px 0;
 }
 
 .no-active-rescues-card p {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-light);
   margin: 0;
   max-width: 260px;
   line-height: 1.5;
@@ -258,14 +317,14 @@
   padding: 12px;
   background: white;
   border-radius: 18px;
-  border: 1px solid #f3f4f6;
+  border: 1px solid var(--border);
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: var(--transition);
 }
 
 .compact-report-item:hover {
   transform: translateY(-2px);
-  border-color: #e5e7eb;
+  border-color: #cbd5e1;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.03);
 }
 
@@ -291,7 +350,7 @@
   align-items: center;
   justify-content: center;
   font-size: 18px;
-  color: #9ca3af;
+  color: var(--text-light);
 }
 
 .compact-details {
@@ -309,7 +368,7 @@
 .compact-header-row h5 {
   font-size: 15px;
   font-weight: 700;
-  color: #111827;
+  color: var(--text);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -324,17 +383,17 @@
   border-radius: 4px;
 }
 
-.compact-severity-badge.low { background: #dcfce7; color: #166534; }
+.compact-severity-badge.low { background: var(--success-light); color: var(--primary); }
 .compact-severity-badge.medium { background: #fef3c7; color: #92400e; }
-.compact-severity-badge.high { background: #fed7aa; color: #9a3412; }
-.compact-severity-badge.critical { background: #fee2e2; color: #991b1b; }
+.compact-severity-badge.high { background: var(--secondary-light); color: var(--secondary); }
+.compact-severity-badge.critical { background: var(--danger-light); color: var(--danger); }
 
 .compact-location {
   display: flex;
   align-items: center;
   gap: 4px;
   font-size: 12px;
-  color: #6b7280;
+  color: var(--text-light);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -342,7 +401,8 @@
 }
 
 .compact-location svg {
-  color: #9ca3af;
+  color: var(--text-light);
+  opacity: 0.7;
 }
 
 .compact-arrow {
@@ -352,12 +412,44 @@
 
 .compact-report-item:hover .compact-arrow {
   transform: translateX(3px);
-  color: #10b981 !important;
+  color: var(--primary) !important;
 }
 
 .no-reports-text {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-light);
   text-align: center;
   margin: 20px 0;
+}
+
+/* ---------- Floating Action Button (FAB) ---------- */
+.floating-action-button {
+  position: fixed;
+  bottom: 96px; /* Floating above bottom navigation */
+  right: calc(50% - 240px + 24px); /* centered inside the 480px wrapper frame */
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  background: var(--primary);
+  color: white;
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 8px 24px rgba(44, 74, 62, 0.3);
+  cursor: pointer;
+  z-index: 999;
+  transition: var(--transition);
+}
+
+.floating-action-button:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 12px 30px rgba(44, 74, 62, 0.4);
+}
+
+@media (max-width: 480px) {
+  .floating-action-button {
+    right: 20px;
+  }
 }
