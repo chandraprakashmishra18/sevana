@@ -180,31 +180,4 @@ export default function LocationStep({
               })
             }
           />
-        </div>
-
-      </div>
-
-      <div className="step-actions">
-
-        <Button
-          type="button"
-          className="secondary-btn"
-          onClick={back}
-        >
-          ← Back
-        </Button>
-
-        <Button
-          type="button"
-          className="primary-btn"
-          onClick={handleContinue}
-          disabled={!formData.latitude}
-        >
-          Continue →
-        </Button>
-
-      </div>
-
-    </div>
-  );
 }
