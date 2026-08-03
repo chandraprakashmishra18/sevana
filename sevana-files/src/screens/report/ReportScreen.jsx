@@ -74,22 +74,38 @@ export default function ReportScreen() {
     try {
       // Basic Validation
       if (!formData.animal_type) {
-        alert("Please select an animal.");
+        showToast({
+          type: "error",
+          title: "Selection Required",
+          message: "Please select an animal.",
+        });
         return;
       }
 
       if (!formData.condition.trim()) {
-        alert("Please describe the animal's condition.");
+        showToast({
+          type: "error",
+          title: "Description Required",
+          message: "Please describe the animal's condition.",
+        });
         return;
       }
 
       if (!formData.images.length) {
-        alert("Please upload a photo.");
+        showToast({
+          type: "error",
+          title: "Photo Required",
+          message: "Please upload a photo.",
+        });
         return;
       }
 
       if (!formData.latitude || !formData.longitude) {
-        alert("Please detect the animal's location.");
+        showToast({
+          type: "error",
+          title: "Location Required",
+          message: "Please detect the animal's location.",
+        });
         return;
       }
 
@@ -106,10 +122,13 @@ export default function ReportScreen() {
     } catch (err) {
       console.error(err);
 
-      alert(
-        err?.response?.data?.message ||
-          "Failed to submit report."
-      );
+      showToast({
+        type: "error",
+        title: "Submission Failed",
+        message:
+          err?.response?.data?.message ||
+          "Failed to submit report.",
+      });
     }
   }
 

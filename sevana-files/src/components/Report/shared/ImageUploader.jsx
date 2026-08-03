@@ -2,6 +2,7 @@ import { useId, useState } from "react";
 import { Camera, Loader2, CheckCircle } from "lucide-react";
 
 import { uploadPhoto } from "../../../services/upload.service";
+import { useToast } from "../../../context/ToastContext";
 
 import "./ImageUploader.css";
 
@@ -10,6 +11,7 @@ export default function ImageUploader({
   onChange,
 }) {
   const inputId = useId();
+  const { showToast } = useToast();
 
   const [uploading, setUploading] = useState(false);
 
@@ -36,7 +38,11 @@ export default function ImageUploader({
       });
     } catch (err) {
       console.error(err);
-      alert("Image upload failed.");
+      showToast({
+        type: "error",
+        title: "Upload Failed",
+        message: "Image upload failed.",
+      });
     } finally {
       setUploading(false);
     }
