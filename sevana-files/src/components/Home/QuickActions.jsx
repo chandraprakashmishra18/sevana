@@ -1,13 +1,11 @@
 import { useNavigate } from "react-router-dom";
-import { HeartHandshake, PawPrint, Stethoscope } from "lucide-react";
+import { HeartHandshake, PawPrint } from "lucide-react";
 
 import ActionCard from "./ActionCard";
-import { useToast } from "../../context/ToastContext";
 import "./QuickActions.css";
 
 export default function QuickActions() {
   const navigate = useNavigate();
-  const { showToast } = useToast();
 
   return (
     <section className="quick-actions">
@@ -17,31 +15,17 @@ export default function QuickActions() {
         <ActionCard
           icon={PawPrint}
           title="Report Animal"
-          subtitle="Create a new rescue report"
-          color="#2E7D32"
+          subtitle="Create a new report"
+          color="#10b981"
           onClick={() => navigate("/report")}
         />
 
         <ActionCard
           icon={HeartHandshake}
           title="Rescue Feed"
-          subtitle="View nearby rescue requests"
-          color="#F57C00"
+          subtitle="View nearby cases"
+          color="#f59e0b"
           onClick={() => navigate("/rescue")}
-        />
-
-        <ActionCard
-          icon={Stethoscope}
-          title="Nearby Vets"
-          subtitle="Find emergency veterinary care"
-          color="#1976D2"
-          onClick={() =>
-            showToast({
-              type: "info",
-              title: "Coming Soon",
-              message: "Vet Finder is coming in Sprint 2.",
-            })
-          }
         />
       </div>
     </section>
