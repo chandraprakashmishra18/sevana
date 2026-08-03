@@ -1,0 +1,42 @@
+.report-stepper {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.step-item {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.step-circle {
+  display: grid;
+  width: 32px;
+  height: 32px;
+  place-items: center;
+  border-radius: 50%;
+  background: #e5e7eb;
+}
+
+.step-circle.active,
+.step-circle.completed {
+  background: #2e7d32;
+  color: #fff;
+}
+
+.step-line {
+  flex: 1;
+  height: 2px;
+  margin: 0 8px;
+  background: #e5e7eb;
+}
+
+.step-line.completed-line {
+  background: #2e7d32;
+}
+
+.step-label {
+  margin-left: 8px;
+  font-size: 0.875rem;
+}

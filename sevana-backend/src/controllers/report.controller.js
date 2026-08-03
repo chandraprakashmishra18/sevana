@@ -50,6 +50,15 @@ const createReportSchema = z.object({
   state: z.string().optional(),
 
   landmark: z.string().optional(),
+
+  images: z
+    .array(
+      z.object({
+        url: z.string().url(),
+        publicId: z.string(),
+      })
+    )
+    .min(1, "At least one image is required."),
 });
 
 const reportIdParamSchema = z.object({ id: z.string().uuid() });
@@ -82,6 +91,7 @@ async function createReport(req, res) {
     city,
     state,
     landmark,
+    images,
   } = createReportSchema.parse(req.body);
 
   const client = await pool.connect();
@@ -133,17 +143,56 @@ RETURNING *
       ],
     );
 
+    const report = rows[0];
+
+    // Save uploaded images
+    if (images && images.length) {
+      for (let i = 0; i < images.length; i++) {
+        const image = images[i];
+
+        await client.query(
+          `
+          INSERT INTO report_media
+          (
+            report_id,
+            uploaded_by,
+            media_type,
+            media_url,
+            is_primary
+          )
+          VALUES
+          (
+            $1,
+            $2,
+            'image',
+            $3,
+            $4
+          )
+          `,
+          [
+            report.id,
+            req.user.id,
+            image.url,
+            i === 0,
+          ],
+        );
+      }
+    }
+
     const xp = await awardXP(client, {
       userId: req.user.id,
       reason: "report_submitted",
       refTable: "animal_reports",
-      refId: rows[0].id,
+      refId: report.id,
     });
 
     await client.query("COMMIT");
     return created(res, {
       message: "Animal report created successfully.",
-      data: { report: rows[0], xpAwarded: xp },
+      data: {
+        report,
+        xpAwarded: xp,
+      },
     });
   } catch (err) {
     await client.query("ROLLBACK");
@@ -188,20 +237,43 @@ async function listReports(req, res) {
   const where = conditions.length ? `WHERE ${conditions.join(" AND ")}` : "";
 
   const { rows } = await pool.query(
-    `SELECT ar.*, u.full_name AS reporter_name,
-            (SELECT COUNT(*) FROM rescues rr WHERE rr.report_id = ar.id) AS responder_count
-     FROM animal_reports ar
-     JOIN users u ON u.id = ar.reported_by
-     ${where}
-     ORDER BY
-       CASE ar.severity
-         WHEN 'critical' THEN 0
-         WHEN 'high' THEN 1
-         WHEN 'medium' THEN 2
-         ELSE 3
-       END,
-       ar.created_at DESC
-     LIMIT 100`,
+    `
+    SELECT
+        ar.*,
+        u.full_name AS reporter_name,
+
+        (
+            SELECT COUNT(*)
+            FROM rescues rr
+            WHERE rr.report_id = ar.id
+        ) AS responder_count,
+
+        (
+            SELECT rm.media_url
+            FROM report_media rm
+            WHERE rm.report_id = ar.id
+            ORDER BY rm.is_primary DESC, rm.created_at ASC
+            LIMIT 1
+        ) AS image
+
+    FROM animal_reports ar
+
+    JOIN users u
+        ON u.id = ar.reported_by
+
+    ${where}
+
+    ORDER BY
+        CASE ar.severity
+            WHEN 'critical' THEN 0
+            WHEN 'high' THEN 1
+            WHEN 'medium' THEN 2
+            ELSE 3
+        END,
+        ar.created_at DESC
+
+    LIMIT 100
+    `,
     params,
   );
 
@@ -211,9 +283,30 @@ async function listReports(req, res) {
 async function getReport(req, res) {
   const { id } = reportIdParamSchema.parse(req.params);
   const { rows } = await pool.query(
-    `SELECT ar.*, u.full_name AS reporter_name
-     FROM animal_reports ar JOIN users u ON u.id = ar.reported_by
-     WHERE ar.id = $1`,
+    `
+    SELECT
+        ar.*,
+        u.full_name AS reporter_name,
+
+        (
+            SELECT COUNT(*)
+            FROM rescues rr
+            WHERE rr.report_id = ar.id
+        ) AS responder_count,
+
+        (
+            SELECT rm.media_url
+            FROM report_media rm
+            WHERE rm.report_id = ar.id
+            ORDER BY rm.is_primary DESC, rm.created_at ASC
+            LIMIT 1
+        ) AS image
+
+    FROM animal_reports ar
+    JOIN users u
+        ON u.id = ar.reported_by
+    WHERE ar.id = $1;
+    `,
     [id],
   );
   if (!rows.length) {
