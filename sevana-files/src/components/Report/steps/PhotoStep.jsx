@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Camera, Upload, Trash2 } from "lucide-react";
+import { Camera, Upload, Trash2, Loader2 } from "lucide-react";
 
 import { uploadPhoto } from "../../../services/upload.service";
 
