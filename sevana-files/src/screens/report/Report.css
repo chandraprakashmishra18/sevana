@@ -1,0 +1,41 @@
+.report-screen {
+  max-width: 580px;
+  margin: auto;
+  padding: 24px 20px;
+  padding-bottom: 80px; /* Space for bottom nav */
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+}
+
+/* Step container animation */
+.report-step {
+  animation: fadeInStep 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes fadeInStep {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.step-header {
+  margin-bottom: 28px;
+}
+
+.step-header h2 {
+  font-size: 24px;
+  font-weight: 800;
+  color: #111827;
+  letter-spacing: -0.5px;
+  margin: 0 0 6px 0;
+}
+
+.step-header p {
+  font-size: 15px;
+  color: #6b7280;
+  margin: 0;
+}
