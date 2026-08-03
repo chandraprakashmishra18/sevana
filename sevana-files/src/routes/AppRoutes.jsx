@@ -72,7 +72,14 @@ export default function AppRoutes() {
         }
       />
 
-      {/* Add vet route after confirming filename */}
+      <Route
+        path="/vets"
+        element={
+          <ProtectedRoute>
+            <VetFinderScreen />
+          </ProtectedRoute>
+        }
+      />
 
       <Route path="*" element={<Navigate to="/" replace />} />
     </Routes>
