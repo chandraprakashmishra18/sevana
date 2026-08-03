@@ -43,7 +43,7 @@
 }
 
 .nav-item.active {
-  color: #10b981;
+  color: var(--primary);
 }
 
 .nav-icon {
