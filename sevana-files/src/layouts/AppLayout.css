@@ -1,6 +1,6 @@
 .app-layout {
   min-height: 100vh;
-  background: #f6f8f7;
+  background: #fafaf9; /* A soft stone background */
   display: flex;
   flex-direction: column;
 }
@@ -10,5 +10,5 @@
   width: 100%;
   max-width: 480px;
   margin: 0 auto;
-  padding: 24px 20px 90px;
+  padding: 24px 20px 96px; /* Extra bottom padding for BottomNavigation */
 }
