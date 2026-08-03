@@ -1,7 +1,8 @@
 .app-header {
   height: 72px;
-  background: white;
-  border-bottom: 1px solid #ececec;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
 
   display: flex;
   align-items: center;
@@ -11,27 +12,52 @@
 
   position: sticky;
   top: 0;
-  z-index: 100;
+  z-index: 1000;
 
-  box-shadow: 0 4px 20px rgba(0,0,0,.04);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.02);
 }
 
 .header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.logo-emoji {
+  font-size: 20px;
+  animation: logo-bounce 4s ease-in-out infinite;
+}
+
+@keyframes logo-bounce {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50% { transform: translateY(-2px) rotate(4deg); }
+}
+
+.logo-text {
   font-size: 22px;
-  font-weight: 700;
-  color: #2e7d32;
+  font-weight: 900;
+  color: #10b981; /* Consistent emerald brand color */
+  letter-spacing: -0.75px;
 }
 
 .header-profile {
-  width: 42px;
-  height: 42px;
-
+  width: 40px;
+  height: 40px;
   border-radius: 50%;
-  background: #eef6ef;
-
+  background: #f0fdf4;
+  border: 1px solid #dcfce7;
   display: flex;
   align-items: center;
   justify-content: center;
-
   cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.header-profile:hover {
+  background: #dcfce7;
+  transform: scale(1.05);
+}
+
+.profile-icon {
+  color: #10b981;
 }
