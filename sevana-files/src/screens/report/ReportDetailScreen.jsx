@@ -1,11 +1,11 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { ArrowLeft, MapPin, Clock } from "lucide-react";
+import { ArrowLeft, MapPin, Clock, ShieldAlert } from "lucide-react";
 
 import useReport from "../../hooks/useReport";
 import useRespondToReport from "../../hooks/useRespondToReport";
 import { useToast } from "../../context/ToastContext";
 
-import "./ReportDetails.css";
+import "../rescue/ReportDetails.css";
 
 export default function ReportDetailsScreen() {
   const { id } = useParams();
