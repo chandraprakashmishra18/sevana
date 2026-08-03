@@ -19,6 +19,8 @@ export default function RescueFeedScreen() {
     error,
   } = useReports(filters);
 
+  console.log("Reports:", data);
+
   if (isLoading) {
     return <RescueLoading />;
   }
