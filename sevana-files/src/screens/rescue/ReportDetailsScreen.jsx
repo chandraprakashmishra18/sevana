@@ -102,7 +102,7 @@ export default function ReportDetailsScreen() {
         className="maps-btn"
         onClick={() =>
           window.open(
-            `https://www.google.com/maps/search/?api=1&query=${report.latitude},${report.longitude}`,
+            `https://www.google.com/maps/dir/?api=1&destination=${report.latitude},${report.longitude}`,
             "_blank"
           )
         }
