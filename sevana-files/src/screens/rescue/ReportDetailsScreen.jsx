@@ -2,11 +2,13 @@ import { useParams } from "react-router-dom";
 import { MapPin, Clock } from "lucide-react";
 
 import useReport from "../../hooks/useReport";
+import useRespondToReport from "../../hooks/useRepondToReport";
 
 export default function ReportDetailsScreen() {
   const { id } = useParams();
 
   const { data, isLoading, isError } = useReport(id);
+  const { mutate, isPending } = useRespondToReport();
 
   if (isLoading) return <h2>Loading...</h2>;
 
@@ -75,8 +77,17 @@ export default function ReportDetailsScreen() {
         👥 {report.responder_count} Responders
       </p>
 
-      <button className="respond-btn">
-        🚑 I'm Responding
+      <button
+        className="respond-btn"
+        disabled={isPending}
+        onClick={() =>
+          mutate({
+            id,
+            notes: "",
+          })
+        }
+      >
+        {isPending ? "Joining..." : "🚑 I'm Responding"}
       </button>
 
     </div>

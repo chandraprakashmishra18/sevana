@@ -289,6 +289,12 @@ async function getReport(req, res) {
         u.full_name AS reporter_name,
 
         (
+            SELECT COUNT(*)
+            FROM rescues rr
+            WHERE rr.report_id = ar.id
+        ) AS responder_count,
+
+        (
             SELECT rm.media_url
             FROM report_media rm
             WHERE rm.report_id = ar.id
@@ -297,8 +303,9 @@ async function getReport(req, res) {
         ) AS image
 
     FROM animal_reports ar
+
     JOIN users u
-        ON u.id = ar.reported_by
+    ON u.id = ar.reported_by
 
     WHERE ar.id = $1
     `,
