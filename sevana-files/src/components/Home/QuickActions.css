@@ -1,16 +1,24 @@
 .quick-actions {
-  margin: 26px 0;
+  margin: 24px 0;
 }
 
 .section-title {
-  margin-bottom: 18px;
-  color: #1f2937;
+  margin-bottom: 16px;
+  color: #111827;
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 800;
+  letter-spacing: -0.5px;
 }
 
 .quick-actions-list {
-  display: flex;
-  flex-direction: column;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   gap: 16px;
+}
+
+@media (max-width: 480px) {
+  .quick-actions-list {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+  }
 }
