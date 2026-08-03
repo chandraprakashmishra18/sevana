@@ -45,6 +45,15 @@ export default function ReportDetailsScreen() {
     } catch (err) {
       console.error(err);
 
+      if (err?.response?.status === 409) {
+        showToast({
+          type: "info",
+          title: "Already Joined",
+          message: "You have already joined this rescue.",
+        });
+        return;
+      }
+
       showToast({
         type: "error",
         title: "Unable to Join",

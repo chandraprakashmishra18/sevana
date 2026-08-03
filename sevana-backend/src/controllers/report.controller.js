@@ -303,11 +303,9 @@ async function getReport(req, res) {
         ) AS image
 
     FROM animal_reports ar
-
     JOIN users u
-    ON u.id = ar.reported_by
-
-    WHERE ar.id = $1
+        ON u.id = ar.reported_by
+    WHERE ar.id = $1;
     `,
     [id],
   );

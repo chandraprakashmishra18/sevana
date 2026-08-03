@@ -3,12 +3,47 @@ import { MapPin, Clock } from "lucide-react";
 
 import useReport from "../../hooks/useReport";
 import useRespondToReport from "../../hooks/useRepondToReport";
+import { useToast } from "../../context/ToastContext";
+import "./ReportDetails.css";
 
 export default function ReportDetailsScreen() {
   const { id } = useParams();
+  const { showToast } = useToast();
 
   const { data, isLoading, isError } = useReport(id);
-  const { mutate, isPending } = useRespondToReport();
+  const respondMutation = useRespondToReport();
+
+  async function handleRespond() {
+    try {
+      await respondMutation.mutateAsync({
+        id,
+        notes: "",
+      });
+
+      showToast({
+        type: "success",
+        title: "Joined Rescue",
+        message: "You have successfully joined this rescue.",
+      });
+    } catch (err) {
+      if (err?.response?.status === 409) {
+        showToast({
+          type: "info",
+          title: "Already Joined",
+          message: "You have already joined this rescue.",
+        });
+        return;
+      }
+
+      showToast({
+        type: "error",
+        title: "Unable to Join",
+        message:
+          err?.response?.data?.message ||
+          "Something went wrong.",
+      });
+    }
+  }
 
   if (isLoading) return <h2>Loading...</h2>;
 
@@ -63,6 +98,18 @@ export default function ReportDetailsScreen() {
         {report.address}
       </p>
 
+      <button
+        className="maps-btn"
+        onClick={() =>
+          window.open(
+            `https://www.google.com/maps/search/?api=1&query=${report.latitude},${report.longitude}`,
+            "_blank"
+          )
+        }
+      >
+        🧭 Navigate to Animal
+      </button>
+
       <p>
         <Clock size={18} />
         {" "}
@@ -79,15 +126,10 @@ export default function ReportDetailsScreen() {
 
       <button
         className="respond-btn"
-        disabled={isPending}
-        onClick={() =>
-          mutate({
-            id,
-            notes: "",
-          })
-        }
+        disabled={respondMutation.isPending}
+        onClick={handleRespond}
       >
-        {isPending ? "Joining..." : "🚑 I'm Responding"}
+        {respondMutation.isPending ? "Joining..." : "🚑 I'm Responding"}
       </button>
 
     </div>

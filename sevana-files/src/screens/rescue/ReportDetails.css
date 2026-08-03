@@ -61,3 +61,19 @@
 .respond-btn:hover{
     background:#15803d;
 }
+
+.maps-btn {
+  margin-top: 16px;
+  width: 100%;
+  background: #1976D2;
+  color: white;
+  border: none;
+  padding: 14px;
+  border-radius: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.maps-btn:hover {
+  background: #1565C0;
+}
