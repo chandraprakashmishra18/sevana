@@ -31,7 +31,7 @@ export default function RescueFeedScreen() {
     );
   }
 
-  const reports = data?.data || [];
+  const reports = data || [];
 
   return (
     <div className="rescue-feed-page">
