@@ -6,7 +6,7 @@ import { useAuth } from "../../context/AuthContext";
 import useReports from "../../hooks/useReports";
 import RescueStatusBadge from "../../components/Rescue/RescueStatusBadge";
 import StatusBadge from "../../components/Rescue/StatusBadge";
-import { MapPin, Clock, ArrowRight, HeartPulse } from "lucide-react";
+import { MapPin, Clock, ArrowRight, HeartPulse, Plus, CheckCircle, Heart, Users } from "lucide-react";
 import "./HomeScreen.css";
 
 export default function HomeScreen() {
@@ -19,12 +19,17 @@ export default function HomeScreen() {
     (r) => r.status !== "rescued" && r.status !== "closed"
   );
 
-  // Get the 3 most recent reports
+  // Get recent reports
   const recentReports = reports?.slice(0, 3) || [];
+
+  // Count active cases
+  const activeCasesCount = reports?.filter(
+    (r) => r.status !== "rescued" && r.status !== "closed"
+  ).length || 0;
 
   return (
     <div className="home-screen-container">
-      {/* Hero Section & Welcome Banner */}
+      {/* Hero Welcome Banner */}
       <HeroCard user={user} />
 
       {/* Progress XP Card */}
@@ -36,6 +41,42 @@ export default function HomeScreen() {
 
       {/* Better Quick Actions */}
       <QuickActions />
+
+      {/* Today's Impact & Statistics Grid */}
+      <section className="home-section stats-section">
+        <h3 className="section-title">Today's Impact</h3>
+        <div className="stats-grid">
+          <div className="stat-card">
+            <div className="stat-icon-wrapper success">
+              <CheckCircle size={20} />
+            </div>
+            <div className="stat-info">
+              <span className="stat-value">124</span>
+              <span className="stat-label">Animals Saved</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-icon-wrapper danger">
+              <Heart size={20} />
+            </div>
+            <div className="stat-info">
+              <span className="stat-value">{activeCasesCount}</span>
+              <span className="stat-label">Active Missions</span>
+            </div>
+          </div>
+
+          <div className="stat-card">
+            <div className="stat-icon-wrapper accent">
+              <Users size={20} />
+            </div>
+            <div className="stat-info">
+              <span className="stat-value">48</span>
+              <span className="stat-label">Volunteers Active</span>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Beautiful Active Rescue Card */}
       <section className="home-section active-rescue-section">
@@ -110,7 +151,7 @@ export default function HomeScreen() {
       {/* Better Recent Reports */}
       <section className="home-section recent-reports-section">
         <div className="section-header-row">
-          <h3 className="section-title">Recent Reports</h3>
+          <h3 className="section-title">Recent Cases</h3>
           <button className="view-all-link" onClick={() => navigate("/rescue")}>
             View Feed
           </button>
@@ -157,6 +198,16 @@ export default function HomeScreen() {
           <p className="no-reports-text">No reports submitted recently.</p>
         )}
       </section>
+
+      {/* Floating Action Button (FAB) for demo quick access */}
+      <button
+        className="floating-action-button"
+        onClick={() => navigate("/report")}
+        title="Report New Animal"
+        aria-label="Report New Animal"
+      >
+        <Plus size={26} />
+      </button>
     </div>
   );
 }
