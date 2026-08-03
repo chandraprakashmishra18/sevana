@@ -32,6 +32,8 @@ export default function LocationCard({
         toast.error("Unable to fetch your location.");
       }
     );
+      }
+    );
   }
 
   return (
@@ -42,8 +44,9 @@ export default function LocationCard({
         type="button"
         className="location-btn"
         onClick={detectLocation}
+        disabled={loading}
       >
-        <MapPin size={18} />
+        <MapPin size={18} className={loading ? "spin" : ""} />
 
         {loading
           ? "Detecting..."
