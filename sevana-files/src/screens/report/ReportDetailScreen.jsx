@@ -155,13 +155,17 @@ export default function ReportDetailsScreen() {
           {report.address}
         </p>
 
-        <a
-          href={`https://www.google.com/maps?q=${report.latitude},${report.longitude}`}
-          target="_blank"
-          rel="noreferrer"
+        <button
+          className="maps-btn"
+          onClick={() =>
+            window.open(
+              `https://www.google.com/maps/search/?api=1&query=${report.latitude},${report.longitude}`,
+              "_blank"
+            )
+          }
         >
-          📍 Open in Google Maps
-        </a>
+          🧭 Navigate to Animal
+        </button>
 
       </div>
 
