@@ -147,7 +147,7 @@ export default function ReportDetailsScreen() {
 
         <div>
           <strong>Status</strong>
-          <p>{report.status}</p>
+          <RescueStatusBadge status={report.status} />
         </div>
 
       </div>
