@@ -7,6 +7,6 @@ const app = require("./app");
 
 const PORT = env.PORT;
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`🚀 Sevana Backend is running on port ${PORT}`);
 });
